@@ -39,7 +39,7 @@ export default function App() {
     }
 
     let CallAPI = async () => {
-      fetch('https://62bacc4b573ca8f8328ba64b.mockapi.io/detector')
+      fetch('https://scangamebackend.herokuapp.com/exampleresponse')
           .then((response) => response.json())
           .then((json) => setData(json))
           .catch((error) => console.error(error))
