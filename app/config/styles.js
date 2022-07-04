@@ -40,7 +40,7 @@ export default{
         backgroundColor: colors.primary,
         borderColor: colors.black,
         borderWidth: 2,
-        bottom: 20
+        bottom: 10,
       },
       NavigationButton: { //These are the two buttons on the side
         width: 75,
@@ -53,33 +53,25 @@ export default{
         borderWidth: 2,    
       },
       EmojiAssignment: {
-        fontSize: 100,
+        fontSize: 120,
+        bottom: 240,
         
+      },
+      CameraIcon: {
+        fontSize: 30,
+        justifyContent: 'center',
+        alignItems: 'center' 
       },
       HighScore: {
         color: colors.white,
         position: 'absolute',
         top: 50,
-        left: 10,
-        fontSize: 15,
-      },
-      UserScore: {
-        color: colors.white,
-        position: 'absolute',
-        top: 75,
-        left: 10,
-        fontSize: 15,
-      },
-      TimeRemaining: {
-        color: colors.white,
-        position: 'absolute',
-        top: 50,
-        right: 10,
-        fontSize: 15,
+        right: 20,
+        fontSize: 25,
       },
       CallToAction: {
         color: colors.white,
-        fontSize: 50,
+        fontSize: 40,
         position: 'absolute',
         top: 120
       },
