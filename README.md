@@ -2,6 +2,8 @@
 This is the repo for the React Native apps that support my ScanGame. From react it should be possible to compile both iOS and Android apps. 
 
 ![IMG_2749](https://user-images.githubusercontent.com/71013416/177129166-3392465b-48cd-4d37-a28c-4201054d5c33.PNG =250x250)
+<img src="https://camo.githubusercontent.com/..." data-canonical-src="https://gyazo.com/eb5c5741b6a9a16c692170a41a49c858.png" width="200" height="400" />
+
 
 # What does it do:
 - When you open the app, you're given the assignment to photograph an object (e.g: 'a person')
