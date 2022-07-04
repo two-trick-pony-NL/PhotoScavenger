@@ -1,8 +1,6 @@
 # ScanGameApps
 This is the repo for the React Native apps that support my ScanGame. From react it should be possible to compile both iOS and Android apps. 
-
-![IMG_2749](https://user-images.githubusercontent.com/71013416/177129166-3392465b-48cd-4d37-a28c-4201054d5c33.PNG =250x250)
-<img src="https://user-images.githubusercontent.com/71013416/177129166-3392465b-48cd-4d37-a28c-4201054d5c33.PNG" width="200" height="400" />
+<img src="https://user-images.githubusercontent.com/71013416/177129166-3392465b-48cd-4d37-a28c-4201054d5c33.PNG" width="300" height="600" />
 
 
 # What does it do:
