@@ -75,4 +75,32 @@ export default{
         position: 'absolute',
         top: 120
       },
+      Response: {
+        backgroundColor: colors.grey,
+        color: colors.black,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 40, 
+        margin: 20,
+        padding: 10,
+        margin: 20,
+
+      }, 
+      ObjectsFoundLabel: {
+        backgroundColor: colors.secondary,
+        color: colors.black,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 40, 
+        padding: 10,
+        margin: 1,
+
+      }, 
+      ObjectsFoundContainer: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        alignContent: 'center',
+        margin: 20,
+
+      }
     }

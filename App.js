@@ -1,12 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Entypo, ActivityIndicator, Text, View, SafeAreaView, TouchableOpacity, Button, Image } from 'react-native';
+import { StyleSheet, Entypo, ActivityIndicator, Text, View, FlatList, SafeAreaView, TouchableOpacity, Button, Image } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import { Camera } from 'expo-camera';
 import { shareAsync } from 'expo-sharing';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { FontAwesome } from '@expo/vector-icons'; 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-
 import * as MediaLibrary from 'expo-media-library';
 import styles from './app/config/styles';
 
@@ -14,13 +13,12 @@ import styles from './app/config/styles';
 export default function App() {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
-  console.log(data);
 
     // Here starts the part where we take the picture
-    let cameraRef = useRef();
-    const [hasCameraPermission, setHasCameraPermission] = useState();
-    const [hasMediaLibraryPermission, setHasMediaLibraryPermission] = useState();
-    const [photo, setPhoto] = useState();
+  let cameraRef = useRef();
+  const [hasCameraPermission, setHasCameraPermission] = useState();
+  const [hasMediaLibraryPermission, setHasMediaLibraryPermission] = useState();
+  const [photo, setPhoto] = useState();
 
     useEffect(() => {
       (async () => {
@@ -55,7 +53,7 @@ export default function App() {
       let newPhoto = await cameraRef.current.takePictureAsync(options);
       setPhoto(newPhoto);
       CallAPI();
-      await console.log(data.OtherObjectsDetected);
+      console.log(data);      
     };
 
     if (photo) {
@@ -70,11 +68,54 @@ export default function App() {
           setPhoto(undefined);
         });
       };
+
+      //This function is a bit of a mess, but it loops over the array of objects that the AI model detected in an image
+      //The reason we have to try/catch is because when the screen is loaded the 'data' object is not available yet, and thus the 
+      // function fails. after a second the data is available and all is fine. Not quite sure how to clean this up
+      let GetObjectsDetected = (data) => {
+        try {
+          return data.map(x=>
+            <View style={styles.ObjectsFoundLabel}>
+              <Text>{x}</Text>
+            </View>
+            );
+        } catch (error) {
+          console.error(error);
+        }
+      };
+
+
+
+
+
     // This is what is shown after taking a photos
       return (
         <SafeAreaView style={styles.container}>
           <Image style={styles.preview} source={{ uri: "data:image/jpg;base64," + photo.base64 }} />
-          <Text> {data.Wasfound}  and more</Text>
+          <Text> Was the correct object found?</Text>
+          <View style={styles.Response}>
+          
+          <Text> {data.Wasfound} </Text>
+          </View>
+          <Text> File location</Text>
+          <View style={styles.Response}>
+         
+          <Text> {data.file_url} </Text>
+          </View>
+          <Text> Take a picture of a:</Text>
+          <View style={styles.Response}>
+          
+          <Text> {data.Searchedfor} </Text>
+          </View>
+          <Text> Your picture contained these objects:</Text>
+          <View style={styles.ObjectsFoundContainer}>
+          {GetObjectsDetected(data.OtherObjectsDetected)}
+          </View>
+
+
+
+  
+          
           <Button title="Share" onPress={sharePic} />
           {hasMediaLibraryPermission ? <Button title="Save" onPress={savePhoto} /> : undefined}
           <Button title="Discard" onPress={() => setPhoto(undefined)} />
