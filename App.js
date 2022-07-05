@@ -36,12 +36,19 @@ export default function App() {
       return <Text>Permission for camera not granted. Please change this in settings.</Text>
     }
 
-    let CallAPI = async () => {
-      fetch('https://scangamebackend.herokuapp.com/exampleresponse')
+    let CallAPI = async (image) => {
+      var formdata = new FormData();
+      formdata.append('file', {uri: image.uri, name: 'picture.jpg', type: 'image/jpg'});
+      //console.log(formdata)
+      fetch('https://scangamebackend.herokuapp.com/uploadfile/boat', {
+        method: 'POST',
+        body: formdata
+        })
           .then((response) => response.json())
           .then((json) => setData(json))
           .catch((error) => console.error(error))
           .finally(() => setLoading(false));
+          console.log(data)
     };
 
     let takePic = async () => {
@@ -52,8 +59,7 @@ export default function App() {
       };
       let newPhoto = await cameraRef.current.takePictureAsync(options);
       setPhoto(newPhoto);
-      CallAPI();
-      console.log(data);      
+      CallAPI(newPhoto);     
     };
 
     if (photo) {
@@ -76,11 +82,11 @@ export default function App() {
         try {
           return data.map(x=>
             <View style={styles.ObjectsFoundLabel}>
-              <Text>{x}</Text>
+              <Text key={index}>{x}</Text>
             </View>
             );
         } catch (error) {
-          console.error(error);
+          //console.error(error);
         }
       };
 
@@ -95,7 +101,7 @@ export default function App() {
           <Text> Was the correct object found?</Text>
           <View style={styles.Response}>
           
-          <Text> {data.Wasfound} </Text>
+          <Text> {data.Wasfound}  false-hardcoded </Text>
           </View>
           <Text> File location</Text>
           <View style={styles.Response}>
