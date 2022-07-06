@@ -11,7 +11,7 @@ import styles from './app/config/styles';
 
 
 export default function App() {
-  const [isLoading, setLoading] = useState(true);
+  const [Loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
 
     // Here starts the part where we take the picture
@@ -40,7 +40,7 @@ export default function App() {
       var formdata = new FormData();
       formdata.append('file', {uri: image.uri, name: 'picture.jpg', type: 'image/jpg'});
       //console.log(formdata)
-      fetch('https://scangamebackend.herokuapp.com/uploadfile/boat', {
+      fetch('https://scangamebackend.herokuapp.com/uploadfile/person', {
         method: 'POST',
         body: formdata
         })
@@ -48,7 +48,7 @@ export default function App() {
           .then((json) => setData(json))
           .catch((error) => console.error(error))
           .finally(() => setLoading(false));
-          console.log(data)
+          console.log(data);
     };
 
     let takePic = async () => {
@@ -57,9 +57,11 @@ export default function App() {
         base64: true,
         exif: false,
       };
+      setData("")
       let newPhoto = await cameraRef.current.takePictureAsync(options);
       setPhoto(newPhoto);
-      CallAPI(newPhoto);     
+      setLoading(true);
+      CallAPI(newPhoto);   
     };
 
     if (photo) {
@@ -78,11 +80,13 @@ export default function App() {
       //This function is a bit of a mess, but it loops over the array of objects that the AI model detected in an image
       //The reason we have to try/catch is because when the screen is loaded the 'data' object is not available yet, and thus the 
       // function fails. after a second the data is available and all is fine. Not quite sure how to clean this up
-      let GetObjectsDetected = (data) => {
+      let GetObjectsDetected = (data1) => {
         try {
-          return data.map(x=>
+          console.log('Printing the objects found in the picture')
+          console.log(data1);
+          return data1.map(x=>
             <View style={styles.ObjectsFoundLabel}>
-              <Text key={index}>{x}</Text>
+              <Text>{x}</Text>
             </View>
             );
         } catch (error) {
@@ -97,34 +101,46 @@ export default function App() {
     // This is what is shown after taking a photos
       return (
         <SafeAreaView style={styles.container}>
+        {Loading ? ( //Setting a spinner while waiting for the API call to return the results. Read as a IF statement. So if Loading is true, then do this else render template
+          <ActivityIndicator
+            //visibility of Overlay Loading Spinner
+            visible={Loading}
+            //Text with the Spinner
+            textContent={'Loading...'}
+            //Text style of the Spinner Text
+            textStyle={styles.spinnerTextStyle}
+          />
+        ) : ( //this bit we render if the app is not loading
+        <>
           <Image style={styles.preview} source={{ uri: "data:image/jpg;base64," + photo.base64 }} />
-          <Text> Was the correct object found?</Text>
-          <View style={styles.Response}>
           
-          <Text> {data.Wasfound}  false-hardcoded </Text>
-          </View>
-          <Text> File location</Text>
-          <View style={styles.Response}>
-         
-          <Text> {data.file_url} </Text>
-          </View>
+
+          <Text style={styles.Results}>Results!</Text>
+
+          
           <Text> Take a picture of a:</Text>
           <View style={styles.Response}>
-          
-          <Text> {data.Searchedfor} </Text>
+            <Text> {data.Searchedfor} </Text>
           </View>
-          <Text> Your picture contained these objects:</Text>
+          <Text> 🤖 AIBot found this in your picture:</Text>
           <View style={styles.ObjectsFoundContainer}>
-          {GetObjectsDetected(data.OtherObjectsDetected)}
+            {GetObjectsDetected(data.OtherObjectsDetected)}
+          </View>
+
+          <Text> Was the correct object found?</Text>
+        
+          <View style={styles.Response}>
+            <Text> {Boolean(data.Wasfound)} </Text>
           </View>
 
 
 
-  
-          
           <Button title="Share" onPress={sharePic} />
           {hasMediaLibraryPermission ? <Button title="Save" onPress={savePhoto} /> : undefined}
           <Button title="Discard" onPress={() => setPhoto(undefined)} />
+
+          </>
+          )}
         </SafeAreaView>
       );
     }
@@ -133,8 +149,8 @@ export default function App() {
       <Camera style={styles.container} ref={cameraRef}>
         <Ionicons name="scan-outline" size={300} color="white" />
           <Text style={styles.HighScore}> ⭐️ Level: 9</Text>
-          <Text style={styles.CallToAction}> Take a picture of a</Text>
-          <Text style={styles.EmojiAssignment}> 🪴 </Text>
+          <Text style={styles.CallToAction}> Take a picture of a 🐈 </Text>
+          <Text style={styles.EmojiAssignment}>  </Text>
           
 
 

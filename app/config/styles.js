@@ -102,5 +102,11 @@ export default{
         alignContent: 'center',
         margin: 20,
 
-      }
+      },
+      Results: {
+      color: colors.white,
+      fontSize: 40,
+      position: 'absolute',
+      top: 120
+      },
     }
