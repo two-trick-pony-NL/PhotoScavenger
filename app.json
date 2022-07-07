@@ -18,7 +18,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": false,
+      "bundleIdentifier": "com.petervandoorn.scangame2"
     },
     "android": {
       "adaptiveIcon": {

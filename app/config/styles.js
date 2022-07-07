@@ -109,4 +109,7 @@ export default{
       position: 'absolute',
       top: 120
       },
+      LoadingScreen: {
+      backgroundColor: colors.primary
+        },
     }

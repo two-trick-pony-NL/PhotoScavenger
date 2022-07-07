@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Entypo, ActivityIndicator, Text, View, FlatList, SafeAreaView, TouchableOpacity, Button, Image } from 'react-native';
+import { StyleSheet, Alert, Entypo, ActivityIndicator, Text, View, FlatList, SafeAreaView, TouchableOpacity, Button, Image } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import { Camera } from 'expo-camera';
 import { shareAsync } from 'expo-sharing';
@@ -8,11 +8,16 @@ import { FontAwesome } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import * as MediaLibrary from 'expo-media-library';
 import styles from './app/config/styles';
+import colors from './app/config/colors';
+
 
 
 export default function App() {
   const [Loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
+  const [assignment, setAssignment] = useState([{'person':'👱‍♂️'}]);
+  const emoji = Object.values(assignment)[0];
+  const DetectorParameter = Object.keys(assignment)[0]
 
     // Here starts the part where we take the picture
   let cameraRef = useRef();
@@ -20,7 +25,18 @@ export default function App() {
   const [hasMediaLibraryPermission, setHasMediaLibraryPermission] = useState();
   const [photo, setPhoto] = useState();
 
+  let CallAssignmentAPI = async () => {
+    fetch('https://scangamebackend.herokuapp.com/newassignment')
+    .then((response) => response.json())
+    .then((json) => setAssignment(json))
+    .catch((error) => console.error(error))
+    console.log('Printing the new assignment')
+    console.log(assignment);
+    console.log(assignment[1]);
+  };
+// This use effect is used 1x on app load, to get the first asignment and fetch camera permissions if we don't have them. 
     useEffect(() => {
+      CallAssignmentAPI();
       (async () => {
         const cameraPermission = await Camera.requestCameraPermissionsAsync();
         const mediaLibraryPermission = await MediaLibrary.requestPermissionsAsync();
@@ -28,19 +44,29 @@ export default function App() {
         setHasMediaLibraryPermission(mediaLibraryPermission.status === "granted");
       })();
     }, []);
-    // IF no permission is given to access the camera this text is shown
 
+
+    // IF no permission is given to access the camera this text is shown
     if (hasCameraPermission === undefined) {
       return <Text>Requesting permissions...</Text>
     } else if (!hasCameraPermission) {
       return <Text>Permission for camera not granted. Please change this in settings.</Text>
     }
 
-    let CallAPI = async (image) => {
+    let HowToPlay = () => {
+      //function to make simple alert
+      console.log('User tapped how to play button')
+      Alert.alert('How to play:',' 👋🏻 Hi! Welcome to ScanGame! Playing is easy; Simply photograph the object to earn points.\nPhotos of incorrect objects will lead to a penalty. \n \n If you cannot find the object, then you can hit 🔄 to get another task. This will cost 50 Points \n\n What is your Highscore? 🥇 ',
+      [
+        { text: 'Let\'s play! 📸 ', onPress: () => console.log('user closed the how to play') },
+      ],);
+    };
+
+    let CallDetectionAPI = async (image) => {
       var formdata = new FormData();
       formdata.append('file', {uri: image.uri, name: 'picture.jpg', type: 'image/jpg'});
       //console.log(formdata)
-      fetch('https://scangamebackend.herokuapp.com/uploadfile/person', {
+      fetch('https://scangamebackend.herokuapp.com/uploadfile/cow'+DetectorParameter, {
         method: 'POST',
         body: formdata
         })
@@ -48,8 +74,12 @@ export default function App() {
           .then((json) => setData(json))
           .catch((error) => console.error(error))
           .finally(() => setLoading(false));
+          console.log('Data received from API:')
           console.log(data);
     };
+
+
+
 
     let takePic = async () => {
       let options = {
@@ -61,7 +91,7 @@ export default function App() {
       let newPhoto = await cameraRef.current.takePictureAsync(options);
       setPhoto(newPhoto);
       setLoading(true);
-      CallAPI(newPhoto);   
+      CallDetectionAPI(newPhoto);   
     };
 
     if (photo) {
@@ -102,14 +132,19 @@ export default function App() {
       return (
         <SafeAreaView style={styles.container}>
         {Loading ? ( //Setting a spinner while waiting for the API call to return the results. Read as a IF statement. So if Loading is true, then do this else render template
+        <View styles={styles.background}>       
           <ActivityIndicator
             //visibility of Overlay Loading Spinner
             visible={Loading}
             //Text with the Spinner
             textContent={'Loading...'}
+            size='large'
+            color= {colors.primary}
             //Text style of the Spinner Text
-            textStyle={styles.spinnerTextStyle}
+            //textStyle={styles.spinnerTextStyle}
           />
+        <Text>The AIBot is looking for objects in your picture</Text>
+        </View>
         ) : ( //this bit we render if the app is not loading
         <>
           <Image style={styles.preview} source={{ uri: "data:image/jpg;base64," + photo.base64 }} />
@@ -120,7 +155,7 @@ export default function App() {
           
           <Text> Take a picture of a:</Text>
           <View style={styles.Response}>
-            <Text> {data.Searchedfor} </Text>
+            <Text> {Object.keys(assignment)[0]} </Text>
           </View>
           <Text> 🤖 AIBot found this in your picture:</Text>
           <View style={styles.ObjectsFoundContainer}>
@@ -149,16 +184,16 @@ export default function App() {
       <Camera style={styles.container} ref={cameraRef}>
         <Ionicons name="scan-outline" size={300} color="white" />
           <Text style={styles.HighScore}> ⭐️ Level: 9</Text>
-          <Text style={styles.CallToAction}> Take a picture of a 🐈 </Text>
-          <Text style={styles.EmojiAssignment}>  </Text>
+          <Text style={styles.CallToAction}> Take a picture of a {Object.keys(assignment)[0]} </Text>
+          <Text style={styles.EmojiAssignment}> {JSON.stringify(emoji)} </Text>
           
 
 
         <View style={styles.NavigationBar}>  
               <TouchableOpacity
-                  onPress={CallAPI}
+                  onPress={CallAssignmentAPI}
                   style={styles.NavigationButton}>
-                  <FontAwesome name="life-buoy" size={24} color="black" />
+                  <FontAwesome name="refresh" size={24} color="black" />
                 </TouchableOpacity>
 
                 <TouchableOpacity
@@ -169,9 +204,9 @@ export default function App() {
                 </TouchableOpacity>
 
                 <TouchableOpacity
-
+                  onPress={HowToPlay}
                   style={styles.NavigationButton}>
-                  <FontAwesome name="user-circle-o" size={24} color="black" />
+                  <FontAwesome name="lightbulb-o" size={32} color="black" />
                 </TouchableOpacity>
         </View>
         <StatusBar style="auto" />
