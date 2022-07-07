@@ -2,8 +2,10 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Alert, Entypo, ActivityIndicator, Text, View, FlatList, SafeAreaView, TouchableOpacity, Button, Image } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import { Camera } from 'expo-camera';
+import { DataTable } from 'react-native-paper';
 import { shareAsync } from 'expo-sharing';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import ConfettiCannon from 'react-native-confetti-cannon';
 import { FontAwesome } from '@expo/vector-icons'; 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import * as MediaLibrary from 'expo-media-library';
@@ -15,7 +17,7 @@ import colors from './app/config/colors';
 export default function App() {
   const [Loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
-  const [assignment, setAssignment] = useState([{'person':'👱‍♂️'}]);
+  const [assignment, setAssignment] = useState([]);
   const emoji = Object.values(assignment)[0];
   const DetectorParameter = Object.keys(assignment)[0]
 
@@ -56,7 +58,7 @@ export default function App() {
     let HowToPlay = () => {
       //function to make simple alert
       console.log('User tapped how to play button')
-      Alert.alert('How to play:',' 👋🏻 Hi! Welcome to ScanGame! Playing is easy; Simply photograph the object to earn points.\nPhotos of incorrect objects will lead to a penalty. \n \n If you cannot find the object, then you can hit 🔄 to get another task. This will cost 50 Points \n\n What is your Highscore? 🥇 ',
+      Alert.alert('How to play:',' 👋🏻 Hi! Welcome to ScanGame! Playing is easy; Simply photograph the object to earn points.\nPhotos of incorrect objects will lead to a penalty. \n \n If you cannot find the object nearby, then use 50 points to get another target. Hit the 🔄  button to refresh the target. This will cost 50 Points \n\n What is your Highscore? 🥇 ',
       [
         { text: 'Let\'s play! 📸 ', onPress: () => console.log('user closed the how to play') },
       ],);
@@ -73,10 +75,10 @@ export default function App() {
           .then((response) => response.json())
           .then((json) => setData(json))
           .catch((error) => console.error(error))
-          .finally(() => setLoading(false));
-          console.log('Data received from API:')
-          console.log(data);
+          .finally(() => setLoading(false));         
     };
+
+
 
 
 
@@ -115,15 +117,25 @@ export default function App() {
           console.log('Printing the objects found in the picture')
           console.log(data1);
           return data1.map(x=>
-            <View style={styles.ObjectsFoundLabel}>
-              <Text>{x}</Text>
-            </View>
+            <DataTable.Row>
+            <DataTable.Cell> 🌟 Bonus item  </DataTable.Cell>
+            <DataTable.Cell> 
+              {x} </DataTable.Cell>
+            <DataTable.Cell numeric>
+              <Text style={styles.tableGood}>
+                + 120
+              </Text>
+            </DataTable.Cell>
+          </DataTable.Row>
             );
         } catch (error) {
           //console.error(error);
         }
       };
 
+      let CorrectAnswerGiven = () => {
+        return data.Wasfound
+      };
 
 
 
@@ -143,36 +155,95 @@ export default function App() {
             //Text style of the Spinner Text
             //textStyle={styles.spinnerTextStyle}
           />
-        <Text>The AIBot is looking for objects in your picture</Text>
+        <Text>Scanning picture for the right objects 🔎 </Text>
         </View>
         ) : ( //this bit we render if the app is not loading
         <>
           <Image style={styles.preview} source={{ uri: "data:image/jpg;base64," + photo.base64 }} />
-          
+          <ConfettiCannon count={200} origin={{x: -10, y: 0}} fadeOut={false} />
+          <Text style={styles.ResultsHeading}>Your Score</Text>
+              <DataTable>
+                <DataTable.Header>
+                  <DataTable.Title></DataTable.Title>
+                  <DataTable.Title>  </DataTable.Title>
+                  <DataTable.Title numeric>Points</DataTable.Title>
+                </DataTable.Header>
 
-          <Text style={styles.Results}>Results!</Text>
+                <DataTable.Row>
+                  <DataTable.Cell> 🎯 Target</DataTable.Cell>
+                  <DataTable.Cell>
+                      
+                        {Object.keys(assignment)[0]}           
+                     
+                  </DataTable.Cell>
+                  <DataTable.Cell numeric>
+                  <Text style={styles.tableGood}>
+                      + 470
+                    </Text>
+                  </DataTable.Cell>
+                </DataTable.Row>
 
-          
-          <Text> Take a picture of a:</Text>
-          <View style={styles.Response}>
-            <Text> {Object.keys(assignment)[0]} </Text>
-          </View>
-          <Text> 🤖 AIBot found this in your picture:</Text>
-          <View style={styles.ObjectsFoundContainer}>
-            {GetObjectsDetected(data.OtherObjectsDetected)}
-          </View>
+                {GetObjectsDetected(data.OtherObjectsDetected)}
+                
+                <DataTable.Row>
+                  <DataTable.Cell> ❗️ Penalty</DataTable.Cell>
+                  <DataTable.Cell>1x refresh</DataTable.Cell>
+                  <DataTable.Cell numeric>
+                    <Text style={styles.tableBad}>
+                        - 35
+                      </Text>
+                  </DataTable.Cell>
+                </DataTable.Row>
 
-          <Text> Was the correct object found?</Text>
-        
-          <View style={styles.Response}>
-            <Text> {Boolean(data.Wasfound)} </Text>
-          </View>
+                <DataTable.Row>
+                  <DataTable.Cell>
+                  
+                    </DataTable.Cell>
+                  <DataTable.Cell></DataTable.Cell>
+                  <DataTable.Cell numeric></DataTable.Cell>
+
+                </DataTable.Row>
+
+                
+                <DataTable.Row style={styles.tableBold}>
+                  <DataTable.Cell>
+                      😎 points previous round
+                    </DataTable.Cell>
+                 
+                  <DataTable.Cell numeric>
+                      200
+                      </DataTable.Cell>
+                </DataTable.Row>
+
+       
 
 
 
-          <Button title="Share" onPress={sharePic} />
-          {hasMediaLibraryPermission ? <Button title="Save" onPress={savePhoto} /> : undefined}
-          <Button title="Discard" onPress={() => setPhoto(undefined)} />
+                <DataTable.Row style={styles.tableBold}>
+                  <DataTable.Cell>
+                    <Text style={styles.tableBold}>
+                      Total
+                    </Text>
+                    </DataTable.Cell>
+                  <DataTable.Cell></DataTable.Cell>
+                  <DataTable.Cell numeric>
+                    <Text style={styles.tableBold}>
+                      435
+                    </Text></DataTable.Cell>
+                </DataTable.Row>
+              </DataTable>
+  
+
+            
+            <View style={styles.ButtonAreaScoreView}>
+              <TouchableOpacity style={styles.SaveOrDiscard} onPress={savePhoto}>
+                <FontAwesome  name="save"  size={24} color="black" />
+              </TouchableOpacity>
+
+              <TouchableOpacity style={styles.TakeAnotherPhotoButton} onPress={() => setPhoto(undefined)} >
+                <Text>Take another Photo!</Text>
+              </TouchableOpacity>
+            </View>
 
           </>
           )}

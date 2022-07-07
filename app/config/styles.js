@@ -7,7 +7,8 @@ export default{
       },
       preview: {
         alignSelf: 'stretch',
-        flex: 1
+        flex: 1,
+        height: 250,
       },
       background: {
         flex: 1,
@@ -111,5 +112,65 @@ export default{
       },
       LoadingScreen: {
       backgroundColor: colors.primary
+      },
+      ScoreCalculation: {
+        height: 500,
+      },    
+      SaveOrDiscard: {
+        backgroundColor: colors.grey,
+        color: colors.black,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 10, 
+        padding: 20,
+        margin: 1,
+        margin: 5,
+        fontSize: 30,
+        borderColor: colors.black,
+        borderWidth: 2,
+        flexDirection: "row",
+        flex: 1
+      }, 
+      TakeAnotherPhotoButton: {
+        backgroundColor: colors.primary,
+        color: colors.black,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 10, 
+        padding: 20,
+        margin: 5,
+        fontSize: 30,
+        borderColor: colors.black,
+        borderWidth: 2,
+        flexDirection: "row",
+        flex: 2,
+        fontWeight: "bold",
+        
+      }, 
+      ButtonAreaScoreView: {
+        
+        flexDirection:"row",
+        justifyContent: "space-around",
+        width: 350,
+        height: 75,
+        margin: 5,
+      }, 
+      
+      tableBold: {
+        fontWeight: "bold",
+      },
+      tableGood: {
+        fontWeight: "bold",
+        color: "green",
+      },
+      tableBad: {
+        fontWeight: "bold",
+        color: "red",
+      },
+      ResultsHeading: {
+        fontWeight: "bold",
+        color: colors.primary,
+        fontSize: 40,
+
         },
     }
