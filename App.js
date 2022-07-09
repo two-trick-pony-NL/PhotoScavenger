@@ -18,7 +18,7 @@ export default function App() {
   const [Loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   const [assignment, setAssignment] = useState([]);
-  const emoji = Object.values(assignment)[0];
+  var emoji = assignment[Object.keys(assignment)[0]]; 
   const DetectorParameter = Object.keys(assignment)[0]
 
     // Here starts the part where we take the picture
@@ -34,7 +34,6 @@ export default function App() {
     .catch((error) => console.error(error))
     console.log('Printing the new assignment')
     console.log(assignment);
-    console.log(assignment[1]);
   };
 // This use effect is used 1x on app load, to get the first asignment and fetch camera permissions if we don't have them. 
     useEffect(() => {
@@ -78,11 +77,6 @@ export default function App() {
           .finally(() => setLoading(false));         
     };
 
-
-
-
-
-
     let takePic = async () => {
       let options = {
         quality: 1,
@@ -97,11 +91,7 @@ export default function App() {
     };
 
     if (photo) {
-      let sharePic = () => {
-        shareAsync(photo.uri).then(() => {
-          setPhoto(undefined);
-        });
-      };
+      
 
       let savePhoto = () => {
         MediaLibrary.saveToLibraryAsync(photo.uri).then(() => {
@@ -151,11 +141,12 @@ export default function App() {
             //Text with the Spinner
             textContent={'Loading...'}
             size='large'
-            color= {colors.primary}
+            color= {colors.grey}
             //Text style of the Spinner Text
             //textStyle={styles.spinnerTextStyle}
           />
-        <Text>Scanning picture for the right objects 🔎 </Text>
+        <Text></Text>
+        <Text>🔎 Looking for a {Object.keys(assignment)[0]} in your picture... </Text>
         </View>
         ) : ( //this bit we render if the app is not loading
         <>
@@ -254,9 +245,9 @@ export default function App() {
     return (
       <Camera style={styles.container} ref={cameraRef}>
         <Ionicons name="scan-outline" size={300} color="white" />
-          <Text style={styles.HighScore}> ⭐️ Level: 9</Text>
+          <Text style={styles.HighScore}> ⭐️ Your score: 933</Text>
           <Text style={styles.CallToAction}> Take a picture of a {Object.keys(assignment)[0]} </Text>
-          <Text style={styles.EmojiAssignment}> {JSON.stringify(emoji)} </Text>
+          <Text style={styles.EmojiAssignment}> {emoji} </Text>
           
 
 
@@ -265,7 +256,9 @@ export default function App() {
                   onPress={CallAssignmentAPI}
                   style={styles.NavigationButton}>
                   <FontAwesome name="refresh" size={24} color="black" />
+                  <Text>refresh</Text>
                 </TouchableOpacity>
+                
 
                 <TouchableOpacity
                   onPress={takePic}
@@ -278,6 +271,7 @@ export default function App() {
                   onPress={HowToPlay}
                   style={styles.NavigationButton}>
                   <FontAwesome name="lightbulb-o" size={32} color="black" />
+                  <Text>rules</Text>
                 </TouchableOpacity>
         </View>
         <StatusBar style="auto" />
