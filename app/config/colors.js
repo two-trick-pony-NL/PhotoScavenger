@@ -5,4 +5,12 @@ export default{
     white: '#fff',
     black: '#000',
     tan: '#f0c9a7',
+    keerzevenprimary: '#6f75c3',
+    keerzevensecondary: '#2A5B9C',
+    keerzeventhird: '#D7CCE6',
+    keerzevengrey: '#826D73',
+    keerzevendark: '#312682',
+    white: '#fff',
+    black: '#000',
+    tan: '#f0c9a7',
 }

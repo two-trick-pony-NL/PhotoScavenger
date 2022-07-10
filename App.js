@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Alert, Entypo, ActivityIndicator, Text, View, FlatList, SafeAreaView, TouchableOpacity, Button, Image } from 'react-native';
+import { StyleSheet, Alert, Entypo, ActivityIndicator, forceUpdate, Text, View, FlatList, SafeAreaView, TouchableOpacity, Button, Image } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import { Camera } from 'expo-camera';
 import { DataTable } from 'react-native-paper';
@@ -11,33 +11,54 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import * as MediaLibrary from 'expo-media-library';
 import styles from './app/config/styles';
 import colors from './app/config/colors';
-
-
+import ScoreTable from './ScoreTable';
 
 export default function App() {
+  //Setting all the states the app can have. Here we store the score, whether we are loading the data from API's and the photo's we take
   const [Loading, setLoading] = useState(false);
-  const [data, setData] = useState([]);
+  const [data, setData] = useState([{'none':'none'}]);
   const [assignment, setAssignment] = useState([]);
-  var emoji = assignment[Object.keys(assignment)[0]]; 
-  const DetectorParameter = Object.keys(assignment)[0]
-
-    // Here starts the part where we take the picture
-  let cameraRef = useRef();
+  const [numberrefresh, setNumberrefresh] = useState(-1);//initializing at -1 so that when we get the initial instruction we end up at 0
+  const [score, setScore] = useState(1); //setting to 1 so on the initial fetch for an instruction we end up at 0 points
   const [hasCameraPermission, setHasCameraPermission] = useState();
   const [hasMediaLibraryPermission, setHasMediaLibraryPermission] = useState();
   const [photo, setPhoto] = useState();
+
+  //Extracting some pictures from API response
+  var emoji = assignment[Object.keys(assignment)[0]]; 
+  const DetectorParameter = Object.keys(assignment)[0]
+
+
+
+function CountRefresh() {
+  setNumberrefresh(numberrefresh + 1)
+}
+
+function NextLevel(){
+  setNumberrefresh(0)
+  console.log("Reset function ran")
+  CallAssignmentAPI()
+  // setScore((score - 250-(numberrefresh*35)))
+  setScore((score + 250))
+  setPhoto(undefined)
+  
+}
+
+// Here starts the part where we take the picture
+  let cameraRef = useRef();
 
   let CallAssignmentAPI = async () => {
     fetch('https://scangamebackend.herokuapp.com/newassignment')
     .then((response) => response.json())
     .then((json) => setAssignment(json))
     .catch((error) => console.error(error))
-    console.log('Printing the new assignment')
-    console.log(assignment);
+    CountRefresh();
   };
 // This use effect is used 1x on app load, to get the first asignment and fetch camera permissions if we don't have them. 
     useEffect(() => {
+      setScore(0)
       CallAssignmentAPI();
+      console.log(assignment);
       (async () => {
         const cameraPermission = await Camera.requestCameraPermissionsAsync();
         const mediaLibraryPermission = await MediaLibrary.requestPermissionsAsync();
@@ -63,18 +84,18 @@ export default function App() {
       ],);
     };
 
-    let CallDetectionAPI = async (image) => {
+    let CallDetectionAPI =  (image) => {
       var formdata = new FormData();
       formdata.append('file', {uri: image.uri, name: 'picture.jpg', type: 'image/jpg'});
       //console.log(formdata)
-      fetch('https://scangamebackend.herokuapp.com/uploadfile/cow'+DetectorParameter, {
+      fetch('https://scangamebackend.herokuapp.com/uploadfile/'+DetectorParameter, {
         method: 'POST',
         body: formdata
         })
           .then((response) => response.json())
           .then((json) => setData(json))
           .catch((error) => console.error(error))
-          .finally(() => setLoading(false));         
+          .finally(() => setLoading(false));              
     };
 
     let takePic = async () => {
@@ -83,11 +104,13 @@ export default function App() {
         base64: true,
         exif: false,
       };
-      setData("")
+
       let newPhoto = await cameraRef.current.takePictureAsync(options);
       setPhoto(newPhoto);
       setLoading(true);
-      CallDetectionAPI(newPhoto);   
+      CallDetectionAPI(newPhoto);
+      WasAssignmentFound(data);
+       
     };
 
     if (photo) {
@@ -97,6 +120,7 @@ export default function App() {
         MediaLibrary.saveToLibraryAsync(photo.uri).then(() => {
           setPhoto(undefined);
         });
+        
       };
 
       //This function is a bit of a mess, but it loops over the array of objects that the AI model detected in an image
@@ -108,12 +132,12 @@ export default function App() {
           console.log(data1);
           return data1.map(x=>
             <DataTable.Row>
-            <DataTable.Cell> 🌟 Bonus item  </DataTable.Cell>
+            <DataTable.Cell> 🌟 item  </DataTable.Cell>
             <DataTable.Cell> 
               {x} </DataTable.Cell>
             <DataTable.Cell numeric>
               <Text style={styles.tableGood}>
-                + 120
+                + 100
               </Text>
             </DataTable.Cell>
           </DataTable.Row>
@@ -123,18 +147,166 @@ export default function App() {
         }
       };
 
-      let CorrectAnswerGiven = () => {
-        return data.Wasfound
+      function WasAssignmentFound() {
+      try {
+          foundItem = data.OtherObjectsDetected.includes(DetectorParameter)
+          console.log('Result of calculation');
+          console.log(foundItem);
+          console.log("Other items detected:");
+          console.log(data.OtherObjectsDetected);
+          console.log("Searched for:");
+          console.log(DetectorParameter);
+          if (foundItem === true) {
+            console.log('✅ Photofound is equal to true');
+            return (
+              <>
+              <ConfettiCannon count={250} fallspeed={2000} origin={{x: -10, y: 0}} fadeOut={true} autoStartDelay={500}/>
+              <DataTable>
+                <DataTable.Header>
+                  <DataTable.Title></DataTable.Title>
+                  <DataTable.Title>  </DataTable.Title>
+                  <DataTable.Title numeric>Points</DataTable.Title>
+                </DataTable.Header>
+
+                <DataTable.Row>
+                  <DataTable.Cell > 
+                   <Text style={styles.tableBold}>
+                   ✅ {Object.keys(assignment)[0]} found 
+                   </Text> 
+                   </DataTable.Cell>
+                  
+                  <DataTable.Cell numeric>
+                  <Text style={styles.tableGood}>
+                      + 250
+                    </Text>
+                  </DataTable.Cell>
+                </DataTable.Row>
+                
+                {GetObjectsDetected(data.OtherObjectsDetected)}
+                
+                <DataTable.Row>
+                  <DataTable.Cell>
+                    </DataTable.Cell>
+                  <DataTable.Cell></DataTable.Cell>
+                  <DataTable.Cell numeric></DataTable.Cell>
+                </DataTable.Row>
+
+                <DataTable.Row style={styles.tableBold}>
+                  <DataTable.Cell>
+                      😎 points previous round
+                    </DataTable.Cell>
+                 
+                  <DataTable.Cell numeric>
+                  <Text style={styles.tableGood}>
+                      {score -(numberrefresh*10)}
+                  </Text>
+                      </DataTable.Cell>
+                </DataTable.Row>
+
+                <DataTable.Row>
+                  <DataTable.Cell> ❗️{numberrefresh}x refreshed</DataTable.Cell>
+                  
+                  <DataTable.Cell numeric>
+                    <Text style={styles.tableBad}>
+                        - {numberrefresh*10}
+                      </Text>
+                  </DataTable.Cell>
+                </DataTable.Row>
+
+
+
+
+
+                <DataTable.Row style={styles.tableBold}>
+                  <DataTable.Cell>
+                    <Text style={styles.tableBold}>
+                      
+                    </Text>
+                    </DataTable.Cell>
+                  <DataTable.Cell></DataTable.Cell>
+                  <DataTable.Cell numeric>
+                    <Text style={styles.tableBold}>
+    
+                     Total:     {score+250-(numberrefresh*10)}
+                    </Text></DataTable.Cell>
+                </DataTable.Row>
+              </DataTable> 
+            <View style={styles.ButtonAreaScoreView}>
+              <TouchableOpacity style={styles.SaveOrDiscard} onPress={savePhoto}>
+                <FontAwesome  name="save"  size={24} color="black" />
+              </TouchableOpacity>
+  
+
+              <TouchableOpacity style={styles.TakeAnotherPhotoButton} onPress={() => NextLevel()} >
+                <Text>Next!</Text>
+              </TouchableOpacity>
+            </View>
+
+              </>
+            )
+          } else {
+            console.log('⛔️ Photofound is not equal to true');
+            return (
+              <>
+              <DataTable>
+                <DataTable.Header>
+                  <DataTable.Title></DataTable.Title>
+                  <DataTable.Title>  </DataTable.Title>
+                  <DataTable.Title numeric>Points</DataTable.Title>
+                </DataTable.Header>
+
+                <DataTable.Row>
+                <DataTable.Cell > 
+                   <Text style={styles.tableBold}>
+                   ⛔️ {Object.keys(assignment)[0]} not found 
+                   </Text> 
+                   </DataTable.Cell>
+                  <DataTable.Cell numeric>
+                  <Text style={styles.tableBad}>
+                      0
+                    </Text>
+                  </DataTable.Cell>
+                </DataTable.Row>
+              
+
+                <DataTable.Row style={styles.tableBold}>
+                  <DataTable.Cell>
+                    <Text style={styles.tableBold}>
+
+                    </Text>
+                    </DataTable.Cell>
+                  
+                  <DataTable.Cell numeric>
+                    <Text style={styles.tableBold}>
+                    
+                    Total Score:     {score-(numberrefresh*10)}
+
+                    </Text></DataTable.Cell>
+                </DataTable.Row>
+              </DataTable> 
+            <View style={styles.ButtonAreaScoreView}>
+              <TouchableOpacity style={styles.SaveOrDiscard} onPress={savePhoto}>
+                <FontAwesome  name="save"  size={24} color="black" />
+              </TouchableOpacity>
+  
+
+              <TouchableOpacity style={styles.TakeAnotherPhotoButton} onPress={() => setPhoto(undefined)} >
+                <Text>Retry</Text>
+              </TouchableOpacity>
+            </View>
+
+              </>)
+        }
+        } catch (error) {
+          //console.error(error);
+        }
       };
 
-
-
-
     // This is what is shown after taking a photos
-      return (
+    return (
         <SafeAreaView style={styles.container}>
         {Loading ? ( //Setting a spinner while waiting for the API call to return the results. Read as a IF statement. So if Loading is true, then do this else render template
-        <View styles={styles.background}>       
+        <View styles={styles.background}>
           <ActivityIndicator
             //visibility of Overlay Loading Spinner
             visible={Loading}
@@ -150,91 +322,12 @@ export default function App() {
         </View>
         ) : ( //this bit we render if the app is not loading
         <>
+        
+
           <Image style={styles.preview} source={{ uri: "data:image/jpg;base64," + photo.base64 }} />
-          <ConfettiCannon count={200} origin={{x: -10, y: 0}} fadeOut={false} />
-          <Text style={styles.ResultsHeading}>Your Score</Text>
-              <DataTable>
-                <DataTable.Header>
-                  <DataTable.Title></DataTable.Title>
-                  <DataTable.Title>  </DataTable.Title>
-                  <DataTable.Title numeric>Points</DataTable.Title>
-                </DataTable.Header>
-
-                <DataTable.Row>
-                  <DataTable.Cell> 🎯 Target</DataTable.Cell>
-                  <DataTable.Cell>
-                      
-                        {Object.keys(assignment)[0]}           
-                     
-                  </DataTable.Cell>
-                  <DataTable.Cell numeric>
-                  <Text style={styles.tableGood}>
-                      + 470
-                    </Text>
-                  </DataTable.Cell>
-                </DataTable.Row>
-
-                {GetObjectsDetected(data.OtherObjectsDetected)}
-                
-                <DataTable.Row>
-                  <DataTable.Cell> ❗️ Penalty</DataTable.Cell>
-                  <DataTable.Cell>1x refresh</DataTable.Cell>
-                  <DataTable.Cell numeric>
-                    <Text style={styles.tableBad}>
-                        - 35
-                      </Text>
-                  </DataTable.Cell>
-                </DataTable.Row>
-
-                <DataTable.Row>
-                  <DataTable.Cell>
-                  
-                    </DataTable.Cell>
-                  <DataTable.Cell></DataTable.Cell>
-                  <DataTable.Cell numeric></DataTable.Cell>
-
-                </DataTable.Row>
-
-                
-                <DataTable.Row style={styles.tableBold}>
-                  <DataTable.Cell>
-                      😎 points previous round
-                    </DataTable.Cell>
-                 
-                  <DataTable.Cell numeric>
-                      200
-                      </DataTable.Cell>
-                </DataTable.Row>
-
-       
-
-
-
-                <DataTable.Row style={styles.tableBold}>
-                  <DataTable.Cell>
-                    <Text style={styles.tableBold}>
-                      Total
-                    </Text>
-                    </DataTable.Cell>
-                  <DataTable.Cell></DataTable.Cell>
-                  <DataTable.Cell numeric>
-                    <Text style={styles.tableBold}>
-                      435
-                    </Text></DataTable.Cell>
-                </DataTable.Row>
-              </DataTable>
-  
-
-            
-            <View style={styles.ButtonAreaScoreView}>
-              <TouchableOpacity style={styles.SaveOrDiscard} onPress={savePhoto}>
-                <FontAwesome  name="save"  size={24} color="black" />
-              </TouchableOpacity>
-
-              <TouchableOpacity style={styles.TakeAnotherPhotoButton} onPress={() => setPhoto(undefined)} >
-                <Text>Take another Photo!</Text>
-              </TouchableOpacity>
-            </View>
+          <Text style={styles.ResultsHeading}>Summary</Text>
+          <Text> Your assignment was to photograph a {Object.keys(assignment)[0]}</Text>
+          {WasAssignmentFound()} 
 
           </>
           )}
@@ -245,12 +338,9 @@ export default function App() {
     return (
       <Camera style={styles.container} ref={cameraRef}>
         <Ionicons name="scan-outline" size={300} color="white" />
-          <Text style={styles.HighScore}> ⭐️ Your score: 933</Text>
+          <Text style={styles.HighScore}> ⭐️ Your score: {score -(numberrefresh*10)}</Text>
           <Text style={styles.CallToAction}> Take a picture of a {Object.keys(assignment)[0]} </Text>
           <Text style={styles.EmojiAssignment}> {emoji} </Text>
-          
-
-
         <View style={styles.NavigationBar}>  
               <TouchableOpacity
                   onPress={CallAssignmentAPI}

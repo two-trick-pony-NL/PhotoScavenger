@@ -64,7 +64,7 @@ export default{
         alignItems: 'center' 
       },
       HighScore: {
-        color: colors.grey,
+        color: colors.white,
         position: 'absolute',
         top: 50,
         right: 20,
