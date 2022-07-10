@@ -37,15 +37,16 @@ function CountRefresh() {
 function NextLevel(){
   setNumberrefresh(0)
   console.log("Reset function ran")
-  CallAssignmentAPI()
+  FreeCallAssignmentAPI()
   // setScore((score - 250-(numberrefresh*35)))
-  setScore((score + 250))
+  setScore((score + 250)+ (data.OtherObjectsDetected.length * 100))
   setPhoto(undefined)
   
 }
 
 // Here starts the part where we take the picture
   let cameraRef = useRef();
+  
 
   let CallAssignmentAPI = async () => {
     fetch('https://scangamebackend.herokuapp.com/newassignment')
@@ -53,6 +54,12 @@ function NextLevel(){
     .then((json) => setAssignment(json))
     .catch((error) => console.error(error))
     CountRefresh();
+  };
+  let FreeCallAssignmentAPI = async () => {
+    fetch('https://scangamebackend.herokuapp.com/newassignment')
+    .then((response) => response.json())
+    .then((json) => setAssignment(json))
+    .catch((error) => console.error(error))
   };
 // This use effect is used 1x on app load, to get the first asignment and fetch camera permissions if we don't have them. 
     useEffect(() => {
@@ -122,6 +129,7 @@ function NextLevel(){
         });
         
       };
+      
 
       //This function is a bit of a mess, but it loops over the array of objects that the AI model detected in an image
       //The reason we have to try/catch is because when the screen is loaded the 'data' object is not available yet, and thus the 
@@ -134,6 +142,7 @@ function NextLevel(){
             <DataTable.Row>
             <DataTable.Cell> 🌟 item  </DataTable.Cell>
             <DataTable.Cell> 
+            
               {x} </DataTable.Cell>
             <DataTable.Cell numeric>
               <Text style={styles.tableGood}>
@@ -147,7 +156,7 @@ function NextLevel(){
         }
       };
 
-      function WasAssignmentFound() {
+      function WasAssignmentFound(data) {
       try {
           foundItem = data.OtherObjectsDetected.includes(DetectorParameter)
           console.log('Result of calculation');
@@ -226,8 +235,8 @@ function NextLevel(){
                   <DataTable.Cell></DataTable.Cell>
                   <DataTable.Cell numeric>
                     <Text style={styles.tableBold}>
-    
-                     Total:     {score+250-(numberrefresh*10)}
+                     New Score : 
+                    {(score + 250 + (data.OtherObjectsDetected.length * 100) - (numberrefresh * 10))}
                     </Text></DataTable.Cell>
                 </DataTable.Row>
               </DataTable> 
@@ -279,7 +288,7 @@ function NextLevel(){
                   <DataTable.Cell numeric>
                     <Text style={styles.tableBold}>
                     
-                    Total Score:     {score-(numberrefresh*10)}
+                    Current Score:     {score-(numberrefresh*10)}
 
                     </Text></DataTable.Cell>
                 </DataTable.Row>
@@ -327,7 +336,7 @@ function NextLevel(){
           <Image style={styles.preview} source={{ uri: "data:image/jpg;base64," + photo.base64 }} />
           <Text style={styles.ResultsHeading}>Summary</Text>
           <Text> Your assignment was to photograph a {Object.keys(assignment)[0]}</Text>
-          {WasAssignmentFound()} 
+          {WasAssignmentFound(data)} 
 
           </>
           )}
