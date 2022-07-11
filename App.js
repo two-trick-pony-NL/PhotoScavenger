@@ -140,8 +140,7 @@ function NextLevel(){
           console.log(data1);
           return data1.map(x=>
             <DataTable.Row>
-            <DataTable.Cell>found a {x}</DataTable.Cell>
-
+              <DataTable.Cell>- {x}</DataTable.Cell>
             <DataTable.Cell numeric>
               <Text style={styles.tableGood}>
                 + 100
@@ -180,12 +179,20 @@ function NextLevel(){
                    <Text style={styles.tableBold}>
                    ✅ {Object.keys(assignment)[0]} found 
                    </Text> 
+                   
                    </DataTable.Cell>
                   
                   <DataTable.Cell numeric>
                   <Text style={styles.tableGood}>
                       + 250
                     </Text>
+                  </DataTable.Cell>
+                  
+                </DataTable.Row>
+
+                <DataTable.Row>
+                  <DataTable.Cell>
+                    <Text style={styles.tableBold}>Other items in your picture: </Text>
                   </DataTable.Cell>
                 </DataTable.Row>
                 
@@ -258,7 +265,7 @@ function NextLevel(){
                 <DataTable.Header>
                   <DataTable.Title></DataTable.Title>
                   <DataTable.Title>  </DataTable.Title>
-                  <DataTable.Title numeric>Points</DataTable.Title>
+                  <DataTable.Title numeric></DataTable.Title>
                 </DataTable.Header>
 
                 <DataTable.Row>
@@ -269,7 +276,7 @@ function NextLevel(){
                    </DataTable.Cell>
                   <DataTable.Cell numeric>
                   <Text style={styles.tableBad}>
-                      0
+                      
                     </Text>
                   </DataTable.Cell>
                 </DataTable.Row>
