@@ -49,14 +49,14 @@ function NextLevel(){
   
 
   let CallAssignmentAPI = async () => {
-    fetch('https://scangamebackend.herokuapp.com/newassignment')
+    fetch('https://scangame.herokuapp.com/newassignment')
     .then((response) => response.json())
     .then((json) => setAssignment(json))
     .catch((error) => console.error(error))
     CountRefresh();
   };
   let FreeCallAssignmentAPI = async () => {
-    fetch('https://scangamebackend.herokuapp.com/newassignment')
+    fetch('https://scangame.herokuapp.com/newassignment')
     .then((response) => response.json())
     .then((json) => setAssignment(json))
     .catch((error) => console.error(error))
@@ -85,7 +85,7 @@ function NextLevel(){
     let HowToPlay = () => {
       //function to make simple alert
       console.log('User tapped how to play button')
-      Alert.alert('How to play:',' 👋🏻 Hi! Welcome to ScanGame! Playing is easy; Simply photograph the object to earn points.\nPhotos of incorrect objects will lead to a penalty. \n \n If you cannot find the object nearby, then use 50 points to get another target. Hit the 🔄  button to refresh the target. This will cost 50 Points \n\n What is your Highscore? 🥇 ',
+      Alert.alert('How to play:',' 👋🏻 Hi! Welcome to ScanGame! Playing is easy; Simply photograph the object to earn points.\nThe more objects you fit in a picture the more points you score. \n \n If you cannot find the object nearby, then use 10 points to get another target. Hit the 🔄  button to refresh the target.  \n\n What is your Highscore? 🥇 ',
       [
         { text: 'Let\'s play! 📸 ', onPress: () => console.log('user closed the how to play') },
       ],);
@@ -95,7 +95,7 @@ function NextLevel(){
       var formdata = new FormData();
       formdata.append('file', {uri: image.uri, name: 'picture.jpg', type: 'image/jpg'});
       //console.log(formdata)
-      fetch('https://scangamebackend.herokuapp.com/uploadfile/'+DetectorParameter, {
+      fetch('https://scangame.herokuapp.com/uploadfile/'+DetectorParameter, {
         method: 'POST',
         body: formdata
         })
@@ -192,7 +192,7 @@ function NextLevel(){
 
                 <DataTable.Row>
                   <DataTable.Cell>
-                    <Text style={styles.tableBold}>Other items in your picture: </Text>
+                    <Text style={styles.tableBold}>🎯Other items in your picture: </Text>
                   </DataTable.Cell>
                 </DataTable.Row>
                 
