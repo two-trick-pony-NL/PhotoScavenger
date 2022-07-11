@@ -36,11 +36,11 @@ function CountRefresh() {
 
 function NextLevel(){
   setNumberrefresh(0)
-  console.log("Reset function ran")
-  FreeCallAssignmentAPI()
+  console.log("Reset function ran");
+  FreeCallAssignmentAPI();
   // setScore((score - 250-(numberrefresh*35)))
-  setScore((score + 250)+ (data.OtherObjectsDetected.length * 100))
-  setPhoto(undefined)
+  setScore((score + 250)+ (data.OtherObjectsDetected.length * 100));
+  setPhoto(undefined);
   
 }
 
@@ -140,10 +140,8 @@ function NextLevel(){
           console.log(data1);
           return data1.map(x=>
             <DataTable.Row>
-            <DataTable.Cell> 🌟 item  </DataTable.Cell>
-            <DataTable.Cell> 
-            
-              {x} </DataTable.Cell>
+            <DataTable.Cell>found a {x}</DataTable.Cell>
+
             <DataTable.Cell numeric>
               <Text style={styles.tableGood}>
                 + 100
@@ -156,7 +154,7 @@ function NextLevel(){
         }
       };
 
-      function WasAssignmentFound(data) {
+      function WasAssignmentFound() {
       try {
           foundItem = data.OtherObjectsDetected.includes(DetectorParameter)
           console.log('Result of calculation');
@@ -235,8 +233,7 @@ function NextLevel(){
                   <DataTable.Cell></DataTable.Cell>
                   <DataTable.Cell numeric>
                     <Text style={styles.tableBold}>
-                     New Score : 
-                    {(score + 250 + (data.OtherObjectsDetected.length * 100) - (numberrefresh * 10))}
+                     New Score :  {(score + 250 + (data.OtherObjectsDetected.length * 100) - (numberrefresh * 10))}
                     </Text></DataTable.Cell>
                 </DataTable.Row>
               </DataTable> 
