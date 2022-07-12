@@ -26,3 +26,8 @@ Currently the app is not published on the appstore yet, but it's easy to play us
 - Download the Expo Go app from the appstore
 - Open this link from your phone wihth expo installed: [LINK]([url](https://expo.dev/@petervandoorn/ScanGameApps?serviceType=classic&distribution=expo-go))
 
+### How does the app work, and what data is stored? 
+Your picture is sent to a server that has a AI model, that can detect specific objects. 
+The server returns the objects in the picture, and that's how the score gets calculated. 
+
+No data is stored, and the pictures are deleted right after they are processed. Don't take my word for it? Check the backend source code [here]([url](https://github.com/two-trick-pony-NL/ScanGameBackend)).
