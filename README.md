@@ -1,4 +1,5 @@
 # ScanGameApps
+[![publish to expo](https://github.com/two-trick-pony-NL/ScanGameApps/actions/workflows/main.yml/badge.svg)](https://github.com/two-trick-pony-NL/ScanGameApps/actions/workflows/main.yml)
 This is the repo for the React Native apps that support my ScanGame. From react it should be possible to compile both iOS and Android apps. 
 
 Here is a in-game clip of the basic idea: <br>
