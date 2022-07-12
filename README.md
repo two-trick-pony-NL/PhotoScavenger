@@ -1,5 +1,6 @@
 # ScanGameApps
 [![publish to expo](https://github.com/two-trick-pony-NL/ScanGameApps/actions/workflows/main.yml/badge.svg)](https://github.com/two-trick-pony-NL/ScanGameApps/actions/workflows/main.yml)
+[![pages-build-deployment](https://github.com/two-trick-pony-NL/ScanGameApps/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/two-trick-pony-NL/ScanGameApps/actions/workflows/pages/pages-build-deployment)
 
 
 
