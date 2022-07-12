@@ -1,11 +1,11 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI
+name: publish to expo
 
 on:
   push:
     branches:
-      - main
+      - master
 jobs:
   publish:
     runs-on: ubuntu-latest
