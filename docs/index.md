@@ -9,9 +9,7 @@ Win from friends and family by taking pictures of the correct objects, scoring p
 
 
 ### Gameplay
-![IMG_2867](https://user-images.githubusercontent.com/71013416/178444982-64cd1e08-3349-49d5-adac-489a59eb6f1e.PNG)
-![IMG_2865](https://user-images.githubusercontent.com/71013416/178445015-58d9f568-a1f5-4e91-8557-a23bb2e64ff0.PNG)
-![IMG_2866](https://user-images.githubusercontent.com/71013416/178445040-f9c5de1d-2eda-4433-a5e8-98b38b9152e9.PNG)
+![ezgif com-gif-maker](https://user-images.githubusercontent.com/71013416/178448499-3f547173-43ab-41b2-967a-a1f9ae8dd9a0.gif)
 
 
 ### How to play
