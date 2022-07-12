@@ -177,7 +177,7 @@ function NextLevel(){
                 <DataTable.Row>
                   <DataTable.Cell > 
                    <Text style={styles.tableBold}>
-                   ✅ {Object.keys(assignment)[0]} found 
+                   {emoji} {Object.keys(assignment)[0]} found 
                    </Text> 
                    
                    </DataTable.Cell>
@@ -352,7 +352,7 @@ function NextLevel(){
       <Camera style={styles.container} ref={cameraRef}>
         <Ionicons name="scan-outline" size={300} color="white" />
           <Text style={styles.HighScore}> ⭐️ Your score: {score -(numberrefresh*10)}</Text>
-          <Text style={styles.CallToAction}> Take a picture of a {Object.keys(assignment)[0]} </Text>
+          <Text style={styles.CallToAction}> Find a {Object.keys(assignment)[0]} </Text>
           <Text style={styles.EmojiAssignment}> {emoji} </Text>
         <View style={styles.NavigationBar}>  
               <TouchableOpacity
