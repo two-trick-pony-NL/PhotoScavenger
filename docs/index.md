@@ -24,7 +24,8 @@ Win from friends and family by taking pictures of the correct objects, scoring p
 Currently the app is not published on the appstore yet, but it's easy to play using expo. Simply follow these steps: 
 
 - Download the Expo Go app from the appstore
-- Open this link from your phone wihth expo installed: [LINK]([url](https://expo.dev/@petervandoorn/ScanGameApps?serviceType=classic&distribution=expo-go))
+- Send me an email : scangame@petervandoorn.com so I can invite you to the expo project
+- Open this link from your phone with expo installed: [LINK]([url](https://expo.dev/@petervandoorn/ScanGameApps?serviceType=classic&distribution=expo-go))
 
 ### How does the app work, and what data is stored? 
 Your picture is sent to a server that has a AI model, that can detect specific objects. 
