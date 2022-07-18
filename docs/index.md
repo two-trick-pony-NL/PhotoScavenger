@@ -21,14 +21,14 @@ Win from friends and family by taking pictures of the correct objects, scoring p
 
 ### Installation
 
-Currently the app is not published on the appstore yet, but it's easy to play using expo. Simply follow these steps: 
+Download from the Appstore here: 
 
-- Download the Expo Go app from the appstore
-- Send me an email : scangame@petervandoorn.com so I can invite you to the expo project
-- Open this link from your phone with expo installed: [LINK]([url](https://expo.dev/@petervandoorn/ScanGameApps?serviceType=classic&distribution=expo-go))
+### Help
+If you need help, or have questions reach out to me at PhotoScavenger@petervandoorn.com
 
 ### How does the app work, and what data is stored? 
-Your picture is sent to a server that has a AI model, that can detect specific objects. 
-The server returns the objects in the picture, and that's how the score gets calculated. 
+Your picture is sent to a server that has a AI model, that can detect specific objects. The server returns the objects in the picture, and that's how the score gets calculated. 
 
-No data is stored, and the pictures are deleted right after they are processed. Don't take my word for it? Check the backend source code [here]([url](https://github.com/two-trick-pony-NL/ScanGameBackend)).
+No user data is stored, no session log is kept. The pictures you take are deleted right after they are processed. 
+
+Don't take my word for it? Check the backend source code [here]([url](https://github.com/two-trick-pony-NL/ScanGameBackend)).
