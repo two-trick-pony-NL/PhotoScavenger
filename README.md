@@ -1,5 +1,9 @@
+![icon](https://user-images.githubusercontent.com/71013416/179624009-d72ba019-3639-438d-8857-dbc061f675a3.png)
+
+
 # PhotoScavenger
-This is the repo for the React Native apps that support my PhotoScavenger app. From react it should be possible to compile both iOS and Android apps. 
+This is the repo for the React Native apps that
+ support my PhotoScavenger app. From react it should be possible to compile both iOS and Android apps. 
 
 Here is a in-game clip of the basic idea: <br>
 
