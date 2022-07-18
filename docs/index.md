@@ -27,7 +27,8 @@ Download from the Appstore here:
 If you need help, or have questions reach out to me at PhotoScavenger@petervandoorn.com
 
 ### How does the app work, and what data is stored? 
-Your picture is sent to a server that has a AI model, that can detect specific objects. 
-The server returns the objects in the picture, and that's how the score gets calculated. 
+Your picture is sent to a server that has a AI model, that can detect specific objects. The server returns the objects in the picture, and that's how the score gets calculated. 
 
-No data is stored, and the pictures are deleted right after they are processed. Don't take my word for it? Check the backend source code [here]([url](https://github.com/two-trick-pony-NL/ScanGameBackend)).
+No user data is stored, no session log is kept. The pictures you take are deleted right after they are processed. 
+
+Don't take my word for it? Check the backend source code [here]([url](https://github.com/two-trick-pony-NL/ScanGameBackend)).
