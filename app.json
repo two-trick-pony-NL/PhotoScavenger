@@ -1,7 +1,15 @@
 {
   "expo": {
-    "name": "ScanGameApps",
-    "slug": "ScanGameApps",
+    "plugins": [
+      [
+        "expo-ads-admob",
+        {
+          "userTrackingPermission": "This identifier will be used to deliver personalized ads to you."
+        }
+      ]
+    ]
+    "name": "Photo Scavenger",
+    "slug": "PhotoScavenger",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -19,12 +27,14 @@
     ],
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "com.petervandoorn.scangame2"
+      "bundleIdentifier": "com.petervandoorn.PhotoScavenger"
+      "googleMobileAdsAppId": "ca-app-pub-3940256099942544~1458002511" // sample id, replace with your own
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
+        "googleMobileAdsAppId": "ca-app-pub-3940256099942544~3347511713" // sample id, replace with your own
       }
     },
     "web": {
