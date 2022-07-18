@@ -12,6 +12,14 @@ import * as MediaLibrary from 'expo-media-library';
 import styles from './app/config/styles';
 import colors from './app/config/colors';
 import ScoreTable from './ScoreTable';
+import {
+  AdMobBanner,
+  AdMobInterstitial,
+  PublisherBanner,
+  AdMobRewarded,
+  setTestDeviceIDAsync,
+} from 'expo-ads-admob';
+
 
 export default function App() {
   //Setting all the states the app can have. Here we store the score, whether we are loading the data from API's and the photo's we take
@@ -49,14 +57,14 @@ function NextLevel(){
   
 
   let CallAssignmentAPI = async () => {
-    fetch('https://scangame.herokuapp.com/newassignment')
+    fetch('https://scangame.herokuapp.com/newassignment/'+score)
     .then((response) => response.json())
     .then((json) => setAssignment(json))
     .catch((error) => console.error(error))
     CountRefresh();
   };
   let FreeCallAssignmentAPI = async () => {
-    fetch('https://scangame.herokuapp.com/newassignment')
+    fetch('https://scangame.herokuapp.com/newassignment/'+score)
     .then((response) => response.json())
     .then((json) => setAssignment(json))
     .catch((error) => console.error(error))
@@ -250,7 +258,7 @@ function NextLevel(){
               </TouchableOpacity>
   
 
-              <TouchableOpacity style={styles.TakeAnotherPhotoButton} onPress={() => NextLevel()} >
+              <TouchableOpacity style={styles.TakeNextPhotoButton} onPress={() => NextLevel()} >
                 <Text>Next!</Text>
               </TouchableOpacity>
             </View>
@@ -320,6 +328,7 @@ function NextLevel(){
         <SafeAreaView style={styles.container}>
         {Loading ? ( //Setting a spinner while waiting for the API call to return the results. Read as a IF statement. So if Loading is true, then do this else render template
         <View styles={styles.background}>
+          
           <ActivityIndicator
             //visibility of Overlay Loading Spinner
             visible={Loading}
@@ -350,10 +359,12 @@ function NextLevel(){
     // This is the main camera view
     return (
       <Camera style={styles.container} ref={cameraRef}>
-        <Ionicons name="scan-outline" size={300} color="white" />
+        
           <Text style={styles.HighScore}> ⭐️ Your score: {score -(numberrefresh*10)}</Text>
           <Text style={styles.CallToAction}> Find a {Object.keys(assignment)[0]} </Text>
           <Text style={styles.EmojiAssignment}> {emoji} </Text>
+
+
         <View style={styles.NavigationBar}>  
               <TouchableOpacity
                   onPress={CallAssignmentAPI}

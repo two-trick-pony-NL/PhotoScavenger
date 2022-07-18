@@ -55,7 +55,9 @@ export default{
       },
       EmojiAssignment: {
         fontSize: 120,
-        bottom: 240,
+        bottom: 150,
+        margin: 30,
+        padding: 50,
         
       },
       CameraIcon: {
@@ -74,7 +76,8 @@ export default{
         color: colors.white,
         fontSize: 40,
         position: 'absolute',
-        top: 120
+        top: 120,
+        padding: 20,
       },
       Response: {
         backgroundColor: colors.grey,
@@ -134,6 +137,22 @@ export default{
       TakeAnotherPhotoButton: {
         backgroundColor: colors.primary,
         color: colors.black,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 10, 
+        padding: 20,
+        margin: 5,
+        fontSize: 30,
+        borderColor: colors.black,
+        borderWidth: 2,
+        flexDirection: "row",
+        flex: 2,
+        fontWeight: "bold",
+        
+      }, 
+      TakeNextPhotoButton: {
+        backgroundColor: 'green',
+        color: 'white',
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 10, 

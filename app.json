@@ -7,8 +7,8 @@
           "userTrackingPermission": "This identifier will be used to deliver personalized ads to you."
         }
       ]
-    ]
-    "name": "Photo Scavenger",
+    ],
+    "name": "photoscavenger",
     "slug": "PhotoScavenger",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -26,15 +26,17 @@
       "**/*"
     ],
     "ios": {
+      "config": {
+        "googleMobileAdsAppId": "ca-app-pub-3940256099942544~1458002511"}, // sample id, replace with your own
       "supportsTablet": false,
-      "bundleIdentifier": "com.petervandoorn.PhotoScavenger"
-      "googleMobileAdsAppId": "ca-app-pub-3940256099942544~1458002511" // sample id, replace with your own
+      "bundleIdentifier": "com.petervandoorn.PhotoScavenger",
     },
     "android": {
+      "config": {
+        "googleMobileAdsAppId": "ca-app-pub-3940256099942544~1458002511"}, // sample id, replace with your own
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
-        "googleMobileAdsAppId": "ca-app-pub-3940256099942544~3347511713" // sample id, replace with your own
+        "backgroundColor": "#FFFFFF",
       }
     },
     "web": {
