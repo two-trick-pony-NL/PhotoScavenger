@@ -23,6 +23,7 @@
         "NSPhotoLibraryUsageDescription": "Allow PhotoScavenger to save photos you take to your library."
       },
       "bundleIdentifier": "com.petervandoorn.PhotoScavenger",
+      "buildNumber": "101"
     },
     "android": {
       "config": {
