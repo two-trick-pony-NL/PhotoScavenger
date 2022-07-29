@@ -21,10 +21,7 @@
       "infoPlist": {
         "NSCameraUsageDescription": "Allow PhotoScavenger to use the camera, to photograph objects while playing the game.",
         "NSPhotoLibraryUsageDescription": "Allow PhotoScavenger to save photos you take to your library."
-      }
-      "config": {
-        "googleMobileAdsAppId": "ca-app-pub-3940256099942544~1458002511"}, // sample id, replace with your own
-      "supportsTablet": false,
+      },
       "bundleIdentifier": "com.petervandoorn.PhotoScavenger",
     },
     "android": {
