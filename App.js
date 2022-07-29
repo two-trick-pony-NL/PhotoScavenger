@@ -12,13 +12,7 @@ import * as MediaLibrary from 'expo-media-library';
 import styles from './app/config/styles';
 import colors from './app/config/colors';
 import ScoreTable from './ScoreTable';
-import {
-  AdMobBanner,
-  AdMobInterstitial,
-  PublisherBanner,
-  AdMobRewarded,
-  setTestDeviceIDAsync,
-} from 'expo-ads-admob';
+
 
 
 export default function App() {

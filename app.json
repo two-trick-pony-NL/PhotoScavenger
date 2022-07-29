@@ -2,7 +2,7 @@
   "expo": {
     "name": "photoscavenger",
     "slug": "PhotoScavenger",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -18,6 +18,10 @@
       "**/*"
     ],
     "ios": {
+      "infoPlist": {
+        "NSCameraUsageDescription": "Allow PhotoScavenger to use the camera, to photograph objects while playing the game.",
+        "NSPhotoLibraryUsageDescription": "Allow PhotoScavenger to save photos you take to your library."
+      }
       "config": {
         "googleMobileAdsAppId": "ca-app-pub-3940256099942544~1458002511"}, // sample id, replace with your own
       "supportsTablet": false,
