@@ -34,4 +34,4 @@ The response from the server is processed and stored as a state object from wher
 - If that succeeds I want to do a leaderboard + userprofile but that adds a lot of complexity whereas the AI model now is 1 fairly simple endpoint. 
 
 # Backend repo: 
-- This app is supported by a FastAPI backend written in Python. It takes post requests with images and uses Machine Learning to detect the objects in the photo. Check the code here: https://github.com/two-trick-pony-NL/ScanGameBackend
+- This app is supported by a FastAPI backend written in Python. It takes post requests with images and uses Machine Learning to detect the objects in the photo. Check the code here: https://github.com/two-trick-pony-NL/PhotoScavengerBackend 

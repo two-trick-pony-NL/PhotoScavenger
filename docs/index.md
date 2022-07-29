@@ -31,4 +31,4 @@ Your picture is sent to a server that has a AI model, that can detect specific o
 
 No user data is stored, no session log is kept. The pictures you take are deleted right after they are processed. 
 
-Don't take my word for it? Check the backend source code [here]([url](https://github.com/two-trick-pony-NL/ScanGameBackend)).
+Don't take my word for it? Check the backend source code [here]([url](https://github.com/two-trick-pony-NL/PhotoScavengerBackend)).
