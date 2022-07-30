@@ -1,8 +1,17 @@
 {
   "expo": {
+    "plugins": [
+      [
+        "expo-media-library",
+        {
+          "photosPermission": "Photo Scavenger uses the Camera, to photograph objects while playing the game.",
+          "savePhotosPermission": "Allow Photo Scavenger to save photos you take during the game."
+        }
+      ]
+    ],
     "name": "photoscavenger",
     "slug": "PhotoScavenger",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -18,12 +27,8 @@
       "**/*"
     ],
     "ios": {
-      "infoPlist": {
-        "NSCameraUsageDescription": "Allow PhotoScavenger to use the camera, to photograph objects while playing the game.",
-        "NSPhotoLibraryUsageDescription": "Allow PhotoScavenger to save photos you take to your library.",
-      },
+      "supportsTablet": false,
       "bundleIdentifier": "com.petervandoorn.PhotoScavenger",
-      "buildNumber": "103",
     },
     "android": {
         "foregroundImage": "./assets/adaptive-icon.png",
