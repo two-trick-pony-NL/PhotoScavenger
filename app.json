@@ -1,17 +1,8 @@
 {
   "expo": {
-    "plugins": [
-      [
-        "expo-media-library",
-        {
-          "photosPermission": "Photo Scavenger uses the Camera, to photograph objects while playing the game.",
-          "savePhotosPermission": "Allow Photo Scavenger to save photos you take during the game."
-        }
-      ]
-    ],
     "name": "photoscavenger",
     "slug": "PhotoScavenger",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -27,10 +18,15 @@
       "**/*"
     ],
     "ios": {
+      "config": {
+        "googleMobileAdsAppId": "ca-app-pub-3940256099942544~1458002511"}, // sample id, replace with your own
       "supportsTablet": false,
       "bundleIdentifier": "com.petervandoorn.PhotoScavenger",
     },
     "android": {
+      "config": {
+        "googleMobileAdsAppId": "ca-app-pub-3940256099942544~1458002511"}, // sample id, replace with your own
+      "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF",
       }
@@ -39,3 +35,4 @@
       "favicon": "./assets/favicon.png"
     }
   }
+}
