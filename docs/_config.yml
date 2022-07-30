@@ -53,7 +53,7 @@ features                                  :
 
   - title                                 :  Privacy friendly
     description                           :  No data is collected, no ads and the photos you take are removed after processing
-    fontawesome_icon_name                 :  blinds-open
+    fontawesome_icon_name                 :  fingerprint
 
   - title                                 :  Free to play
     description                           :  Because PhotoScavenger is a fun side-project of mine, there are 0 ads and the app costst $0
