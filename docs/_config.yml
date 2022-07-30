@@ -40,15 +40,15 @@ features                                  :
     fontawesome_icon_name                 : play-circle
   
   - title                                 : Using AI to detect objects
-    description                           : PhotoScavenger uses the latest AI techniques to detect objects in the pictures you snap 
+    description                           : Photo Scavenger uses the latest AI techniques to detect objects in the pictures you snap 
     fontawesome_icon_name                 : magic
 
   - title                                 :  Objectives get harder as you go
-    description                           :  PhotoScavenger might look like a simple game, and it is. But beware, the more points you score the harder the objectives get!
+    description                           :  Photo Scavenger might look like a simple game, and it is. But beware, the more points you score the harder the objectives get!
     fontawesome_icon_name                 :  binoculars
     
   - title                                 : All you need is your iPhone
-    description                           : All you need to play PhotoScavenger is your iPhone
+    description                           : All you need to play Photo Scavenger is your iPhone
     fontawesome_icon_name                 : mobile
 
   - title                                 :  Privacy friendly
