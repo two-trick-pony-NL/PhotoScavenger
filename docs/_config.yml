@@ -1,5 +1,5 @@
 #page title
-page_title                                :                                           # Automatically populates with app name if not set and if iOS app ID is set. Otherwise enter manually.
+page_title                                :  PhotoScavenger                           # Automatically populates with app name if not set and if iOS app ID is set. Otherwise enter manually.
 
 # App Info
 ios_app_id                                : 1635162774                                # Required. Enter iOS app ID to automatically populate name, price and icons (e.g. 718043190).
@@ -7,12 +7,12 @@ ios_app_country                           : nl                                  
 
 appstore_link                             :                                           # Automatically populates if not set and if iOS app ID is set. Otherwise enter manually.
 playstore_link                            :                                           # Enter Google Play Store URL.
-presskit_download_link                    : https://petervandoorn.com                 # Enter a link to downloadable file or (e.g. public Dropbox link to a .zip file). 
+presskit_download_link                    :                                           # Enter a link to downloadable file or (e.g. public Dropbox link to a .zip file). 
                                                                                       # Or upload your press kit file to assets and set path accordingly (e.g. "assets/your_press_kit.zip").
 
-app_icon                                  :  assets/icon.png                      # Automatically populates if not set and if iOS app ID is set.  Otherwise enter path to icon file manually.
-app_name                                  :                                           # Automatically populates if not set and if iOS app ID is set.  Otherwise enter manually.
-app_price                                 :                                           # Automatically populates if not set and if iOS app ID is set.  Otherwise enter manually.
+app_icon                                  :  assets/icon.png                          # Automatically populates if not set and if iOS app ID is set.  Otherwise enter path to icon file manually.
+app_name                                  :  Photo Scavenger                          # Automatically populates if not set and if iOS app ID is set.  Otherwise enter manually.
+app_price                                 :  Free                                         # Automatically populates if not set and if iOS app ID is set.  Otherwise enter manually.
 app_description                           : Find, Photograph, Score!
 
 enable_smart_app_banner                   : true                                      # Set to true to show a smart app banner at top of page on mobile devices.
@@ -25,7 +25,7 @@ your_link                                 : https://petervandoorn.com
 your_city                                 : Amsterdam                                
 email_address                             : photoscavenger@petervandoorn.com
 facebook_username                         :                                           
-instagram_username                        : two.trick.pony_
+instagram_username                        :
 twitter_username                          : 
 github_username                           : two-trick-pony-NL
 youtube_username                          :
@@ -53,7 +53,7 @@ features                                  :
 
   - title                                 :  Privacy friendly
     description                           :  No data is collected, no ads and the photos you take are removed after processing
-    fontawesome_icon_name                 :  binary-circle-check
+    fontawesome_icon_name                 :  blinds-open
 
   - title                                 :  Free to play
     description                           :  Because PhotoScavenger is a fun side-project of mine, there are 0 ads and the app costst $0
