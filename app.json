@@ -24,6 +24,7 @@
       "bundleIdentifier": "com.petervandoorn.PhotoScavenger",
       "infoPlist": {
         "NSCameraUsageDescription": "Photo Scavenger uses the Camera, to photograph objects while playing the game.",
+        "NSPhotoLibraryAddUsageDescription": "Allow Photo Scavenger to save the photos while playing the game.",
         "NSPhotoLibraryUsageDescription": "Allow Photo Scavenger to save the photos while playing the game."
       }
     },
