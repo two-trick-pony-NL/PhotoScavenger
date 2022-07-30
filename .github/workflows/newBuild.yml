@@ -1,5 +1,5 @@
 
-name: Create new Build and submit to Appstore
+name: Publish Version
 
 on:
   push:
@@ -28,5 +28,8 @@ jobs:
       - name: 📦 Install dependencies
         run: yarn install
 
-      - name: 🚀 Build app
+      - name: ✨ Publish app to Expo
+        run: expo publish --non-interactive
+
+      - name: 🚀 Buildfor iOS and submit to Appstore
         run: eas build -p ios --profile production --non-interactive --auto-submit
