@@ -19,7 +19,8 @@
     ],
     "ios": {
       "config": {
-        "googleMobileAdsAppId": "ca-app-pub-3940256099942544~1458002511"}, // sample id, replace with your own
+        "googleMobileAdsAppId": "ca-app-pub-3940256099942544~1458002511"
+      },
       "supportsTablet": false,
       "buildNumber": "3",
       "bundleIdentifier": "com.petervandoorn.PhotoScavenger",
@@ -31,14 +32,20 @@
     },
     "android": {
       "config": {
-        "googleMobileAdsAppId": "ca-app-pub-3940256099942544~1458002511"}, // sample id, replace with your own
+        "googleMobileAdsAppId": "ca-app-pub-3940256099942544~1458002511"
+      },
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF",
+        "backgroundColor": "#FFFFFF"
       }
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "f4973149-3f6e-4921-8f09-9864267d46ca"
+      }
     }
   }
 }
