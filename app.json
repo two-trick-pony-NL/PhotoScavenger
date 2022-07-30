@@ -51,7 +51,7 @@
       [
         "expo-tracking-transparency",
         {
-          "userTrackingPermission": "This identifier will be used to track if the app is functioning properly."
+          "userTrackingPermission": "Allow Photo Scavenger to collect app-related data that can be used to verify the app is working correctly"
         }
       ]
     ]
