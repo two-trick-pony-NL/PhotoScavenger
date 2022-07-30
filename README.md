@@ -3,7 +3,9 @@
 
 # Photo Scavenger
 This is the repo for the React Native apps that
- support my Photo Scavenger app. From react it should be possible to compile both iOS and Android apps. 
+support my Photo Scavenger app. From react it should be possible to compile both iOS and Android apps. 
+
+Here is the project page: https://photoscavenger.petervandoorn.com
 
 Here is a in-game clip of the basic idea: <br>
 
@@ -13,6 +15,7 @@ Here is a in-game clip of the basic idea: <br>
 
 
 # How to run: 
+If you use expo check my profile here
 Use Expo, I published the app here: https://expo.dev/@petervandoorn/ScanGameApps?serviceType=classic&distribution=expo-go
 
 
