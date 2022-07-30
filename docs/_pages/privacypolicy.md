@@ -8,7 +8,7 @@ include_in_header: false
 August 1 2022
 
 # Privacy Policy
-In principle: PhotoScavenger does not collect, store or share any of your data. 
+In principle: Photo Scavenger does not collect, store or share any of your data. 
 
 <br>
 
@@ -25,12 +25,12 @@ None. Yes, you send pictures in our app, and those are deleted right after proce
 <br>
 
 ## 2.0 What Personal Information we collect about you and how we collect it
-PhotoScavenger might collect personal data in the pictures that you take from our app. However our intention is to have fun, and not harvest your data. So those images are deleted as soon as object detection is completed. 
+Photo Scavenger might collect personal data in the pictures that you take from our app. However our intention is to have fun, and not harvest your data. So those images are deleted as soon as object detection is completed. 
 
 ### 2.1 Third Parties we collect information from
 - No third parties collect your information
 <br>
 
 ## 3.0 How we store and secure the Personal Information we collect
-- PhotoScavenger stores no information about you, images are deleted as soon as object detection is completed
+- Photo Scavenger stores no information about you, images are deleted as soon as object detection is completed
 

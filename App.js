@@ -87,7 +87,7 @@ function NextLevel(){
     let HowToPlay = () => {
       //function to make simple alert
       console.log('User tapped how to play button')
-      Alert.alert('How to play:',' 👋🏻 Hi! Welcome to PhotoScavenger! Playing is easy; Simply photograph the object to earn points.\nThe more objects you fit in a picture the more points you score. \n \n If you cannot find the object nearby, then use 10 points to get another target. Hit the 🔄  button to refresh the target.  \n\n What is your Highscore? 🥇 ',
+      Alert.alert('How to play:',' 👋🏻 Hi! Welcome to Photo Scavenger! Playing is easy; Simply photograph the object to earn points.\nThe more objects you fit in a picture the more points you score. \n \n If you cannot find the object nearby, then use 10 points to get another target. Hit the 🔄  button to refresh the target.  \n\n What is your Highscore? 🥇 ',
       [
         { text: 'Let\'s play! 📸 ', onPress: () => console.log('user closed the how to play') },
       ],);
