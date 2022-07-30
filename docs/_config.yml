@@ -42,10 +42,23 @@ features                                  :
   - title                                 : Using AI to detect objects
     description                           : PhotoScavenger uses the latest AI techniques to detect objects in the pictures you snap 
     fontawesome_icon_name                 : magic
+
+  - title                                 :  Objectives get harder as you go
+    description                           :  PhotoScavenger might look like a simple game, and it is. But beware, the more points you score the harder the objectives get!
+    fontawesome_icon_name                 :  binoculars
     
   - title                                 : All you need is your iPhone
     description                           : All you need to play PhotoScavenger is your iPhone
     fontawesome_icon_name                 : mobile
+
+  - title                                 :  Privacy friendly
+    description                           :  No data is collected, no ads and the photos you take are removed after processing
+    fontawesome_icon_name                 :  binary-circle-check
+
+  - title                                 :  Free to play
+    description                           :  Because PhotoScavenger is a fun side-project of mine, there are 0 ads and the app costst $0
+    fontawesome_icon_name                 :  money-bill
+
 
 
 
@@ -77,7 +90,7 @@ app_description_color                     : "#ffffff"
 feature_title_color                       : "#000000"
 feature_text_color                        : "#666666"
 
-feature_icons_foreground_color            : "#76e1f6"
+feature_icons_foreground_color            : "#1d63ea"
 feature_icons_background_color            : "#e6e6e6"
 
 social_icons_foreground_color             : "#666666"
