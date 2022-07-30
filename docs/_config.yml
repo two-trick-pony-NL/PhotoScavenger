@@ -5,8 +5,8 @@ page_title                                :  Photo Scavenger - Find, Photograph,
 ios_app_id                                : 1635162774                                # Required. Enter iOS app ID to automatically populate name, price and icons (e.g. 718043190).
 ios_app_country                           : nl                                        # Required outside USA. Enter 2 letter country code as in https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
 
-appstore_link                             :                                           # Automatically populates if not set and if iOS app ID is set. Otherwise enter manually.
-playstore_link                            :                                           # Enter Google Play Store URL.
+appstore_link                             : https://apps.apple.com/us/app/photo-scavenger/id1635162774                                          # Automatically populates if not set and if iOS app ID is set. Otherwise enter manually.
+playstore_link                            : https://petervandoorn.com                                       # Enter Google Play Store URL.
 presskit_download_link                    :                                           # Enter a link to downloadable file or (e.g. public Dropbox link to a .zip file). 
                                                                                       # Or upload your press kit file to assets and set path accordingly (e.g. "assets/your_press_kit.zip").
 
@@ -56,7 +56,7 @@ features                                  :
     fontawesome_icon_name                 :  fingerprint
 
   - title                                 :  Open Source
-    description                           :  All of the Photo Scavenger code is available on Github. So if you want to see how the app works you can. Even the object detection is available from my Github page. 
+    description                           :  All of the Photo Scavenger code is available on Github. So if you want to see how the app works you can. 
     fontawesome_icon_name                 :  code
 
   - title                                 : # New Feature Title
