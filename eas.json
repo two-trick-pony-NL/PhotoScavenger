@@ -10,15 +10,9 @@
     "preview": {
       "distribution": "internal"
     },
-    "production": {
-      "env": {
-        "APP_ENV": "production"
-    }
+    "production": {}
   },
   "submit": {
-    "production": {
-      "env": {
-        "APP_ENV": "production"
-    }
+    "production": {}
   }
 }
