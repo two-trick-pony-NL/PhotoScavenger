@@ -10,6 +10,18 @@ Here you can keep a changelog for your app. Edit the markdown based CHANGELOG.md
 <br>
 
 ### `Latest`
+# **Version 1.0.6**
+After failure to get accepted by Apple changes were made
+#### What's New
+- Nothing for now
+- CI Automatically submits the app to apple if I change code
+#### Bug Fixes
+- Fixed some configurations that made apples review to fail
+
+#### Roadmap
+- Launch Android app 
+- More available objects to scan
+- Some ads in a free version, and a paid version for $1
 # **Version 1.0.3**
 After overwhelming positive responses on Reddit I started preparing the app for a release on the appstore
 
