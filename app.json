@@ -20,15 +20,12 @@
     "ios": {
       "infoPlist": {
         "NSCameraUsageDescription": "Allow PhotoScavenger to use the camera, to photograph objects while playing the game.",
-        "NSPhotoLibraryUsageDescription": "Allow PhotoScavenger to save photos you take to your library."
+        "NSPhotoLibraryUsageDescription": "Allow PhotoScavenger to save photos you take to your library.",
       },
       "bundleIdentifier": "com.petervandoorn.PhotoScavenger",
-      "buildNumber": "101"
+      "buildNumber": "102",
     },
     "android": {
-      "config": {
-        "googleMobileAdsAppId": "ca-app-pub-3940256099942544~1458002511"}, // sample id, replace with your own
-      "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF",
       }
@@ -37,4 +34,3 @@
       "favicon": "./assets/favicon.png"
     }
   }
-}
