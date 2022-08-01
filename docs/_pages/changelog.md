@@ -10,7 +10,18 @@ Here you can keep a changelog for your app. Edit the markdown based CHANGELOG.md
 <br>
 
 ### `Latest`
-# **Version 1.0.6**
+# **Version 1.0.9**
+Accepted by Apple! 
+#### What's New
+- Minor wording changes when asking for permission to use camera and photolibrary
+#### Bug Fixes
+- Fixed some configurations that made apples review to fail
+
+#### Roadmap
+- Launch Android app 
+- New  object detection library so more objects will be possible
+- Research monetisation strategies
+# **Version 1.0.8**
 After failure to get accepted by Apple changes were made
 #### What's New
 - Nothing for now
@@ -22,7 +33,7 @@ After failure to get accepted by Apple changes were made
 - Launch Android app 
 - More available objects to scan
 - Some ads in a free version, and a paid version for $1
-# **Version 1.0.3**
+# **Version 1.0.7**
 After overwhelming positive responses on Reddit I started preparing the app for a release on the appstore
 
 #### What's New
@@ -41,7 +52,7 @@ After overwhelming positive responses on Reddit I started preparing the app for 
 <br>
 
 ### `Initial Release`
-# **Version 1.0.0**
+# **Version 1.0.6**
 Uploaded the first version to the Expo store, however this means that the app is not accessible to the general public in the appstores
 
 <br>

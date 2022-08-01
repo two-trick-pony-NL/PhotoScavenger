@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Alert, Entypo, ActivityIndicator, forceUpdate, Text, View, FlatList, SafeAreaView, TouchableOpacity, Button, Image } from 'react-native';
+import { StyleSheet, Alert, Entypo, ScrollView, ActivityIndicator, forceUpdate, Text, View, FlatList, SafeAreaView, TouchableOpacity, Button, Image } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import { Camera } from 'expo-camera';
 import { DataTable } from 'react-native-paper';
@@ -160,7 +160,7 @@ function NextLevel(){
           foundItem = data.OtherObjectsDetected.includes(DetectorParameter)
           console.log('Result of calculation');
           console.log(foundItem);
-          console.log("Other items detected:");
+          console.log("All items detected:");
           console.log(data.OtherObjectsDetected);
           console.log("Searched for:");
           console.log(DetectorParameter);
@@ -171,14 +171,14 @@ function NextLevel(){
               <ConfettiCannon count={250} fallspeed={2000} origin={{x: -10, y: 0}} fadeOut={true} autoStartDelay={500}/>
               <DataTable>
                 <DataTable.Header>
-                  <DataTable.Title></DataTable.Title>
+                  <DataTable.Title style={styles.tableBold}>Assignment</DataTable.Title>
                   <DataTable.Title>  </DataTable.Title>
                   <DataTable.Title numeric>Points</DataTable.Title>
                 </DataTable.Header>
 
                 <DataTable.Row>
                   <DataTable.Cell > 
-                   <Text style={styles.tableBold}>
+                   <Text>
                    {emoji} {Object.keys(assignment)[0]} found 
                    </Text> 
                    
@@ -190,6 +190,10 @@ function NextLevel(){
                     </Text>
                   </DataTable.Cell>
                   
+                </DataTable.Row>
+
+                <DataTable.Row>
+
                 </DataTable.Row>
 
                 <DataTable.Row>
@@ -236,14 +240,15 @@ function NextLevel(){
                 <DataTable.Row style={styles.tableBold}>
                   <DataTable.Cell>
                     <Text style={styles.tableBold}>
-                      
+                    New Score :
                     </Text>
                     </DataTable.Cell>
                   <DataTable.Cell></DataTable.Cell>
                   <DataTable.Cell numeric>
                     <Text style={styles.tableBold}>
-                     New Score :  {(score + 250 + (data.OtherObjectsDetected.length * 100) - (numberrefresh * 10))}
-                    </Text></DataTable.Cell>
+                       {(score + 250 + (data.OtherObjectsDetected.length * 100) - (numberrefresh * 10))}
+                    </Text>
+                    </DataTable.Cell>
                 </DataTable.Row>
               </DataTable> 
             <View style={styles.ButtonAreaScoreView}>
@@ -341,10 +346,13 @@ function NextLevel(){
         
 
           <Image style={styles.preview} source={{ uri: "data:image/jpg;base64," + photo.base64 }} />
+          <View style={styles.tableview}>
           <Text style={styles.ResultsHeading}>Summary</Text>
           <Text> Your assignment was to photograph a {Object.keys(assignment)[0]}</Text>
-          {WasAssignmentFound(data)} 
-
+          <ScrollView >
+            {WasAssignmentFound(data)}
+          </ScrollView>
+          </View>
           </>
           )}
         </SafeAreaView>

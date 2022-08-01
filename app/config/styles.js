@@ -7,7 +7,12 @@ export default{
       },
       preview: {
         alignSelf: 'stretch',
-        flex: 1,
+        flex: 2,
+        height: 250,
+      },
+      tableview: {
+        
+        flex: 3,
         height: 250,
       },
       background: {
