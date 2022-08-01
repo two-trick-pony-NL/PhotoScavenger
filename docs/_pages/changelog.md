@@ -10,6 +10,12 @@ Here you can keep a changelog for your app. Edit the markdown based CHANGELOG.md
 <br>
 
 ### `Latest`
+# **Version 1.0.10**
+Fixed first userfeedback
+#### What's New
+- The summary screen now is scrollable, if you have many objects in a picture you can now scroll instead of having overflow
+#### Bug Fixes
+- None
 # **Version 1.0.9**
 Accepted by Apple! 
 #### What's New
