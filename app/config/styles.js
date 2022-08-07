@@ -7,12 +7,12 @@ export default{
       },
       preview: {
         alignSelf: 'stretch',
-        flex: 2,
+        flex: 1,
         height: 250,
       },
       tableview: {
         
-        flex: 3,
+        flex: 4,
         height: 250,
       },
       background: {
@@ -60,9 +60,10 @@ export default{
       },
       EmojiAssignment: {
         fontSize: 120,
-        bottom: 150,
         margin: 30,
         padding: 50,
+        justifyContent: 'center',
+        alignItems: 'center',
         
       },
       CameraIcon: {

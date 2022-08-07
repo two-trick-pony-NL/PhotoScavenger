@@ -10,6 +10,7 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "~1.17.3",
     "expo": "~45.0.0",
     "expo-ads-admob": "~13.0.0",
     "expo-camera": "~12.2.0",

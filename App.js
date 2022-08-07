@@ -3,6 +3,7 @@ import { StyleSheet, Alert, Entypo, ScrollView, ActivityIndicator, forceUpdate, 
 import React, { useEffect, useRef, useState } from 'react';
 import { Camera } from 'expo-camera';
 import { DataTable } from 'react-native-paper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { shareAsync } from 'expo-sharing';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import ConfettiCannon from 'react-native-confetti-cannon';
@@ -21,7 +22,7 @@ export default function App() {
   const [data, setData] = useState([{'none':'none'}]);
   const [assignment, setAssignment] = useState([]);
   const [numberrefresh, setNumberrefresh] = useState(-1);//initializing at -1 so that when we get the initial instruction we end up at 0
-  const [score, setScore] = useState(1); //setting to 1 so on the initial fetch for an instruction we end up at 0 points
+  const [score, setScore] = useState(0); //setting to 1 so on the initial fetch for an instruction we end up at 0 points
   const [hasCameraPermission, setHasCameraPermission] = useState();
   const [hasMediaLibraryPermission, setHasMediaLibraryPermission] = useState();
   const [photo, setPhoto] = useState();
@@ -29,6 +30,29 @@ export default function App() {
   //Extracting some pictures from API response
   var emoji = assignment[Object.keys(assignment)[0]]; 
   const DetectorParameter = Object.keys(assignment)[0]
+
+// Function to store data on the device 
+const storeData = async (value) => {
+  try {
+    await AsyncStorage.setItem('score', value)
+  } catch (e) {
+    // saving error
+  }
+}
+// Function to retrieve data on the device 
+
+const getData = async () => {
+  try {
+    const value = await AsyncStorage.getItem('score')
+    if(value !== null) {
+      setScore(0);
+      // value previously stored
+    }
+  } catch(e) {
+    // error reading value
+  }
+}
+
 
 
 
@@ -51,21 +75,20 @@ function NextLevel(){
   
 
   let CallAssignmentAPI = async () => {
-    fetch('https://scangame.herokuapp.com/newassignment/'+score)
+    fetch('https://photoscavenger.vdotvo9a4e2a6.eu-central-1.cs.amazonlightsail.com/v2/newassignment/'+score)
     .then((response) => response.json())
     .then((json) => setAssignment(json))
     .catch((error) => console.error(error))
     CountRefresh();
   };
   let FreeCallAssignmentAPI = async () => {
-    fetch('https://scangame.herokuapp.com/newassignment/'+score)
+    fetch('https://photoscavenger.vdotvo9a4e2a6.eu-central-1.cs.amazonlightsail.com/v2/newassignment/'+score)
     .then((response) => response.json())
     .then((json) => setAssignment(json))
     .catch((error) => console.error(error))
   };
 // This use effect is used 1x on app load, to get the first asignment and fetch camera permissions if we don't have them. 
     useEffect(() => {
-      setScore(0)
       CallAssignmentAPI();
       console.log(assignment);
       (async () => {
@@ -97,7 +120,7 @@ function NextLevel(){
       var formdata = new FormData();
       formdata.append('file', {uri: image.uri, name: 'picture.jpg', type: 'image/jpg'});
       //console.log(formdata)
-      fetch('https://scangame.herokuapp.com/uploadfile/'+DetectorParameter, {
+      fetch('https://photoscavenger.vdotvo9a4e2a6.eu-central-1.cs.amazonlightsail.com/v2/uploadfile/'+DetectorParameter, {
         method: 'POST',
         body: formdata
         })
@@ -169,9 +192,10 @@ function NextLevel(){
             return (
               <>
               <ConfettiCannon count={250} fallspeed={2000} origin={{x: -10, y: 0}} fadeOut={true} autoStartDelay={500}/>
+              <ScrollView>
               <DataTable>
                 <DataTable.Header>
-                  <DataTable.Title style={styles.tableBold}>Assignment</DataTable.Title>
+                  <DataTable.Title style={styles.tableBold}></DataTable.Title>
                   <DataTable.Title>  </DataTable.Title>
                   <DataTable.Title numeric>Points</DataTable.Title>
                 </DataTable.Header>
@@ -192,39 +216,18 @@ function NextLevel(){
                   
                 </DataTable.Row>
 
-                <DataTable.Row>
-
-                </DataTable.Row>
 
                 <DataTable.Row>
                   <DataTable.Cell>
-                    <Text style={styles.tableBold}>🎯Other items in your picture: </Text>
+                    <Text > All items in your picture: </Text>
                   </DataTable.Cell>
                 </DataTable.Row>
                 
                 {GetObjectsDetected(data.OtherObjectsDetected)}
                 
+                
                 <DataTable.Row>
-                  <DataTable.Cell>
-                    </DataTable.Cell>
-                  <DataTable.Cell></DataTable.Cell>
-                  <DataTable.Cell numeric></DataTable.Cell>
-                </DataTable.Row>
-
-                <DataTable.Row style={styles.tableBold}>
-                  <DataTable.Cell>
-                      😎 points previous round
-                    </DataTable.Cell>
-                 
-                  <DataTable.Cell numeric>
-                  <Text style={styles.tableGood}>
-                      {score -(numberrefresh*10)}
-                  </Text>
-                      </DataTable.Cell>
-                </DataTable.Row>
-
-                <DataTable.Row>
-                  <DataTable.Cell> ❗️{numberrefresh}x refreshed</DataTable.Cell>
+                  <DataTable.Cell>{numberrefresh}x refreshed</DataTable.Cell>
                   
                   <DataTable.Cell numeric>
                     <Text style={styles.tableBad}>
@@ -232,6 +235,16 @@ function NextLevel(){
                       </Text>
                   </DataTable.Cell>
                 </DataTable.Row>
+                
+                
+                <DataTable.Row>
+
+                  <DataTable.Cell></DataTable.Cell>
+                  <DataTable.Cell numeric></DataTable.Cell>
+                </DataTable.Row>
+
+
+
 
 
 
@@ -251,6 +264,8 @@ function NextLevel(){
                     </DataTable.Cell>
                 </DataTable.Row>
               </DataTable> 
+
+              </ScrollView>
             <View style={styles.ButtonAreaScoreView}>
               <TouchableOpacity style={styles.SaveOrDiscard} onPress={savePhoto}>
                 <FontAwesome  name="save"  size={24} color="black" />
@@ -262,12 +277,17 @@ function NextLevel(){
               </TouchableOpacity>
             </View>
 
+
+            
+            
+            <ConfettiCannon count={250} fallspeed={3000} origin={{x: -10, y: -10}} fadeOut={true} autoStartDelay={500}/>
               </>
             )
           } else {
             console.log('⛔️ Photofound is not equal to true');
             return (
               <>
+              <ScrollView>
               <DataTable>
                 <DataTable.Header>
                   <DataTable.Title></DataTable.Title>
@@ -304,6 +324,7 @@ function NextLevel(){
                     </Text></DataTable.Cell>
                 </DataTable.Row>
               </DataTable> 
+              </ScrollView>
             <View style={styles.ButtonAreaScoreView}>
               <TouchableOpacity style={styles.SaveOrDiscard} onPress={savePhoto}>
                 <FontAwesome  name="save"  size={24} color="black" />
@@ -313,6 +334,7 @@ function NextLevel(){
               <TouchableOpacity style={styles.TakeAnotherPhotoButton} onPress={() => setPhoto(undefined)} >
                 <Text>Retry</Text>
               </TouchableOpacity>
+
             </View>
 
               </>)
@@ -325,6 +347,7 @@ function NextLevel(){
     // This is what is shown after taking a photos
     return (
         <SafeAreaView style={styles.container}>
+       
         {Loading ? ( //Setting a spinner while waiting for the API call to return the results. Read as a IF statement. So if Loading is true, then do this else render template
         <View styles={styles.background}>
           
@@ -343,18 +366,21 @@ function NextLevel(){
         </View>
         ) : ( //this bit we render if the app is not loading
         <>
-        
-
+    
           <Image style={styles.preview} source={{ uri: "data:image/jpg;base64," + photo.base64 }} />
+          
           <View style={styles.tableview}>
           <Text style={styles.ResultsHeading}>Summary</Text>
           <Text> Your assignment was to photograph a {Object.keys(assignment)[0]}</Text>
-          <ScrollView >
+
             {WasAssignmentFound(data)}
-          </ScrollView>
+      
           </View>
           </>
           )}
+
+
+          
         </SafeAreaView>
       );
     }
@@ -362,7 +388,7 @@ function NextLevel(){
     return (
       <Camera style={styles.container} ref={cameraRef}>
         
-          <Text style={styles.HighScore}> ⭐️ Your score: {score -(numberrefresh*10)}</Text>
+          <Text style={styles.HighScore}> ⭐️ {score -(numberrefresh*10)}</Text>
           <Text style={styles.CallToAction}> Find a {Object.keys(assignment)[0]} </Text>
           <Text style={styles.EmojiAssignment}> {emoji} </Text>
 

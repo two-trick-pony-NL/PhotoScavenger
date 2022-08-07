@@ -10,6 +10,14 @@ Here you can keep a changelog for your app. Edit the markdown based CHANGELOG.md
 <br>
 
 ### `Latest`
+# **Version 1.0.11**
+Fixed first userfeedback
+#### What's New
+- Increased the number of objects the AI can detect. 
+- The increase is from 20 ==> 80 using the latest COCO dataset
+- App now uses the V2 API endpoint so that we can use the new objects
+#### Bug Fixes
+- Minor fixes to scrolling in the summary screen
 # **Version 1.0.10**
 Fixed first userfeedback
 #### What's New
