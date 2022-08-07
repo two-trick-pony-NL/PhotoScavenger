@@ -301,11 +301,15 @@ function NextLevel(){
                    ⛔️ {Object.keys(assignment)[0]} not found 
                    </Text> 
                    </DataTable.Cell>
-                  <DataTable.Cell numeric>
-                  <Text style={styles.tableBad}>
-                      
-                    </Text>
-                  </DataTable.Cell>
+
+                </DataTable.Row>
+
+                <DataTable.Row>
+                <DataTable.Cell > 
+                   <Text>
+                    💡 If the object is not detected properly, try taking a better picture from another distance or with better lighting.
+                   </Text> 
+                   </DataTable.Cell>
                 </DataTable.Row>
               
 
