@@ -1,5 +1,6 @@
 {
   "cli": {
+    "autoIncrement":"version",
     "version": ">= 0.55.1"
   },
   "build": {
@@ -15,7 +16,6 @@
   "submit": {
     "production": {
       "ios": {
-        "autoIncrement":"version",
         "appleId": "peter@petervandoorn.com",
         "ascAppId": "1637234234",
         "appleTeamId": "U37U4F79V9"
