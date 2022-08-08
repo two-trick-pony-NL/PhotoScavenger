@@ -10,9 +10,7 @@
     "preview": {
       "distribution": "internal"
     },
-    "production": {
-    "autoIncrement":"version"
-    }
+    "production": {}
   },
   "submit": {
     "production": {
