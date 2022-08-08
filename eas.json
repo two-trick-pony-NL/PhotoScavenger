@@ -1,6 +1,5 @@
 {
   "cli": {
-    "autoIncrement":"version",
     "version": ">= 0.55.1"
   },
   "build": {
@@ -11,7 +10,9 @@
     "preview": {
       "distribution": "internal"
     },
-    "production": {}
+    "production": {
+    "autoIncrement":"version",
+    }
   },
   "submit": {
     "production": {
