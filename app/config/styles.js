@@ -1,3 +1,4 @@
+import { styleProps } from 'react-native-web/dist/cjs/modules/forwardedProps';
 import colors from './colors';
 export default{
     container: {
@@ -203,8 +204,76 @@ export default{
         padding: 20,
         },
 
-        HelperTextArea: {
-          justifyContent: 'center',
-          alignItems: 'center',
-          },
+      HelperTextArea: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        },
+      centeredView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 22
+      },
+      modalView: {
+        margin: 20,
+        backgroundColor: "white",
+        borderRadius: 20,
+        padding: 35,
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+          width: 0,
+          height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5
+      },
+      button: {
+        borderRadius: 20,
+        padding: 10,
+        elevation: 2
+      },
+      buttonOpen: {
+        backgroundColor: "#F194FF",
+      },
+      buttonClose: {
+        backgroundColor: colors.primary,
+        color: colors.black,
+      },
+      textStyle: {
+        color: "white",
+        fontWeight: "bold",
+        textAlign: "center"
+      },
+      modalText: {
+        marginBottom: 15,
+        textAlign: "left"
+      },
+
+      ProfileHeading: {
+        fontWeight: "bold",
+        color: colors.primary,
+        fontSize: 35,
+
+        },
+
+      ProfileSubHeading: {
+        fontWeight: "bold",
+        color: colors.primary,
+        fontSize: 15,
+        paddingTop: 10,
+        paddingBottom: 10,
+
+        },
+      ProgressBar: {
+        flex: 0,
+        justifyContent: "center",
+        alignItems: "center",
+      },
+      EmojiGrid: {
+        fontSize: 40,
+        justifyContent: "center",
+        alignItems: "center",
+      },
     }

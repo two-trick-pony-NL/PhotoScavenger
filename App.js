@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { Alert, ScrollView, ActivityIndicator, Text, View, SafeAreaView, TouchableOpacity, Image } from 'react-native';
+import { Alert, Modal, Pressable, ScrollView, ActivityIndicator, Text, View, SafeAreaView, TouchableOpacity, Image } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import { Camera } from 'expo-camera';
 import { DataTable } from 'react-native-paper';
@@ -9,11 +9,14 @@ import * as MediaLibrary from 'expo-media-library';
 import styles from './app/config/styles';
 import colors from './app/config/colors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import ProgressCircle from 'react-native-progress-circle'
+import { FlatGrid } from 'react-native-super-grid';
 
 
 export default function App() {
   //Setting all the states the app can have. Here we store the score, whether we are loading the data from API's and the photo's we take
   const [Loading, setLoading] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
   const [data, setData] = useState([{'none':'none'}]);
   const [assignment, setAssignment] = useState([]);
   const [numberrefresh, setNumberrefresh] = useState(-1);//initializing at -1 so that when we get the initial instruction we end up at 0
@@ -88,6 +91,7 @@ function NextLevel(){
     useEffect(() => {
       retrieveSavedScore();
       CallAssignmentAPI();
+      setModalVisible(!modalVisible);
       console.log(assignment);
       (async () => {
         const cameraPermission = await Camera.requestCameraPermissionsAsync();
@@ -394,6 +398,75 @@ function NextLevel(){
     // This is the main camera view
     return (
       <Camera style={styles.container} ref={cameraRef}>
+
+        <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {
+                  Alert.alert("Modal has been closed.");
+                  setModalVisible(!modalVisible);
+                }}
+              >
+            
+                <View style={styles.centeredView}>
+                  <View style={styles.modalView}>
+                  <ScrollView>
+
+         
+                    <Text style={styles.ProfileHeading}>Photo Scavenger</Text>
+                    <Text style={styles.modalText}>Find, Photograph, Score!</Text>
+
+                    <Text style={styles.ProfileSubHeading}>How to play</Text>
+                    <Text style={styles.modalText}>Playing is easy; Simply photograph the object to earn points. The more objects you fit in a picture the more points you score. Try to photograph all 80 objects in the game to earn a 100% score.</Text>
+                    <Text style={styles.modalText}>If you cannot find the object nearby, then use 10 points to get another target. Hit the refresh button to refresh the target.</Text>
+                    
+
+                    <Text style={styles.ProfileSubHeading}>Progress</Text>
+                    <Text style={styles.modalText}>Find all unique objects to get to 100%</Text>
+                    <View styles={styles.ProgressBar}>
+                    <ProgressCircle 
+                          style= {styles.ProgressBar}
+                          percent={30}
+                          radius={50}
+                          borderWidth={8}
+                          color={colors.primary}
+                          shadowColor="#999"
+                          bgColor="#fff"
+                      >
+                          <Text style={{ fontSize: 18 }}>{'30%'}</Text>
+                      </ProgressCircle>  
+
+                      <Text style={styles.ProfileSubHeading}>Your score</Text>
+                      <Text style={styles.modalText}>So far you have earned {score -(numberrefresh*10)} points in Photo Scavenger</Text>    
+
+                      <Text style={styles.ProfileSubHeading}>Objects found so far</Text>
+                      <Text style={styles.modalText}>These are the objects you have seen at least once in Photo Scavenger!</Text>                
+                      <FlatGrid
+                        itemDimension={50}
+                        data={['🧸', '✂️', '🪥', '📺',  '📚', '🏺', '⏹', '⏹', '⏹', '⏹', '⏹', '⏹', '⏹', '⏹', '⏹', '⏹', '⏹', '⏹', '⏹', '⏹', '⏹', '⏹' ]}
+                        renderItem={({ item }) => (<Text style={styles.EmojiGrid}> {item} </Text>)}
+                      />
+                    </View>
+                  
+                    <Text style={styles.ProfileSubHeading}>About</Text>
+                    <Text style={styles.modalText}>Photo Scavenger is made with ♥️ by Peter van Doorn. The app uses no ads, has no tracking stores no data, and all your photos are deleted after processing. If you're interested in reading the source code of this app, check out my GitHub page. </Text>
+
+                    </ScrollView>
+                    
+                    <Pressable
+                      style={[styles.button, styles.buttonClose]}
+                      onPress={() => setModalVisible(!modalVisible)}
+                    >
+                      <Text style={styles.textStyle}>Let's play! 📸 </Text>
+                    </Pressable> 
+                    
+                  </View>
+
+                 
+                </View>
+                
+              </Modal>
         
           <Text style={styles.HighScore}> ⭐️ {score -(numberrefresh*10)}</Text>
           <Text style={styles.CallToAction}> Find a {Object.keys(assignment)[0]} </Text>
@@ -405,7 +478,7 @@ function NextLevel(){
                   onPress={CallAssignmentAPI}
                   style={styles.NavigationButton}>
                   <FontAwesome name="refresh" size={24} color="black" />
-                  <Text>refresh</Text>
+                  
                 </TouchableOpacity>
                 
 
@@ -417,11 +490,13 @@ function NextLevel(){
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                  onPress={HowToPlay}
+                  onPress={() => setModalVisible(!modalVisible)}
                   style={styles.NavigationButton}>
-                  <FontAwesome name="lightbulb-o" size={32} color="black" />
-                  <Text>rules</Text>
+                  <FontAwesome name="trophy" size={32} color="black" />
+                  
                 </TouchableOpacity>
+
+        
         </View>
         <StatusBar style="auto" />
       </Camera>
