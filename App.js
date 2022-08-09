@@ -54,6 +54,20 @@ const retrieveSavedScore = async() => {
   }
 };
 
+const createTwoButtonAlert = () =>
+    Alert.alert(
+      "Alert Title",
+      "My Alert Msg",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { text: "OK", onPress: () => console.log("OK Pressed") }
+      ]
+    );
+
 function CountRefresh() {
   setNumberrefresh(numberrefresh + 1)
 }
@@ -109,14 +123,6 @@ function NextLevel(){
       return <Text>Permission for camera not granted. Please change this in settings.</Text>
     }
 
-    let HowToPlay = () => {
-      //function to make simple alert
-      console.log('User tapped how to play button')
-      Alert.alert('How to play:',' 👋🏻 Hi! Welcome to Photo Scavenger! Playing is easy; Simply photograph the object to earn points.\nThe more objects you fit in a picture the more points you score. \n \n If you cannot find the object nearby, then use 10 points to get another target. Hit the 🔄  button to refresh the target.  \n\n What is your Highscore? 🥇 ',
-      [
-        { text: 'Let\'s play! 📸 ', onPress: () => console.log('user closed the how to play') },
-      ],);
-    };
 
     let CallDetectionAPI =  (image) => {
       var formdata = new FormData();
@@ -421,7 +427,14 @@ function NextLevel(){
                     <Text style={styles.modalText}>Playing is easy; Simply photograph the object to earn points. The more objects you fit in a picture the more points you score. Try to photograph all 80 objects in the game to earn a 100% score.</Text>
                     <Text style={styles.modalText}>If you cannot find the object nearby, then use 10 points to get another target. Hit the refresh button to refresh the target.</Text>
                     
+                    <Pressable
+                      style={[styles.button, styles.TakeAnotherPhotoButton]}
+                      onPress={() => setModalVisible(!modalVisible)}
+                    >
+                      <Text style={styles.textStyle}>Let's play </Text>
+                    </Pressable> 
 
+                    <Text style={styles.ProfileHeading}>Statistics</Text>
                     <Text style={styles.ProfileSubHeading}>Progress</Text>
                     <Text style={styles.modalText}>Find all unique objects to get to 100%</Text>
                     <View styles={styles.ProgressBar}>
@@ -452,14 +465,15 @@ function NextLevel(){
                     <Text style={styles.ProfileSubHeading}>About</Text>
                     <Text style={styles.modalText}>Photo Scavenger is made with ♥️ by Peter van Doorn. The app uses no ads, has no tracking stores no data, and all your photos are deleted after processing. If you're interested in reading the source code of this app, check out my GitHub page. </Text>
 
+                    <Text style={styles.ProfileSubHeading}>Reset game</Text>
+                    <Text style={styles.modalText}>Tapping the buttons below will set your score back to 0 and clear all the objects you have collected so far.  </Text>
+                                  
+                 
+                      <TouchableOpacity style={styles.SaveOrDiscard}>
+                        <FontAwesome  name="trash"  size={24} color="black" onPress={createTwoButtonAlert}/>
+                      </TouchableOpacity>
                     </ScrollView>
-                    
-                    <Pressable
-                      style={[styles.button, styles.buttonClose]}
-                      onPress={() => setModalVisible(!modalVisible)}
-                    >
-                      <Text style={styles.textStyle}>Let's play! 📸 </Text>
-                    </Pressable> 
+
                     
                   </View>
 
@@ -492,7 +506,7 @@ function NextLevel(){
                 <TouchableOpacity
                   onPress={() => setModalVisible(!modalVisible)}
                   style={styles.NavigationButton}>
-                  <FontAwesome name="trophy" size={32} color="black" />
+                  <FontAwesome name="bars" size={32} color="black" />
                   
                 </TouchableOpacity>
 

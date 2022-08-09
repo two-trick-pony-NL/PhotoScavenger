@@ -255,6 +255,7 @@ export default{
         fontWeight: "bold",
         color: colors.primary,
         fontSize: 35,
+        paddingTop: 20,
 
         },
 
