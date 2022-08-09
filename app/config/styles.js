@@ -198,4 +198,13 @@ export default{
         fontSize: 40,
 
         },
+      HelperText: {
+        color: colors.grey,
+        padding: 20,
+        },
+
+        HelperTextArea: {
+          justifyContent: 'center',
+          alignItems: 'center',
+          },
     }

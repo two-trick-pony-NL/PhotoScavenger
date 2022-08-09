@@ -1,19 +1,14 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Alert, Entypo, ScrollView, ActivityIndicator, forceUpdate, Text, View, FlatList, SafeAreaView, TouchableOpacity, Button, Image } from 'react-native';
+import { Alert, ScrollView, ActivityIndicator, Text, View, SafeAreaView, TouchableOpacity, Image } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import { Camera } from 'expo-camera';
 import { DataTable } from 'react-native-paper';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { shareAsync } from 'expo-sharing';
-import Ionicons from '@expo/vector-icons/Ionicons';
 import ConfettiCannon from 'react-native-confetti-cannon';
 import { FontAwesome } from '@expo/vector-icons'; 
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import * as MediaLibrary from 'expo-media-library';
 import styles from './app/config/styles';
 import colors from './app/config/colors';
-import ScoreTable from './ScoreTable';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export default function App() {
@@ -31,43 +26,43 @@ export default function App() {
   var emoji = assignment[Object.keys(assignment)[0]]; 
   const DetectorParameter = Object.keys(assignment)[0]
 
-// Function to store data on the device 
-const storeData = async (value) => {
-  try {
-    await AsyncStorage.setItem('score', value)
-  } catch (e) {
-    // saving error
-  }
-}
-// Function to retrieve data on the device 
+// Function to store data and list of objects deen on the device 
 
-const getData = async () => {
-  try {
-    const value = await AsyncStorage.getItem('score')
-    if(value !== null) {
-      setScore(0);
-      // value previously stored
+const saveScore = async() => {
+  try{
+    await AsyncStorage.setItem("score", JSON.stringify(score-(numberrefresh*10)));
+    console.log("Saved score to device")
+    console.log(score-(numberrefresh*10))
+  } catch (err){
+    alert(err);
+  }
+};
+// retrieving score from device memory
+const retrieveSavedScore = async() => {
+  try{
+    let storedscore = await AsyncStorage.getItem("score");
+    if (storedscore !== null) {
+      setScore(JSON.parse(storedscore));
+      console.log("retrieved score from storage")
+      console.log(storedscore)
     }
-  } catch(e) {
-    // error reading value
+  } catch (err){
+    alert(err);
   }
-}
-
-
-
+};
 
 function CountRefresh() {
   setNumberrefresh(numberrefresh + 1)
 }
 
 function NextLevel(){
+  setScore((score + 250)+ (data.OtherObjectsDetected.length * 100));
   setNumberrefresh(0)
   console.log("Reset function ran");
-  FreeCallAssignmentAPI();
   // setScore((score - 250-(numberrefresh*35)))
-  setScore((score + 250)+ (data.OtherObjectsDetected.length * 100));
   setPhoto(undefined);
-  
+  FreeCallAssignmentAPI();
+  saveScore();
 }
 
 // Here starts the part where we take the picture
@@ -80,8 +75,10 @@ function NextLevel(){
     .then((json) => setAssignment(json))
     .catch((error) => console.error(error))
     CountRefresh();
+    saveScore();
   };
   let FreeCallAssignmentAPI = async () => {
+    saveScore();
     fetch('https://photoscavenger.vdotvo9a4e2a6.eu-central-1.cs.amazonlightsail.com/v2/newassignment/'+score)
     .then((response) => response.json())
     .then((json) => setAssignment(json))
@@ -89,6 +86,7 @@ function NextLevel(){
   };
 // This use effect is used 1x on app load, to get the first asignment and fetch camera permissions if we don't have them. 
     useEffect(() => {
+      retrieveSavedScore();
       CallAssignmentAPI();
       console.log(assignment);
       (async () => {
@@ -138,11 +136,11 @@ function NextLevel(){
       };
 
       let newPhoto = await cameraRef.current.takePictureAsync(options);
+      saveScore();
       setPhoto(newPhoto);
       setLoading(true);
       CallDetectionAPI(newPhoto);
       WasAssignmentFound(data);
-       
     };
 
     if (photo) {
@@ -191,7 +189,7 @@ function NextLevel(){
             console.log('✅ Photofound is equal to true');
             return (
               <>
-              <ConfettiCannon count={250} fallspeed={2000} origin={{x: -10, y: 0}} fadeOut={true} autoStartDelay={500}/>
+              <ConfettiCannon count={200} fallspeed={2000} origin={{x: -50, y: -50}} fadeOut={true} autoStartDelay={500}/>
               <ScrollView>
               <DataTable>
                 <DataTable.Header>
@@ -301,16 +299,14 @@ function NextLevel(){
                    ⛔️ {Object.keys(assignment)[0]} not found 
                    </Text> 
                    </DataTable.Cell>
-
+                  <DataTable.Cell numeric>
+                  <Text style={styles.tableBad}>
+                      
+                    </Text>
+                  </DataTable.Cell>
                 </DataTable.Row>
 
-                <DataTable.Row>
-                <DataTable.Cell > 
-                   <Text>
-                    💡 If the object is not detected properly, try taking a better picture from another distance or with better lighting.
-                   </Text> 
-                   </DataTable.Cell>
-                </DataTable.Row>
+                
               
 
                 <DataTable.Row style={styles.tableBold}>
@@ -328,7 +324,14 @@ function NextLevel(){
                     </Text></DataTable.Cell>
                 </DataTable.Row>
               </DataTable> 
+
+
+                
+
+
               </ScrollView>
+              <Text style={styles.HelperText}>💡 You can help the AI to better detect objects if you make sure that the lighting is good, you're close enough to the object and that you hold the camera steady.</Text>
+            
             <View style={styles.ButtonAreaScoreView}>
               <TouchableOpacity style={styles.SaveOrDiscard} onPress={savePhoto}>
                 <FontAwesome  name="save"  size={24} color="black" />
