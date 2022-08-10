@@ -16,8 +16,28 @@ Here is a in-game clip of the basic idea: <br>
 
 # How to run: 
 If you use expo check my profile here
-Use Expo, I published the app here: https://expo.dev/@petervandoorn/ScanGameApps?serviceType=classic&distribution=expo-go
 
+##### From source
+- Install React Native: 
+ ```
+ npm install -g expo-cli
+```
+- Clone github Repo
+```
+git clone https://github.com/two-trick-pony-NL/PhotoScavenger/
+```
+
+- Run Expo client
+```
+expo start
+```
+
+
+##### From your phone
+Download from iOS appstore
+```
+https://apps.apple.com/nl/app/photo-scavenger/id1637234234?l=en
+```
 
 # What does it do:
 - When you open the app, you're given the assignment to photograph an object (e.g: 'a person')
