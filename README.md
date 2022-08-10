@@ -1,4 +1,4 @@
-![image](https://user-images.githubusercontent.com/71013416/183673937-d22763fa-7f5b-4aa6-b0a8-a1be342055ba.png)
+<img src="https://user-images.githubusercontent.com/71013416/183674037-eca7cc9b-4a19-494c-a449-af638fdd869c.png" width="250">
 
 
 # Photo Scavenger
