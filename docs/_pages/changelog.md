@@ -10,6 +10,16 @@ Here you can keep a changelog for your app. Edit the markdown based CHANGELOG.md
 <br>
 
 ### `Latest`
+
+# **Version 1.0.12**
+Fixed first userfeedback
+#### What's New
+- Your score is now saved to your device so that next time you play you can pick up where you left
+- The "rules" screen has now been replaced by a real 
+- When you open the app for the first time of the day you'll enter through the menu as well. 
+- On this new menu you can also see the Objects you have detected so far, as well as see the % of objects you found out of the total. This should enhance the playability
+#### Bug Fixes
+- Minor fixes to scrolling in the summary screen
 # **Version 1.0.11**
 Fixed first userfeedback
 #### What's New

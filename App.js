@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { Alert, Modal, Pressable, ScrollView, ActivityIndicator, Text, View, SafeAreaView, TouchableOpacity, Image } from 'react-native';
+import { Alert, Modal,forceUpdate, Pressable, ScrollView, ActivityIndicator, Text, View, SafeAreaView, TouchableOpacity, Image } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import { Camera } from 'expo-camera';
 import { DataTable } from 'react-native-paper';
@@ -19,6 +19,8 @@ export default function App() {
   const [modalVisible, setModalVisible] = useState(false);
   const [data, setData] = useState([{'none':'none'}]);
   const [assignment, setAssignment] = useState([]);
+  const [PercentageObjectsSeen, setPercentageObjectsSeen] = useState([]);
+  const [EmojiSeen, setEmojiSeen] = useState([]);
   const [numberrefresh, setNumberrefresh] = useState(-1);//initializing at -1 so that when we get the initial instruction we end up at 0
   const [score, setScore] = useState(0); //setting to 1 so on the initial fetch for an instruction we end up at 0 points
   const [hasCameraPermission, setHasCameraPermission] = useState();
@@ -29,13 +31,39 @@ export default function App() {
   var emoji = assignment[Object.keys(assignment)[0]]; 
   const DetectorParameter = Object.keys(assignment)[0]
 
-// Function to store data and list of objects deen on the device 
+// Function to store data and list of objects seen on the device 
+
+
+const GetPercentageObjectsSeen = async () => {
+  let keys = []
+  try {
+    keys = await AsyncStorage.getAllKeys()
+  } catch(e) {
+    // read key error
+  }
+  console.log(keys)
+  console.log(keys.length -1)
+  setPercentageObjectsSeen(Math.round((((keys.length-1)/80)*100)))
+  setEmojiSeen(['😅'])
+  };
+
 
 const saveScore = async() => {
   try{
     await AsyncStorage.setItem("score", JSON.stringify(score-(numberrefresh*10)));
     console.log("Saved score to device")
     console.log(score-(numberrefresh*10))
+  } catch (err){
+    alert(err);
+  }
+};
+const SaveObjectSeen = async(ObjectSeen) => {
+  try{
+    await AsyncStorage.setItem(JSON.stringify(ObjectSeen), JSON.stringify(ObjectSeen));
+    console.log("Saved Emoji to device")
+    console.log("Added this emoji to the store")
+    console.log(ObjectSeen)
+    GetPercentageObjectsSeen()
   } catch (err){
     alert(err);
   }
@@ -48,11 +76,23 @@ const retrieveSavedScore = async() => {
       setScore(JSON.parse(storedscore));
       console.log("retrieved score from storage")
       console.log(storedscore)
+      
     }
   } catch (err){
     alert(err);
   }
 };
+
+const removeScore = async () => {
+  try {
+    await AsyncStorage.removeItem("score");
+  } catch (err) {
+    alert(err);
+  } finally {
+    setScore(0);
+    console.log("Reset score for this user to 0")
+  }
+}
 
 const createTwoButtonAlert = () =>
     Alert.alert(
@@ -73,17 +113,19 @@ function CountRefresh() {
 }
 
 function NextLevel(){
+  SaveObjectSeen(assignment)
   setScore((score + 250)+ (data.OtherObjectsDetected.length * 100));
   setNumberrefresh(0)
   console.log("Reset function ran");
   // setScore((score - 250-(numberrefresh*35)))
   setPhoto(undefined);
   FreeCallAssignmentAPI();
-  saveScore();
+  
 }
 
 // Here starts the part where we take the picture
   let cameraRef = useRef();
+
   
 
   let CallAssignmentAPI = async () => {
@@ -92,7 +134,7 @@ function NextLevel(){
     .then((json) => setAssignment(json))
     .catch((error) => console.error(error))
     CountRefresh();
-    saveScore();
+    //saveScore();
   };
   let FreeCallAssignmentAPI = async () => {
     saveScore();
@@ -103,6 +145,8 @@ function NextLevel(){
   };
 // This use effect is used 1x on app load, to get the first asignment and fetch camera permissions if we don't have them. 
     useEffect(() => {
+      GetPercentageObjectsSeen()
+      setNumberrefresh(0);
       retrieveSavedScore();
       CallAssignmentAPI();
       setModalVisible(!modalVisible);
@@ -440,14 +484,15 @@ function NextLevel(){
                     <View styles={styles.ProgressBar}>
                     <ProgressCircle 
                           style= {styles.ProgressBar}
-                          percent={30}
+                          percent={PercentageObjectsSeen}
                           radius={50}
                           borderWidth={8}
                           color={colors.primary}
                           shadowColor="#999"
                           bgColor="#fff"
                       >
-                          <Text style={{ fontSize: 18 }}>{'30%'}</Text>
+                          <Text style={{ fontSize: 18 }}>{PercentageObjectsSeen}%</Text>
+                          
                       </ProgressCircle>  
 
                       <Text style={styles.ProfileSubHeading}>Your score</Text>
@@ -457,20 +502,20 @@ function NextLevel(){
                       <Text style={styles.modalText}>These are the objects you have seen at least once in Photo Scavenger!</Text>                
                       <FlatGrid
                         itemDimension={50}
-                        data={['🧸', '✂️', '🪥', '📺',  '📚', '🏺', '⏹', '⏹', '⏹', '⏹', '⏹', '⏹', '⏹', '⏹', '⏹', '⏹', '⏹', '⏹', '⏹', '⏹', '⏹', '⏹' ]}
+                        data={EmojiSeen}
                         renderItem={({ item }) => (<Text style={styles.EmojiGrid}> {item} </Text>)}
                       />
                     </View>
                   
                     <Text style={styles.ProfileSubHeading}>About</Text>
-                    <Text style={styles.modalText}>Photo Scavenger is made with ♥️ by Peter van Doorn. The app uses no ads, has no tracking stores no data, and all your photos are deleted after processing. If you're interested in reading the source code of this app, check out my GitHub page. </Text>
+                    <Text style={styles.modalText}>Photo Scavenger is made with ♥️ by Peter van Doorn. The app uses no ads, has no tracking stores no data, and all your photos are deleted after processing. If you're interested in reading the source code of this app, check out my GitHub page: https://github.com/two-trick-pony-NL/PhotoScavenger </Text>
 
                     <Text style={styles.ProfileSubHeading}>Reset game</Text>
                     <Text style={styles.modalText}>Tapping the buttons below will set your score back to 0 and clear all the objects you have collected so far.  </Text>
                                   
                  
-                      <TouchableOpacity style={styles.SaveOrDiscard}>
-                        <FontAwesome  name="trash"  size={24} color="black" onPress={createTwoButtonAlert}/>
+                    <TouchableOpacity style={styles.SaveOrDiscard}>
+                        <FontAwesome  name="trash"  size={24} color="black" onPress={removeScore}/>
                       </TouchableOpacity>
                     </ScrollView>
 
