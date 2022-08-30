@@ -44,7 +44,7 @@ const GetPercentageObjectsSeen = async () => {
   console.log(keys)
   console.log(keys.length -1)
   setPercentageObjectsSeen(Math.round((((keys.length-1)/80)*100)))
-  setEmojiSeen(['😅'])
+  setEmojiSeen(keys)
   };
 
 
@@ -113,7 +113,7 @@ function CountRefresh() {
 }
 
 function NextLevel(){
-  SaveObjectSeen(assignment)
+  SaveObjectSeen(emoji)
   setScore((score + 250)+ (data.OtherObjectsDetected.length * 100));
   setNumberrefresh(0)
   console.log("Reset function ran");
