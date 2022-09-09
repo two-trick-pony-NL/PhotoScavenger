@@ -13,11 +13,12 @@ import ProgressCircle from 'react-native-progress-circle'
 import { FlatGrid } from 'react-native-super-grid';
 
 
+
 export default function App() {
   //Setting all the states the app can have. Here we store the score, whether we are loading the data from API's and the photo's we take
   const [Loading, setLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-  const [confettiVissible, setconfettiVissible] = useState(false);
+  const [confettiVisible, setconfettiVisible] = useState(false);
   const [data, setData] = useState([{'none':'none'}]);
   const [assignment, setAssignment] = useState([]);
   const [PercentageObjectsSeen, setPercentageObjectsSeen] = useState([]);
@@ -42,19 +43,38 @@ const GetPercentageObjectsSeen = async () => {
   } catch(e) {
     // read key error
   }
+  var justemoji = []
+  keys.forEach((item) => justemoji.push(item.slice(1, item.length-1)));
+  for( var i = 0; i < justemoji.length; i++){ 
+                                   
+    if ( justemoji[i] === 'cor') { 
+        justemoji.splice(i, 1); 
+        i--; 
+    }
+}
+  for( var i = 0; i < justemoji.length; i++){ 
+                                    
+    if ( justemoji[i] === '') { 
+        justemoji.splice(i, 1); 
+        i--; 
+    }
+  }
+  console.log("Logging just emoji")
+  console.log(justemoji)
+  console.log("Logging Keys + length ")
   console.log(keys)
   console.log(keys.length -1)
   setPercentageObjectsSeen(Math.round((((keys.length-1)/80)*100)))
-  setEmojiSeen(keys)
+  setEmojiSeen(justemoji)
   };
 
 
 
 const saveScore = async() => {
   try{
-    await AsyncStorage.setItem("score", JSON.stringify(score-(numberrefresh*10)));
+    await AsyncStorage.setItem("score", JSON.stringify(score-(numberrefresh*50)));
     console.log("Saved score to device")
-    console.log(score-(numberrefresh*10))
+    console.log(score-(numberrefresh*50))
   } catch (err){
     alert(err);
   }
@@ -112,7 +132,7 @@ function NextLevel(){
   // setScore((score - 250-(numberrefresh*35)))
   setPhoto(undefined);
   FreeCallAssignmentAPI();
-  
+  setconfettiVisible(true);
   
 }
 
@@ -143,7 +163,7 @@ function NextLevel(){
       retrieveSavedScore();
       CallAssignmentAPI();
       setModalVisible(!modalVisible);
-      setconfettiVissible(!confettiVissible);
+      setconfettiVisible(false);
       console.log(assignment);
       (async () => {
         const cameraPermission = await Camera.requestCameraPermissionsAsync();
@@ -189,6 +209,7 @@ function NextLevel(){
       setLoading(true);
       CallDetectionAPI(newPhoto);
       WasAssignmentFound(data);
+      setconfettiVisible(false);
     };
 
     if (photo) {
@@ -237,6 +258,7 @@ function NextLevel(){
             console.log('✅ Photofound is equal to true');
             return (
               <>
+              
               <ConfettiCannon count={200} fallspeed={2000} origin={{x: -50, y: -50}} fadeOut={true} autoStartDelay={500}/>
               <ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
               <DataTable>
@@ -277,7 +299,7 @@ function NextLevel(){
                   
                   <DataTable.Cell numeric>
                     <Text style={styles.tableBad}>
-                        - {numberrefresh*10}
+                        - {numberrefresh*50}
                       </Text>
                   </DataTable.Cell>
                 </DataTable.Row>
@@ -305,7 +327,7 @@ function NextLevel(){
                   <DataTable.Cell></DataTable.Cell>
                   <DataTable.Cell numeric>
                     <Text style={styles.tableBold}>
-                       {(score + 250 + (data.OtherObjectsDetected.length * 100) - (numberrefresh * 10))}
+                       {(score + 250 + (data.OtherObjectsDetected.length * 100) - (numberrefresh * 50))}
                     </Text>
                     </DataTable.Cell>
                 </DataTable.Row>
@@ -326,7 +348,7 @@ function NextLevel(){
 
             
             
-            <ConfettiCannon count={250} fallspeed={3000} origin={{x: -10, y: -10}} fadeOut={true} autoStartDelay={500}/>
+            
               </>
             )
           } else {
@@ -367,7 +389,7 @@ function NextLevel(){
                   <DataTable.Cell numeric>
                     <Text style={styles.tableBold}>
                     
-                    Current Score:     {score-(numberrefresh*10)}
+                    Current Score:     {score-(numberrefresh*50)}
 
                     </Text></DataTable.Cell>
                 </DataTable.Row>
@@ -378,7 +400,7 @@ function NextLevel(){
 
 
               </ScrollView>
-              <Text style={styles.HelperText}>💡 You can help the AI to better detect objects if you make sure that the lighting is good, you're close enough to the object and that you hold the camera steady.</Text>
+              <Text style={styles.HelperText}>💡 If the object you are photographing is not detected then try to take another picture. Good lighting conditions, being up close to the object and holding the camera steady greatly help the AI detect your objects.</Text>
             
             <View style={styles.ButtonAreaScoreView}>
               <TouchableOpacity style={styles.SaveOrDiscard} onPress={savePhoto}>
@@ -442,7 +464,7 @@ function NextLevel(){
     // This is the main camera view
     return (
       <Camera style={styles.container} ref={cameraRef}>
-        <ConfettiCannon visible={confettiVissible} count={200} fallspeed={2000} origin={{x: -50, y: -50}} fadeOut={true} autoStartDelay={500}/>
+      
         <Modal
                 animationType="slide"
                 transparent={true}
@@ -475,21 +497,22 @@ function NextLevel(){
                           shadowColor={colors.grey}
                           bgColor={colors.white}
                       >
-                          <Text style={{ fontSize: 15,fontWeight: "bold" }}>{PercentageObjectsSeen}% Complete</Text>
-                          <Text style={{ fontSize: 15,fontWeight: "bold" }}>{score -(numberrefresh*10)} points</Text>
+                          <Text style={{ fontSize: 30,fontWeight: "bold" }}>{PercentageObjectsSeen}%</Text>
+                          <Text style={{ fontSize: 15,fontWeight: "bold" }}>found</Text>
+                          <Text style={{ fontSize: 15,fontWeight: "bold" }}>{score -(numberrefresh*50)} points</Text>
                       </ProgressCircle>  
                       </View>
                     <Text style={styles.ProfileSubHeading}> 🏆 Your progress</Text>
                     <Text>
                       <Text style={styles.modalText}>You have earned</Text>
-                      <Text style={{fontWeight: "bold"}}> {score -(numberrefresh*10)}</Text>
+                      <Text style={{fontWeight: "bold"}}> {score -(numberrefresh*50)}</Text>
                       <Text style={styles.modalText}> points so far and found</Text>
                       <Text style={{fontWeight: "bold"}}> {PercentageObjectsSeen}%</Text>
                     <Text style={styles.modalText}> of all objects in the game.</Text> 
                     </Text>
                     <Text style={styles.ProfileSubHeading}>🤳 How to play</Text>
-                    <Text style={styles.modalText}>Simply photograph the object to earn points. The more objects you fit in a picture the more points you score.</Text>
-                    <Text style={styles.modalText}>If you cannot find the object nearby, then use 10 points to get another target. Hit the refresh button to refresh the target.</Text>
+                    <Text style={styles.modalText}>Photograph objects to earn points. The more things you fit in a picture the more points you score.</Text>
+                    <Text style={styles.modalText}>If you cannot find the object then you can refresh your assignment for a 50 point penalty.</Text>
                       <Text style={styles.ProfileSubHeading}>👀 Objects found so far</Text>
                       <Text style={styles.modalText}>These are the objects you have seen at least once in Photo Scavenger!</Text>                
                       <FlatGrid
@@ -527,7 +550,8 @@ function NextLevel(){
           
           <Text style={styles.CallToAction}> Find a {Object.keys(assignment)[0]} </Text>
           <Text style={styles.EmojiAssignment}> {emoji} </Text>
-          <View style={styles.HighScore}>
+          <Text style={styles.HighScore}> {score -(numberrefresh*50)} </Text>
+          <View style={styles.ProgressScore}>
                   <ProgressCircle 
                           style= {styles.ProgressBar}
                           percent={PercentageObjectsSeen}
@@ -537,7 +561,8 @@ function NextLevel(){
                           shadowColor={colors.grey}
                           bgColor={colors.white}
                       > 
-                          <Text style={{ fontSize: 15, color:colors.black, fontWeight: "bold"}}>{score -(numberrefresh*10)}</Text>
+                          <Text style={{ fontSize: 15, color:colors.black, fontWeight: "bold"}}>{PercentageObjectsSeen}%</Text>
+                          <Text style={{ fontSize: 8, color:colors.black, fontWeight: "bold"}}>found</Text>
               
           </ProgressCircle>  
           </View>

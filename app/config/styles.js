@@ -75,22 +75,22 @@ export default{
       HighScore: {
         color: colors.white,
         position: 'absolute',
-        top: 50,
-        right: 20,
+        top: 120,
+        right: 15,
         fontSize: 25,
       },
       ProgressScore: {
         color: colors.white,
         position: 'absolute',
-        top: 45,
-        right: 100,
+        top: 50,
+        right: 20,
         fontSize: 25,
       },
       CallToAction: {
         color: colors.white,
         fontSize: 40,
         position: 'absolute',
-        top: 120,
+        top: 150,
         padding: 20,
       },
       Response: {
