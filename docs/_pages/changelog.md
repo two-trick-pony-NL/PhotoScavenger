@@ -10,7 +10,7 @@ Here you can keep a changelog for your app. Edit the markdown based CHANGELOG.md
 <br>
 
 ### `Latest`
-# **Version 1.0.15**
+# **Version 2.0.0**
 Improved game mechanics
 
 #### What's New
