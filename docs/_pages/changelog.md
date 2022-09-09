@@ -11,6 +11,23 @@ Here you can keep a changelog for your app. Edit the markdown based CHANGELOG.md
 
 ### `Latest`
 
+# **Version 1.0.13**
+Improved game mechanics
+
+#### What's New
+- The game mechanic shifted from highest score to % of completion. 
+- The progress bar in the menu is now fully functioning so it keeps track of all objects you have detected so far
+- The menu also shows all objects you succesfully detected however this section is somewhat glitchy (Will be solved in 1.0.14)
+- The Backend API now has a fully functioning dashboard that shows usage https://two-trick-pony-nl-dashboard-photoscavenger-dashboard-jvqrac.streamlitapp.com/ 
+
+#### Roadmap
+- Launch Android app 
+- Improve the "seen objects" section of the menu 
+- add progress bar to the main view so the game becomes about reaching a 100% instead of your points
+
+#### Bug Fixes
+- Minor improvements and bug fixes
+
 # **Version 1.0.12**
 Fixed first userfeedback
 #### What's New
