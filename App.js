@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { Alert, Modal,forceUpdate, Pressable, ScrollView, ActivityIndicator, Text, View, SafeAreaView, TouchableOpacity, Image } from 'react-native';
+import { Alert, Modal,Linking, Pressable, ScrollView, ActivityIndicator, Text, View, SafeAreaView, TouchableOpacity, Image } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import { Camera } from 'expo-camera';
 import { DataTable } from 'react-native-paper';
@@ -17,6 +17,7 @@ export default function App() {
   //Setting all the states the app can have. Here we store the score, whether we are loading the data from API's and the photo's we take
   const [Loading, setLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+  const [confettiVissible, setconfettiVissible] = useState(false);
   const [data, setData] = useState([{'none':'none'}]);
   const [assignment, setAssignment] = useState([]);
   const [PercentageObjectsSeen, setPercentageObjectsSeen] = useState([]);
@@ -46,6 +47,7 @@ const GetPercentageObjectsSeen = async () => {
   setPercentageObjectsSeen(Math.round((((keys.length-1)/80)*100)))
   setEmojiSeen(keys)
   };
+
 
 
 const saveScore = async() => {
@@ -83,16 +85,6 @@ const retrieveSavedScore = async() => {
   }
 };
 
-const removeScore = async () => {
-  try {
-    await AsyncStorage.removeItem("score");
-  } catch (err) {
-    alert(err);
-  } finally {
-    setScore(0);
-    console.log("Reset score for this user to 0")
-  }
-}
 
 const createTwoButtonAlert = () =>
     Alert.alert(
@@ -120,6 +112,7 @@ function NextLevel(){
   // setScore((score - 250-(numberrefresh*35)))
   setPhoto(undefined);
   FreeCallAssignmentAPI();
+  
   
 }
 
@@ -150,6 +143,7 @@ function NextLevel(){
       retrieveSavedScore();
       CallAssignmentAPI();
       setModalVisible(!modalVisible);
+      setconfettiVissible(!confettiVissible);
       console.log(assignment);
       (async () => {
         const cameraPermission = await Camera.requestCameraPermissionsAsync();
@@ -244,7 +238,7 @@ function NextLevel(){
             return (
               <>
               <ConfettiCannon count={200} fallspeed={2000} origin={{x: -50, y: -50}} fadeOut={true} autoStartDelay={500}/>
-              <ScrollView>
+              <ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
               <DataTable>
                 <DataTable.Header>
                   <DataTable.Title style={styles.tableBold}></DataTable.Title>
@@ -339,7 +333,7 @@ function NextLevel(){
             console.log('⛔️ Photofound is not equal to true');
             return (
               <>
-              <ScrollView>
+              <ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
               <DataTable>
                 <DataTable.Header>
                   <DataTable.Title></DataTable.Title>
@@ -448,7 +442,7 @@ function NextLevel(){
     // This is the main camera view
     return (
       <Camera style={styles.container} ref={cameraRef}>
-
+        <ConfettiCannon visible={confettiVissible} count={200} fallspeed={2000} origin={{x: -50, y: -50}} fadeOut={true} autoStartDelay={500}/>
         <Modal
                 animationType="slide"
                 transparent={true}
@@ -461,15 +455,51 @@ function NextLevel(){
             
                 <View style={styles.centeredView}>
                   <View style={styles.modalView}>
-                  <ScrollView>
-
-         
+                  <FontAwesome name="close" size={24} color="black" onPress={() => setModalVisible(!modalVisible)} style={{
+                    position: 'absolute',
+                    right: 15,
+                    top: 10
+                  }}/>
+                  
+                  <ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
+           
                     <Text style={styles.ProfileHeading}>Photo Scavenger</Text>
                     <Text style={styles.modalText}>Find, Photograph, Score!</Text>
-
-                    <Text style={styles.ProfileSubHeading}>How to play</Text>
-                    <Text style={styles.modalText}>Playing is easy; Simply photograph the object to earn points. The more objects you fit in a picture the more points you score. Try to photograph all 80 objects in the game to earn a 100% score.</Text>
+                    <View style={{alignItems: 'center', padding: 20}}>
+                  <ProgressCircle 
+                          style= {styles.ProgressBar}
+                          percent={PercentageObjectsSeen}
+                          radius={75}
+                          borderWidth={8}
+                          color={colors.primary}
+                          shadowColor={colors.grey}
+                          bgColor={colors.white}
+                      >
+                          <Text style={{ fontSize: 15,fontWeight: "bold" }}>{PercentageObjectsSeen}% Complete</Text>
+                          <Text style={{ fontSize: 15,fontWeight: "bold" }}>{score -(numberrefresh*10)} points</Text>
+                      </ProgressCircle>  
+                      </View>
+                    <Text style={styles.ProfileSubHeading}> 🏆 Your progress</Text>
+                    <Text>
+                      <Text style={styles.modalText}>You have earned</Text>
+                      <Text style={{fontWeight: "bold"}}> {score -(numberrefresh*10)}</Text>
+                      <Text style={styles.modalText}> points so far and found</Text>
+                      <Text style={{fontWeight: "bold"}}> {PercentageObjectsSeen}%</Text>
+                    <Text style={styles.modalText}> of all objects in the game.</Text> 
+                    </Text>
+                    <Text style={styles.ProfileSubHeading}>🤳 How to play</Text>
+                    <Text style={styles.modalText}>Simply photograph the object to earn points. The more objects you fit in a picture the more points you score.</Text>
                     <Text style={styles.modalText}>If you cannot find the object nearby, then use 10 points to get another target. Hit the refresh button to refresh the target.</Text>
+                      <Text style={styles.ProfileSubHeading}>👀 Objects found so far</Text>
+                      <Text style={styles.modalText}>These are the objects you have seen at least once in Photo Scavenger!</Text>                
+                      <FlatGrid
+                        itemDimension={50}
+                        data={EmojiSeen}
+                        renderItem={({ item }) => (<Text style={styles.EmojiGrid}> {item} </Text>)}
+                      />
+                      
+                
+
                     
                     <Pressable
                       style={[styles.button, styles.TakeAnotherPhotoButton]}
@@ -477,46 +507,13 @@ function NextLevel(){
                     >
                       <Text style={styles.textStyle}>Let's play </Text>
                     </Pressable> 
-
-                    <Text style={styles.ProfileHeading}>Statistics</Text>
-                    <Text style={styles.ProfileSubHeading}>Progress</Text>
-                    <Text style={styles.modalText}>Find all unique objects to get to 100%</Text>
-                    <View styles={styles.ProgressBar}>
-                    <ProgressCircle 
-                          style= {styles.ProgressBar}
-                          percent={PercentageObjectsSeen}
-                          radius={50}
-                          borderWidth={8}
-                          color={colors.primary}
-                          shadowColor="#999"
-                          bgColor="#fff"
-                      >
-                          <Text style={{ fontSize: 18 }}>{PercentageObjectsSeen}%</Text>
-                          
-                      </ProgressCircle>  
-
-                      <Text style={styles.ProfileSubHeading}>Your score</Text>
-                      <Text style={styles.modalText}>So far you have earned {score -(numberrefresh*10)} points in Photo Scavenger</Text>    
-
-                      <Text style={styles.ProfileSubHeading}>Objects found so far</Text>
-                      <Text style={styles.modalText}>These are the objects you have seen at least once in Photo Scavenger!</Text>                
-                      <FlatGrid
-                        itemDimension={50}
-                        data={EmojiSeen}
-                        renderItem={({ item }) => (<Text style={styles.EmojiGrid}> {item} </Text>)}
-                      />
-                    </View>
-                  
-                    <Text style={styles.ProfileSubHeading}>About</Text>
-                    <Text style={styles.modalText}>Photo Scavenger is made with ♥️ by Peter van Doorn. The app uses no ads, has no tracking stores no data, and all your photos are deleted after processing. If you're interested in reading the source code of this app, check out my GitHub page: https://github.com/two-trick-pony-NL/PhotoScavenger </Text>
-
-                    <Text style={styles.ProfileSubHeading}>Reset game</Text>
-                    <Text style={styles.modalText}>Tapping the buttons below will set your score back to 0 and clear all the objects you have collected so far.  </Text>
-                                  
-                 
-                    <TouchableOpacity style={styles.SaveOrDiscard}>
-                        <FontAwesome  name="trash"  size={24} color="black" onPress={removeScore}/>
-                      </TouchableOpacity>
+                    <Text>
+        
+                    <Text style={styles.modalTextMuted}>This app is made with ♥️ by Peter van Doorn. The app uses no ads, has no tracking, stores no data, and all your photos are deleted after processing. If you're interested in reading the source code of this app, check out my</Text>
+                    <Text onPress={() => Linking.openURL('https://github.com/two-trick-pony-NL/PhotoScavenger')}> Github</Text>
+                    <Text style={styles.modalTextMuted}> page.</Text>
+                    </Text>
+                    
                     </ScrollView>
 
                     
@@ -527,9 +524,23 @@ function NextLevel(){
                 
               </Modal>
         
-          <Text style={styles.HighScore}> ⭐️ {score -(numberrefresh*10)}</Text>
+          
           <Text style={styles.CallToAction}> Find a {Object.keys(assignment)[0]} </Text>
           <Text style={styles.EmojiAssignment}> {emoji} </Text>
+          <View style={styles.HighScore}>
+                  <ProgressCircle 
+                          style= {styles.ProgressBar}
+                          percent={PercentageObjectsSeen}
+                          radius={30}
+                          borderWidth={4}
+                          color={colors.primary}
+                          shadowColor={colors.grey}
+                          bgColor={colors.white}
+                      > 
+                          <Text style={{ fontSize: 15, color:colors.black, fontWeight: "bold"}}>{score -(numberrefresh*10)}</Text>
+              
+          </ProgressCircle>  
+          </View>
 
 
         <View style={styles.NavigationBar}>  
@@ -554,10 +565,11 @@ function NextLevel(){
                   <FontAwesome name="bars" size={32} color="black" />
                   
                 </TouchableOpacity>
-
+                
         
         </View>
         <StatusBar style="auto" />
+        
       </Camera>
     );
     }

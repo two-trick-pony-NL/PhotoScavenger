@@ -79,6 +79,13 @@ export default{
         right: 20,
         fontSize: 25,
       },
+      ProgressScore: {
+        color: colors.white,
+        position: 'absolute',
+        top: 45,
+        right: 100,
+        fontSize: 25,
+      },
       CallToAction: {
         color: colors.white,
         fontSize: 40,
@@ -250,6 +257,13 @@ export default{
         marginBottom: 15,
         textAlign: "left"
       },
+      modalTextMuted: {
+        marginBottom: 10,
+        fontWeight: "italic",
+        color: colors.grey,
+        textAlign: "left",
+        paddingTop: 30,
+      },
 
       ProfileHeading: {
         fontWeight: "bold",
@@ -271,6 +285,10 @@ export default{
         flex: 0,
         justifyContent: "center",
         alignItems: "center",
+        alignSelf:"center",
+        borderRadius: 100,
+        borderColor: colors.black,
+        borderWidth: 2, 
       },
       EmojiGrid: {
         fontSize: 40,
