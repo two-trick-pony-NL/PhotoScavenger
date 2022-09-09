@@ -10,6 +10,23 @@ Here you can keep a changelog for your app. Edit the markdown based CHANGELOG.md
 <br>
 
 ### `Latest`
+# **Version 1.0.15**
+Improved game mechanics
+
+#### What's New
+- Revamped scoring in all screens. It's now about the % of objects you found 
+- Penalty for refreshing from 10 to 50 points to make the game harder
+- The progress bar is greatly improved and added to the camera screen
+- The glitches are removed from the overview of objects you have found. I removed the " that showed as well as removed empty items
+- The Backend API now has a fully functioning dashboard that shows usage https://two-trick-pony-nl-dashboard-photoscavenger-dashboard-jvqrac.streamlitapp.com/ 
+
+#### Roadmap
+- Launch Android app 
+- Add emoji's for objectives that have no emoji yet
+
+#### Bug Fixes
+- Minor improvements and bug fixes
+
 
 # **Version 1.0.13**
 Improved game mechanics
