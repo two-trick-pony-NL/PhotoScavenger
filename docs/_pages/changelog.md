@@ -23,6 +23,9 @@ Improved game mechanics
 #### Roadmap
 - Launch Android app 
 - Add emoji's for objectives that have no emoji yet
+- Add confetti or explosion for everytime the score updates in camera screen
+- Center the screen that shows when you did not find the object. It seems offset to the left
+- Launch version 2.0.0 now that the game is really where I want it to be at. 
 
 #### Bug Fixes
 - Minor improvements and bug fixes
