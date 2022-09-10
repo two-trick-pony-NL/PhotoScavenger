@@ -259,7 +259,7 @@ export default{
       },
       modalTextMuted: {
         marginBottom: 10,
-        fontWeight: "italic",
+        fontStyle: 'italic',
         color: colors.grey,
         textAlign: "left",
         paddingTop: 30,
@@ -294,5 +294,10 @@ export default{
         fontSize: 40,
         justifyContent: "center",
         alignItems: "center",
+      },
+      logo: {
+        borderRadius: 10,
+        width: 50,
+        height: 50,
       },
     }

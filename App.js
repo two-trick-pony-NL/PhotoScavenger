@@ -18,7 +18,6 @@ export default function App() {
   //Setting all the states the app can have. Here we store the score, whether we are loading the data from API's and the photo's we take
   const [Loading, setLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-  const [confettiVisible, setconfettiVisible] = useState(false);
   const [data, setData] = useState([{'none':'none'}]);
   const [assignment, setAssignment] = useState([]);
   const [PercentageObjectsSeen, setPercentageObjectsSeen] = useState([]);
@@ -34,40 +33,102 @@ export default function App() {
   const DetectorParameter = Object.keys(assignment)[0]
 
 // Function to store data and list of objects seen on the device 
-
+let ViewImage = () => {
+  console.log("Hello world")
+}
 
 const GetPercentageObjectsSeen = async () => {
+  //This is an empty list "keys" where we get all the values from Asyncstorage
   let keys = []
   try {
     keys = await AsyncStorage.getAllKeys()
   } catch(e) {
     // read key error
   }
+  // That list of keys above contains more than just emoji's and also has ugly quotation marks around each key
+  //THerefor we remove the first and last character of each key. 
   var justemoji = []
   keys.forEach((item) => justemoji.push(item.slice(1, item.length-1)));
   for( var i = 0; i < justemoji.length; i++){ 
-                                   
+         // the key "score" is also part of "all keys", so this is a very ugly way to pop that one out the list too.                           
     if ( justemoji[i] === 'cor') { 
         justemoji.splice(i, 1); 
         i--; 
     }
-}
-  for( var i = 0; i < justemoji.length; i++){ 
-                                    
+} // finally, if the emoji is empty we remove it from the list as well, so the gridview ends up nice and pretty. 
+  for( var i = 0; i < justemoji.length; i++){                                 
     if ( justemoji[i] === '') { 
         justemoji.splice(i, 1); 
         i--; 
     }
   }
-  console.log("Logging just emoji")
-  console.log(justemoji)
-  console.log("Logging Keys + length ")
-  console.log(keys)
-  console.log(keys.length -1)
-  setPercentageObjectsSeen(Math.round((((keys.length-1)/80)*100)))
+  // We calculate the progress based on the keys list not emoji list. Because some assignments have no emoji but you do want to count them. 
+  setPercentageObjectsSeen(Math.round((((keys.length)/80)*100)))
+  //The list of emoji's is passed to the function that renders the grid with observed emojis in the settings view. 
   setEmojiSeen(justemoji)
   };
 
+
+  let RenderGrid = () => {
+    if (EmojiSeen == 0) {
+      
+      return <View>
+          <Text style={styles.ProfileSubHeading}>🤳 How to play</Text>
+          <Text style={styles.modalText}>Photograph objects to earn points. The more things you fit in a picture the more points you score.</Text>
+          <Text style={styles.modalText}>If you cannot find the object then you can refresh <FontAwesome name="refresh" size={12} color="black" /> your assignment for a 50 point penalty.</Text> 
+          <Text style={styles.modalText}>Good lighting, getting up close and sharp pictures photos greatly improve your chances of detecting the correct object.</Text>
+          <Pressable
+                      style={[styles.button, styles.TakeAnotherPhotoButton]}
+                      onPress={() => setModalVisible(!modalVisible)}
+                    >
+                      <Text style={styles.textStyle}> Play </Text>
+                    </Pressable> 
+      </View>
+    } else { 
+      
+      return  <View>
+        <View style={{alignItems: 'center', padding: 20}}>
+                  <ProgressCircle 
+                          style= {styles.ProgressBar}
+                          percent={PercentageObjectsSeen}
+                          radius={75}
+                          borderWidth={8}
+                          color={colors.primary}
+                          shadowColor={colors.grey}
+                          bgColor={colors.white}
+                      >
+                          <Text style={{ fontSize: 30,fontWeight: "bold" }}>{PercentageObjectsSeen}%</Text>
+                          <Text style={{ fontSize: 15,fontWeight: "bold" }}>found</Text>
+                          <Text style={{ fontSize: 15,fontWeight: "bold" }}>{score -(numberrefresh*50)} points</Text>
+                      </ProgressCircle>  
+                      </View>
+                    <Text style={styles.ProfileSubHeading}> 🏆 Your progress</Text>
+                    <Text>
+                      <Text style={styles.modalText}>You have earned</Text>
+                      <Text style={{fontWeight: "bold"}}> {score -(numberrefresh*50)}</Text>
+                      <Text style={styles.modalText}> points so far and found</Text>
+                      <Text style={{fontWeight: "bold"}}> {PercentageObjectsSeen}%</Text>
+                    <Text style={styles.modalText}> of all objects in the game.</Text> 
+                    </Text>  
+          <Text style={styles.ProfileSubHeading}>🤳 Did you know</Text>
+          <Text style={styles.modalText}>That you get 100 extra points for each additional object in a picture</Text>
+          
+        <Text style={styles.ProfileSubHeading}>👀 Objects found so far</Text>
+        <Text style={styles.modalText}>These are the objects you have seen at least once in Photo Scavenger!</Text> 
+        <FlatGrid
+          itemDimension={50}
+          data={EmojiSeen}
+          renderItem={({ item }) => (<Text style={styles.EmojiGrid}> {item} </Text>)}
+      />
+      <Pressable
+                      style={[styles.button, styles.TakeAnotherPhotoButton]}
+                      onPress={() => setModalVisible(!modalVisible)}
+                    >
+                      <Text style={styles.textStyle}>Find {80-EmojiSeen.length} more objects</Text>
+                    </Pressable> 
+    </View> 
+    }
+  };
 
 
 const saveScore = async() => {
@@ -106,19 +167,6 @@ const retrieveSavedScore = async() => {
 };
 
 
-const createTwoButtonAlert = () =>
-    Alert.alert(
-      "Alert Title",
-      "My Alert Msg",
-      [
-        {
-          text: "Cancel",
-          onPress: () => console.log("Cancel Pressed"),
-          style: "cancel"
-        },
-        { text: "OK", onPress: () => console.log("OK Pressed") }
-      ]
-    );
 
 function CountRefresh() {
   setNumberrefresh(numberrefresh + 1)
@@ -132,7 +180,6 @@ function NextLevel(){
   // setScore((score - 250-(numberrefresh*35)))
   setPhoto(undefined);
   FreeCallAssignmentAPI();
-  setconfettiVisible(true);
   
 }
 
@@ -147,7 +194,7 @@ function NextLevel(){
     .then((json) => setAssignment(json))
     .catch((error) => console.error(error))
     CountRefresh();
-    //saveScore();
+
   };
   let FreeCallAssignmentAPI = async () => {
     saveScore();
@@ -163,8 +210,6 @@ function NextLevel(){
       retrieveSavedScore();
       CallAssignmentAPI();
       setModalVisible(!modalVisible);
-      setconfettiVisible(false);
-      console.log(assignment);
       (async () => {
         const cameraPermission = await Camera.requestCameraPermissionsAsync();
         const mediaLibraryPermission = await MediaLibrary.requestPermissionsAsync();
@@ -185,7 +230,6 @@ function NextLevel(){
     let CallDetectionAPI =  (image) => {
       var formdata = new FormData();
       formdata.append('file', {uri: image.uri, name: 'picture.jpg', type: 'image/jpg'});
-      //console.log(formdata)
       fetch('https://photoscavenger.vdotvo9a4e2a6.eu-central-1.cs.amazonlightsail.com/v2/uploadfile/'+DetectorParameter, {
         method: 'POST',
         body: formdata
@@ -209,7 +253,7 @@ function NextLevel(){
       setLoading(true);
       CallDetectionAPI(newPhoto);
       WasAssignmentFound(data);
-      setconfettiVisible(false);
+      
     };
 
     if (photo) {
@@ -226,11 +270,11 @@ function NextLevel(){
       //This function is a bit of a mess, but it loops over the array of objects that the AI model detected in an image
       //The reason we have to try/catch is because when the screen is loaded the 'data' object is not available yet, and thus the 
       // function fails. after a second the data is available and all is fine. Not quite sure how to clean this up
-      let GetObjectsDetected = (data1) => {
+      let GetObjectsDetected = (items_to_render) => {
         try {
           console.log('Printing the objects found in the picture')
-          console.log(data1);
-          return data1.map(x=>
+          console.log(items_to_render);
+          return items_to_render.map(x=>
             <DataTable.Row>
               <DataTable.Cell>- {x}</DataTable.Cell>
             <DataTable.Cell numeric>
@@ -248,12 +292,6 @@ function NextLevel(){
       function WasAssignmentFound() {
       try {
           foundItem = data.OtherObjectsDetected.includes(DetectorParameter)
-          console.log('Result of calculation');
-          console.log(foundItem);
-          console.log("All items detected:");
-          console.log(data.OtherObjectsDetected);
-          console.log("Searched for:");
-          console.log(DetectorParameter);
           if (foundItem === true) {
             console.log('✅ Photofound is equal to true');
             return (
@@ -303,20 +341,12 @@ function NextLevel(){
                       </Text>
                   </DataTable.Cell>
                 </DataTable.Row>
-                
-                
+
                 <DataTable.Row>
 
                   <DataTable.Cell></DataTable.Cell>
                   <DataTable.Cell numeric></DataTable.Cell>
                 </DataTable.Row>
-
-
-
-
-
-
-
 
                 <DataTable.Row style={styles.tableBold}>
                   <DataTable.Cell>
@@ -344,11 +374,6 @@ function NextLevel(){
                 <Text>Next!</Text>
               </TouchableOpacity>
             </View>
-
-
-            
-            
-            
               </>
             )
           } else {
@@ -443,21 +468,15 @@ function NextLevel(){
         </View>
         ) : ( //this bit we render if the app is not loading
         <>
-    
           <Image style={styles.preview} source={{ uri: "data:image/jpg;base64," + photo.base64 }} />
-          
           <View style={styles.tableview}>
           <Text style={styles.ResultsHeading}>Summary</Text>
           <Text> Your assignment was to photograph a {Object.keys(assignment)[0]}</Text>
-
             {WasAssignmentFound(data)}
-      
           </View>
           </>
           )}
 
-
-          
         </SafeAreaView>
       );
     }
@@ -484,56 +503,16 @@ function NextLevel(){
                   }}/>
                   
                   <ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
-           
+                  <View style={{alignItems: 'center'}}>
+                    <Image source={require('./app/assets/AppIcon.png')} style={styles.logo} />
+                  </View>
                     <Text style={styles.ProfileHeading}>Photo Scavenger</Text>
                     <Text style={styles.modalText}>Find, Photograph, Score!</Text>
-                    <View style={{alignItems: 'center', padding: 20}}>
-                  <ProgressCircle 
-                          style= {styles.ProgressBar}
-                          percent={PercentageObjectsSeen}
-                          radius={75}
-                          borderWidth={8}
-                          color={colors.primary}
-                          shadowColor={colors.grey}
-                          bgColor={colors.white}
-                      >
-                          <Text style={{ fontSize: 30,fontWeight: "bold" }}>{PercentageObjectsSeen}%</Text>
-                          <Text style={{ fontSize: 15,fontWeight: "bold" }}>found</Text>
-                          <Text style={{ fontSize: 15,fontWeight: "bold" }}>{score -(numberrefresh*50)} points</Text>
-                      </ProgressCircle>  
-                      </View>
-                    <Text style={styles.ProfileSubHeading}> 🏆 Your progress</Text>
-                    <Text>
-                      <Text style={styles.modalText}>You have earned</Text>
-                      <Text style={{fontWeight: "bold"}}> {score -(numberrefresh*50)}</Text>
-                      <Text style={styles.modalText}> points so far and found</Text>
-                      <Text style={{fontWeight: "bold"}}> {PercentageObjectsSeen}%</Text>
-                    <Text style={styles.modalText}> of all objects in the game.</Text> 
-                    </Text>
-                    <Text style={styles.ProfileSubHeading}>🤳 How to play</Text>
-                    <Text style={styles.modalText}>Photograph objects to earn points. The more things you fit in a picture the more points you score.</Text>
-                    <Text style={styles.modalText}>If you cannot find the object then you can refresh your assignment for a 50 point penalty.</Text>
-                      <Text style={styles.ProfileSubHeading}>👀 Objects found so far</Text>
-                      <Text style={styles.modalText}>These are the objects you have seen at least once in Photo Scavenger!</Text>                
-                      <FlatGrid
-                        itemDimension={50}
-                        data={EmojiSeen}
-                        renderItem={({ item }) => (<Text style={styles.EmojiGrid}> {item} </Text>)}
-                      />
-                      
-                
-
-                    
-                    <Pressable
-                      style={[styles.button, styles.TakeAnotherPhotoButton]}
-                      onPress={() => setModalVisible(!modalVisible)}
-                    >
-                      <Text style={styles.textStyle}>Let's play </Text>
-                    </Pressable> 
-                    <Text>
+                      {RenderGrid()}                             
+                    <Text style={{alignItems: 'center', padding: 20}}>
         
-                    <Text style={styles.modalTextMuted}>This app is made with ♥️ by Peter van Doorn. The app uses no ads, has no tracking, stores no data, and all your photos are deleted after processing. If you're interested in reading the source code of this app, check out my</Text>
-                    <Text onPress={() => Linking.openURL('https://github.com/two-trick-pony-NL/PhotoScavenger')}> Github</Text>
+                    <Text style={styles.modalTextMuted}>This app is made with ♥️ by Peter van Doorn. The app is very friendly towards your privacy. There are no ads, there is no tracking and all your photos are deleted directly after processing. The app is open source too, so if you're interested in seeing how the app was built then check out my</Text>
+                    <Text onPress={() => Linking.openURL('https://github.com/two-trick-pony-NL/PhotoScavenger')}> GitHub</Text>
                     <Text style={styles.modalTextMuted}> page.</Text>
                     </Text>
                     

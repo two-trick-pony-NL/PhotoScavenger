@@ -26,6 +26,7 @@ Improved game mechanics
 - Add confetti or explosion for everytime the score updates in camera screen
 - Center the screen that shows when you did not find the object. It seems offset to the left
 - Launch version 2.0.0 now that the game is really where I want it to be at. 
+- Fix how the app looks if you have 0 points and 0 objects. 
 
 #### Bug Fixes
 - Minor improvements and bug fixes
