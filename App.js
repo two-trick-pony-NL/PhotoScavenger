@@ -12,8 +12,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import ProgressCircle from 'react-native-progress-circle'
 import { FlatGrid } from 'react-native-super-grid';
 
-
-
 export default function App() {
   //Setting all the states the app can have. Here we store the score, whether we are loading the data from API's and the photo's we take
   const [Loading, setLoading] = useState(false);
@@ -32,10 +30,6 @@ export default function App() {
   var emoji = assignment[Object.keys(assignment)[0]]; 
   const DetectorParameter = Object.keys(assignment)[0]
 
-// Function to store data and list of objects seen on the device 
-let ViewImage = () => {
-  console.log("Hello world")
-}
 
 const GetPercentageObjectsSeen = async () => {
   //This is an empty list "keys" where we get all the values from Asyncstorage
@@ -204,6 +198,7 @@ function NextLevel(){
     .catch((error) => console.error(error))
   };
 // This use effect is used 1x on app load, to get the first asignment and fetch camera permissions if we don't have them. 
+  
     useEffect(() => {
       GetPercentageObjectsSeen()
       setNumberrefresh(0);
@@ -217,13 +212,20 @@ function NextLevel(){
         setHasMediaLibraryPermission(mediaLibraryPermission.status === "granted");
       })();
     }, []);
+    
+  
 
 
     // IF no permission is given to access the camera this text is shown
     if (hasCameraPermission === undefined) {
       return <Text>Requesting permissions...</Text>
     } else if (!hasCameraPermission) {
-      return <Text>Permission for camera not granted. Please change this in settings.</Text>
+      return <View style={{alignItems: 'center',flex: 1,justifyContent: 'center'}}>
+      <Image source={require('./app/assets/AppIcon.png')} style={styles.logo} />
+    
+      <Text style={styles.ProfileHeading}>Oops</Text>
+      <Text style={styles.ProfileSubHeading}>⚠️ Permission for camera not granted ⚠️ </Text>
+      <Text>Please grant permission  in the settings</Text></View>
     }
 
 
@@ -394,15 +396,8 @@ function NextLevel(){
                    ⛔️ {Object.keys(assignment)[0]} not found 
                    </Text> 
                    </DataTable.Cell>
-                  <DataTable.Cell numeric>
-                  <Text style={styles.tableBad}>
-                      
-                    </Text>
-                  </DataTable.Cell>
-                </DataTable.Row>
-
-                
-              
+       
+                </DataTable.Row>              
 
                 <DataTable.Row style={styles.tableBold}>
                   <DataTable.Cell>
@@ -420,13 +415,14 @@ function NextLevel(){
                 </DataTable.Row>
               </DataTable> 
 
-
-                
-
-
+              
               </ScrollView>
-              <Text style={styles.HelperText}>💡 If the object you are photographing is not detected then try to take another picture. Good lighting conditions, being up close to the object and holding the camera steady greatly help the AI detect your objects.</Text>
+              
             
+            
+              <View style={styles.ButtonAreaScoreView}>
+            <Text style={styles.HelperText} >💡 If you struggle detecting objects. Try to take another picture with good lighting conditions, from close up to the object and holding the camera steady.</Text>
+            </View>
             <View style={styles.ButtonAreaScoreView}>
               <TouchableOpacity style={styles.SaveOrDiscard} onPress={savePhoto}>
                 <FontAwesome  name="save"  size={24} color="black" />
@@ -470,7 +466,7 @@ function NextLevel(){
         <>
           <Image style={styles.preview} source={{ uri: "data:image/jpg;base64," + photo.base64 }} />
           <View style={styles.tableview}>
-          <Text style={styles.ResultsHeading}>Summary</Text>
+          <Text style={styles.ResultsHeading}>Results</Text>
           <Text> Your assignment was to photograph a {Object.keys(assignment)[0]}</Text>
             {WasAssignmentFound(data)}
           </View>
@@ -495,12 +491,21 @@ function NextLevel(){
               >
             
                 <View style={styles.centeredView}>
-                  <View style={styles.modalView}>
-                  <FontAwesome name="close" size={24} color="black" onPress={() => setModalVisible(!modalVisible)} style={{
+                  <View style={styles.modalView}> 
+                  <TouchableOpacity name="close" onPress={() => setModalVisible(!modalVisible)} style={{
                     position: 'absolute',
-                    right: 15,
-                    top: 10
+                    right: -10,
+                    top: -10,
+                    width: 75,
+                    height: 75
+                    
+                  }}>
+                  <FontAwesome name="close" size={24} color="black"style={{
+                    position: 'absolute',
+                    right: 25,
+                    top: 20
                   }}/>
+                  </TouchableOpacity>
                   
                   <ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
                   <View style={{alignItems: 'center'}}>

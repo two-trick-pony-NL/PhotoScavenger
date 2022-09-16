@@ -22,7 +22,7 @@
         "googleMobileAdsAppId": "ca-app-pub-3940256099942544~1458002511"
       },
       "supportsTablet": false,
-      "buildNumber": "1",
+      "buildNumber": "2",
       "bundleIdentifier": "com.petervandoorn.photoscavenger.lite",
       "infoPlist": {
         "NSCameraUsageDescription": "Photo Scavenger uses the camera to photograph objects in the game.",
@@ -32,6 +32,8 @@
       }
     },
     "android": {
+      "versionCode": 36,
+      "permissions": [ "CAMERA", "WRITE_EXTERNAL_STORAGE", "CAMERA_ROLL" ],
       "config": {
         "googleMobileAdsAppId": "ca-app-pub-3940256099942544~1458002511"
       },
@@ -50,9 +52,10 @@
     },
     "plugins": [
       [
-        "expo-tracking-transparency",
+        "expo-media-library",
         {
-          "userTrackingPermission": "Allow Photo Scavenger to collect app-related data that can be used to verify the app is working correctly"
+          "photosPermission": "Allow PhotoScavenger",
+          "savePhotosPermission": "Allow test test",
         }
       ]
     ]

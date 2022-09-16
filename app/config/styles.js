@@ -150,7 +150,7 @@ export default{
       }, 
       TakeAnotherPhotoButton: {
         backgroundColor: colors.primary,
-        color: colors.black,
+        color: colors.white,
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 10, 
@@ -207,8 +207,8 @@ export default{
 
         },
       HelperText: {
-        color: colors.grey,
-        padding: 20,
+        color: "grey",
+        fontStyle: 'italic',
         },
 
       HelperTextArea: {
@@ -260,7 +260,7 @@ export default{
       modalTextMuted: {
         marginBottom: 10,
         fontStyle: 'italic',
-        color: colors.grey,
+        color: "grey",
         textAlign: "left",
         paddingTop: 30,
       },
