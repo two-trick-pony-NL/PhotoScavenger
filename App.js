@@ -516,7 +516,7 @@ function NextLevel(){
                       {RenderGrid()}                             
                     <Text style={{alignItems: 'center', padding: 20}}>
         
-                    <Text style={styles.modalTextMuted}>This app is made with ♥️ by Peter van Doorn. The app is very friendly towards your privacy. There are no ads, there is no tracking and all your photos are deleted directly after processing. The app is open source too, so if you're interested in seeing how the app was built then check out my</Text>
+                    <Text style={styles.modalTextMuted}>This app is made with by Peter van Doorn. The app is very friendly towards your privacy. There are no ads, there is no tracking and all your photos are deleted directly after processing. The app is open source too, so if you're interested in seeing how the app was built then check out my</Text>
                     <Text onPress={() => Linking.openURL('https://github.com/two-trick-pony-NL/PhotoScavenger')}> GitHub</Text>
                     <Text style={styles.modalTextMuted}> page.</Text>
                     </Text>
