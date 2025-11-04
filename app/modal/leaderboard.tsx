@@ -1,4 +1,4 @@
-import { View, Text,Image, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, Image, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { useState, useEffect } from 'react';
 import { PlayerScore, useGameStore } from '@/stores/GameStore';
 
@@ -37,28 +37,35 @@ export default function LeaderboardModal({ leaderboard, onClose }: Props) {
 
   return (
     <View style={styles.container}>
-      <View style={{alignItems:'center'}}>
+      <View style={{ alignItems: 'center' }}>
         <Image source={require('@/assets/icon.png')} style={{ width: 50, height: 50, marginBottom: 40, borderRadius: 10 }} />
       </View>
       <Text style={styles.title}>Leaderboard</Text>
 
-      <FlatList
-        data={sorted}
-        keyExtractor={(item) => item.name}
-        renderItem={({ item, index }) => (
-          <View style={styles.row}>
-            <Text style={styles.rank}>{index + 1}.</Text>
-            <Text style={styles.name}>{item.name}</Text>
-            <Text style={styles.points}>{item.points}</Text>
-          </View>
-        )}
-      />
+      {sorted.length === 0 ? (
+        <View style={{ paddingVertical: 40, alignItems: 'center' }}>
+          <Text style={{ fontSize: 18, color: '#555' }}>No scores yet. Be the first to play!</Text>
+        </View>
+      ) : (
+        <FlatList
+          data={sorted}
+          keyExtractor={(item) => item.name}
+          renderItem={({ item, index }) => (
+            <View style={styles.row}>
+              <Text style={styles.rank}>{index + 1}.</Text>
+              <Text style={styles.name}>{item.name}</Text>
+              <Text style={styles.points}>{item.points}</Text>
+            </View>
+          )}
+        />
+      )}
 
       <View style={styles.bottom}>
         {countdown !== null && countdown > 0 ? (
           <TouchableOpacity style={styles.button} onPress={handleStartNextRound}>
             <Text style={styles.buttonText}>Join Next Round in {countdown}s</Text>
-          </TouchableOpacity>        ) : (
+          </TouchableOpacity>
+        ) : (
           <TouchableOpacity style={styles.button} onPress={handleStartNextRound}>
             <Text style={styles.buttonText}>Join Next Round</Text>
           </TouchableOpacity>
@@ -68,16 +75,15 @@ export default function LeaderboardModal({ leaderboard, onClose }: Props) {
   );
 }
 
-
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff', paddingTop: 60, paddingHorizontal: 20},
+  container: { flex: 1, backgroundColor: '#fff', paddingTop: 60, paddingHorizontal: 20 },
   title: { fontSize: 28, fontWeight: 'bold', marginBottom: 20, textAlign: 'center' },
   row: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 12, borderBottomWidth: 1, borderColor: '#eee' },
   rank: { fontSize: 18, fontWeight: 'bold', width: 30 },
   name: { fontSize: 18, flex: 1 },
   points: { fontSize: 18, fontWeight: 'bold' },
   bottom: { marginTop: 20, alignItems: 'center' },
-  button: { backgroundColor: '#d90827', alignItems: 'center', padding: 24, borderRadius: 12, width:'100%', marginBottom: 75},
+  button: { backgroundColor: '#d90827', alignItems: 'center', padding: 24, borderRadius: 12, width: '100%', marginBottom: 75 },
   buttonText: { color: 'white', fontWeight: 'bold', fontSize: 18 },
   countdown: { fontSize: 18, fontWeight: 'bold' },
 });

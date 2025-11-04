@@ -1,7 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useGameStore } from '@/stores/GameStore';
 
-
 export function useGameWS(wsUrl: string) {
   const wsRef = useRef<WebSocket | null>(null);
 
@@ -12,12 +11,14 @@ export function useGameWS(wsUrl: string) {
   const setEmojiState = useGameStore((state) => state.setEmojiState);
   const addEvent = useGameStore((state) => state.addEvent);
 
+  // Helper to pick random item from an array
+  const pickRandom = <T,>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
 
   useEffect(() => {
     const ws = new WebSocket(wsUrl);
     wsRef.current = ws;
 
-    ws.onopen = () => console.log('WS connected');
+    ws.onopen = (msg) => console.log('WS connected');
 
     ws.onmessage = (msg) => {
       try {
@@ -33,30 +34,57 @@ export function useGameWS(wsUrl: string) {
           case 'countdown':
             setTimeRemaining(data.time_remaining);
             setStatus(data.status);
-
             break;
 
           case 'new_round':
             setRoundEmojis(data.emojis);
             break;
 
-          case 'photo_uploading':
+          case 'photo_uploading': {
             setEmojiState(data.emoji, 'uploading');
-            addEvent({ type: 'uploading', msg: `${data.player_id} is uploading ${data.emoji}` });
-            break;
 
-          case 'emoji_locked':
+            const uploadMessages = [
+              `${data.player_id} is frantically snapping ${data.emoji}! 📸`,
+              `${data.player_id} is on a roll with ${data.emoji}! ⚡`,
+              `${data.player_id} just spotted ${data.emoji} and is taking a shot!`,
+              `Look out! ${data.player_id} is chasing ${data.emoji}!`,
+              `${data.player_id} is racing against the clock for ${data.emoji}!`,
+              `${data.player_id} is capturing ${data.emoji} like a pro!`,
+              `${data.player_id} has their eyes on ${data.emoji}! 👀`,
+              `${data.player_id} snaps a photo of ${data.emoji}!`,
+              `Hurry! ${data.player_id} is after ${data.emoji}!`,
+              `${data.player_id} is going all-in on ${data.emoji}! 🔥`,
+            ];
+
+            addEvent({ type: 'uploading', msg: pickRandom(uploadMessages) });
+            break;
+          }
+
+          case 'emoji_locked': {
             setEmojiState(data.emoji, 'locked');
             setLeaderboard(data.leaderboard);
-            addEvent({ type: 'locked', msg: `${data.winner} locked ${data.emoji} (+${data.points})` });
-            
+
+            const lockedMessages = [
+              `🎉 ${data.winner} captured ${data.emoji} and scored +${data.points} points!`,
+              `${data.winner} locked in ${data.emoji}! Well done! 🏆`,
+              `Boom! ${data.winner} found ${data.emoji} (+${data.points})!`,
+              `${data.winner} nailed it! ${data.emoji} is theirs! 🎯`,
+              `Victory! ${data.winner} grabbed ${data.emoji} for +${data.points} points!`,
+              `${data.winner} swooped in and claimed ${data.emoji}! ✨`,
+              `${data.winner} got ${data.emoji}! Crowd goes wild! 🎊`,
+              `Yes! ${data.winner} discovered ${data.emoji} and scored big!`,
+              `${data.winner} is unstoppable! ${data.emoji} +${data.points} points!`,
+              `${data.winner} triumphantly locked ${data.emoji}! 🏅`,
+            ];
+
+            addEvent({ type: 'locked', msg: pickRandom(lockedMessages) });
             break;
+          }
 
           case 'round_ended':
             setStatus('ended');
             setLeaderboard(data.leaderboard);
-            useGameStore.getState().resetRound(); // wipes events & status
-            addEvent({ type: 'round_ended', msg: 'Round ended!' });
+            useGameStore.getState().resetRound();
             break;
         }
       } catch (err) {

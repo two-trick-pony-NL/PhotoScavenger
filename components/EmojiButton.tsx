@@ -1,26 +1,35 @@
-import { TouchableOpacity, Text, StyleSheet } from 'react-native';
-import { useGameStore } from '@/stores/GameStore';
+// components/EmojiButton.tsx
+import React from 'react';
+import { TouchableOpacity, Text, StyleSheet, ActivityIndicator, View } from 'react-native';
+import { EmojiState } from '@/stores/GameStore';
 
-type Props = { emoji: string; onPress: () => void };
+type Props = {
+  emoji: string;
+  state: EmojiState;
+  onPress: () => void;
+};
 
-export function EmojiButton({ emoji, onPress }: Props) {
-  const state = useGameStore((s) => s.emojiStates[emoji] || 'idle');
+export default function EmojiButton({ emoji, state, onPress }: Props) {
+  const isLocked = state === 'locked';
+  const isUploading = state === 'uploading';
 
   return (
     <TouchableOpacity
+      style={[styles.emojiButton, isLocked && styles.lockedButton]}
+      disabled={isLocked} // only disable if locked
       onPress={onPress}
-      disabled={state !== 'idle'}
-      style={[styles.button, state === 'locked' && styles.locked]}
     >
-      <Text style={styles.text}>{emoji}</Text>
-      {state === 'uploading' && <Text style={styles.uploading}>⏳</Text>}
+      <View style={styles.content}>
+        <Text style={styles.emojiButtonText}>{emoji}</Text>
+      </View>
     </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
-  button: { padding: 12, backgroundColor: 'rgba(0,0,0,0.5)', borderRadius: 12, marginHorizontal: 8 },
-  text: { fontSize: 24 },
-  uploading: { position: 'absolute', top: 0, right: 0, fontSize: 16 },
-  locked: { opacity: 0.5 },
+  emojiButton: { padding: 12, backgroundColor: 'rgba(0,0,0,0.5)', borderRadius: 12 },
+  lockedButton: { opacity: 0.5 },
+  content: { flexDirection: 'row', alignItems: 'center' },
+  emojiButtonText: { fontSize: 56 },
+  uploading: { marginLeft: 8 },
 });
