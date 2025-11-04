@@ -234,7 +234,16 @@ const styles = StyleSheet.create({
   timer: { position: 'absolute', top: 40, alignSelf: 'flex-end', padding: 8 },
   statusContainer: { position: 'absolute', bottom: 120, alignSelf: 'center', alignItems: 'center', paddingHorizontal: 20 },
   statusText: { color: 'white', fontSize: 18, marginBottom: 12, fontWeight: 'bold', textAlign: 'center' },
-  bottom: { position: 'absolute', bottom: 40, width: '100%', flexDirection: 'row', justifyContent: 'center', gap: 16 },
+  bottom: {
+    position: 'absolute',
+    bottom: 40,
+    width: '100%',
+    flexDirection: 'row',
+    flexWrap: 'wrap',          // allows emojis to flow to next line
+    justifyContent: 'center',
+    paddingHorizontal: 16,
+    gap: 12,                   // spacing between emojis
+  },  
   startButton: { backgroundColor: '#d90827', paddingVertical: 15, paddingHorizontal: 40, borderRadius: 12 },
   startText: { color: 'white', fontSize: 20, fontWeight: 'bold' },
   message: { textAlign: 'center', fontSize: 18, marginBottom: 20 },
