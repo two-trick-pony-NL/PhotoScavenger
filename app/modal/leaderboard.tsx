@@ -27,7 +27,7 @@ export default function LeaderboardModal({ leaderboard, onClose }: Props) {
   const handleStartNextRound = async () => {
     onClose();
     try {
-      await fetch('http://192.168.1.213:8000/start_round', { method: 'POST' });
+      await fetch('https://photoscavenger-backend-service.2ps1g1wgs1ndj.eu-central-1.cs.amazonlightsail.com/start_round', { method: 'POST' });
     } catch (err) {
       console.error('Failed to start next round', err);
     }

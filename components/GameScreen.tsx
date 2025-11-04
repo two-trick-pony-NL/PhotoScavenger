@@ -15,7 +15,7 @@ import { CountdownTimer } from './CountdownTimer';
 import ConfettiCannon from 'react-native-confetti-cannon';
 import EmojiButton from './EmojiButton';
 
-const API_URL = 'photoscavenger-backend-service.2ps1g1wgs1ndj.eu-central-1.cs.amazonlightsail.com';
+const API_URL = 'https://photoscavenger-backend-service.2ps1g1wgs1ndj.eu-central-1.cs.amazonlightsail.com';
 const UPLOAD_URL = `${API_URL}/upload/`;
 const START_URL = `${API_URL}/start_round/`;
 const WEBSOCKET_URL = 'ws://photoscavenger-backend-service.2ps1g1wgs1ndj.eu-central-1.cs.amazonlightsail.com/ws';
