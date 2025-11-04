@@ -5,8 +5,10 @@ import * as Haptics from 'expo-haptics';
 import { 
   View, Text, TouchableOpacity, StyleSheet, Dimensions, ActivityIndicator, Modal, Animated, Alert
 } from 'react-native';
-import { useGameStore, EmojiState } from '@/stores/GameStore';
+import { useGameStore } from '@/stores/GameStore';
 import { useGameWS } from '@/hooks/useGameWS';
+import { useSound } from '@/hooks/useSoundsEffects';
+import { useBackgroundMusic } from '@/hooks/useBackgroundMusic';
 import LeaderboardModal from '@/app/modal/leaderboard';
 import EventFeed from '@/components/EventFeed';
 import { CountdownTimer } from './CountdownTimer';
@@ -30,7 +32,6 @@ export default function GameScreen({ username }: Props) {
   const [showConfetti, setShowConfetti] = useState(false);
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
-  // Zustand state
   const roundEmojis = useGameStore((s) => s.roundEmojis);
   const emojiStates = useGameStore((s) => s.emojiStates);
   const events = useGameStore((s) => s.events);
@@ -38,7 +39,9 @@ export default function GameScreen({ username }: Props) {
   const leaderboard = useGameStore((s) => s.leaderboard);
   const addEvent = useGameStore((s) => s.addEvent);
 
-  // WebSocket connection
+  const { playSound } = useSound();
+
+
   useGameWS(WEBSOCKET_URL);
 
   useEffect(() => {
@@ -47,7 +50,10 @@ export default function GameScreen({ username }: Props) {
   }, []);
 
   useEffect(() => {
-    if (status === 'ended') setShowLeaderboard(true);
+    if (status === 'ended') {
+      setShowLeaderboard(true);
+      playSound('leaderboard');
+    }
   }, [status]);
 
   const startGame = async () => {
@@ -74,20 +80,16 @@ export default function GameScreen({ username }: Props) {
       }, 1500);
     });
 
-    // Haptic feedback
     switch(type) {
-      case 'success':
-        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-        break;
-      case 'warning':
-        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
-        break;
-      case 'error':
-        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
-        break;
-      default:
-        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+      case 'success': Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success); break;
+      case 'warning': Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning); break;
+      case 'error': Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error); break;
+      default: Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     }
+  };
+
+  const handleCountdown = (count: number) => {
+    if (count === 4) playSound('countdown');
   };
 
   const takeAndSendPhoto = async (emoji: string) => {
@@ -117,29 +119,34 @@ export default function GameScreen({ username }: Props) {
 
       switch (json.status) {
         case 'success':
-          showAnimatedMessage('Correct! First capture!', 'white', 'success');
           setShowConfetti(true);
+          showAnimatedMessage(`Nice! ${emoji}!`, 'green', 'success');
+          playSound('success');
           setTimeout(() => setShowConfetti(false), 3000);
           break;
         case 'too_late':
           showAnimatedMessage('Too late!', 'white', 'warning');
+          playSound('fail');
           break;
         case 'wrong':
-          showAnimatedMessage(`'No ${emoji} detected!'`, 'white', 'error');
+          showAnimatedMessage(`Try again`, 'white', 'error');
+          playSound('fail');
           break;
         default:
           showAnimatedMessage('Upload failed', 'red', 'error');
+          playSound('fail');
       }
     } catch (err) {
       console.error('Upload failed', err);
       showAnimatedMessage('Upload failed', 'red');
+      playSound('fail');
     }
   };
 
   if (!permission) return <View />;
   if (!permission.granted)
     return (
-      <View style={styles.container}>
+      <View style={styles.overlay}>
         <Text style={styles.message}>Camera access required</Text>
         <TouchableOpacity style={styles.grantButton} onPress={requestPermission}>
           <Text style={styles.grantText}>Grant Permission</Text>
@@ -151,7 +158,6 @@ export default function GameScreen({ username }: Props) {
     <View style={styles.container}>
       <CameraView style={styles.camera} facing={facing} ref={cameraRef} />
 
-      {/* Loading overlay */}
       {loading && (
         <View style={styles.overlay}>
           <ActivityIndicator size="large" color="#fff" />
@@ -159,17 +165,14 @@ export default function GameScreen({ username }: Props) {
         </View>
       )}
 
-      {/* Animated feedback message */}
       {feedback && (
         <Animated.View style={[styles.feedbackContainer, { opacity: fadeAnim }]}>
           <Text style={[styles.feedbackText, { color: feedback.color }]}>{feedback.text}</Text>
         </Animated.View>
       )}
 
-      {/* Confetti */}
-      {showConfetti && <ConfettiCannon count={200} origin={{ x: (width/2), y: 0 }} fadeOut />}
+      {showConfetti && <ConfettiCannon count={200} origin={{ x: (width/2), y: 0 }} fadeOut={true} fallSpeed={2000} />}
 
-      {/* Status / start / late join messages */}
       <View style={styles.statusContainer}>
         {!loading && status === 'idle' && (
           <>
@@ -181,34 +184,27 @@ export default function GameScreen({ username }: Props) {
         )}
         {!loading && status === 'running' && roundEmojis.length === 0 && (
           <Text style={styles.statusText}>
-                            Take a photo matching the target emojis as quickly as possible!
-
+            Take a photo matching the target emojis, before other players do
           </Text>
         )}
       </View>
 
-      {/* Countdown timer */}
       <View style={styles.timer}>
-        <CountdownTimer />
+        <CountdownTimer onTick={handleCountdown} />
       </View>
 
-      {/* Event feed */}
       <EventFeed events={events} />
 
-      {/* Emoji buttons */}
-      {/* Emoji buttons + helper text */}
       <View style={styles.bottom}>
         {roundEmojis.filter((e) => emojiStates[e] !== 'locked').length > 0 ? (
-          roundEmojis
-            .filter((e) => emojiStates[e] !== 'locked') // only unlocked
-            .map((e) => (
-              <EmojiButton
-                key={e}
-                emoji={e}
-                state={emojiStates[e] || 'idle'}
-                onPress={() => takeAndSendPhoto(e)}
-              />
-            ))
+          roundEmojis.filter((e) => emojiStates[e] !== 'locked').map((e) => (
+            <EmojiButton
+              key={e}
+              emoji={e}
+              state={emojiStates[e] || 'idle'}
+              onPress={() => takeAndSendPhoto(e)}
+            />
+          ))
         ) : status === 'running' ? (
           <Text style={[styles.statusText, { marginBottom: 0 }]}>
             Game in progress. You will automatically join the next round
@@ -216,13 +212,11 @@ export default function GameScreen({ username }: Props) {
         ) : null}
       </View>
 
-
-      {/* Leaderboard modal */}
       <Modal visible={showLeaderboard} transparent animationType="slide">
         <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.7)' }}>
-          <LeaderboardModal 
-            leaderboard={leaderboard.map(([name, points]) => ({ name, points }))} 
-            onClose={() => setShowLeaderboard(false)} 
+          <LeaderboardModal
+            leaderboard={leaderboard.map(([name, points]) => ({ name, points }))}
+            onClose={() => setShowLeaderboard(false)}
           />
         </View>
       </Modal>
@@ -235,54 +229,17 @@ const { width } = Dimensions.get('window');
 const styles = StyleSheet.create({
   container: { flex: 1 },
   camera: { flex: 1 },
-  overlay: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0,0,0,0.7)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+  overlay: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.7)', justifyContent: 'center', alignItems: 'center' },
   loadingText: { color: 'white', marginTop: 10, fontSize: 18 },
   timer: { position: 'absolute', top: 40, alignSelf: 'flex-end', padding: 8 },
-  statusContainer: {
-    position: 'absolute',
-    bottom: 120,
-    alignSelf: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-  },
-  statusText: {
-    color: 'white',
-    fontSize: 18,
-    marginBottom: 12,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  bottom: {
-    position: 'absolute',
-    bottom: 40,
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    gap: 16,
-  },
-  startButton: {
-    backgroundColor: '#d90827',
-    paddingVertical: 15,
-    paddingHorizontal: 40,
-    borderRadius: 12,
-  },
+  statusContainer: { position: 'absolute', bottom: 120, alignSelf: 'center', alignItems: 'center', paddingHorizontal: 20 },
+  statusText: { color: 'white', fontSize: 18, marginBottom: 12, fontWeight: 'bold', textAlign: 'center' },
+  bottom: { position: 'absolute', bottom: 40, width: '100%', flexDirection: 'row', justifyContent: 'center', gap: 16 },
+  startButton: { backgroundColor: '#d90827', paddingVertical: 15, paddingHorizontal: 40, borderRadius: 12 },
   startText: { color: 'white', fontSize: 20, fontWeight: 'bold' },
   message: { textAlign: 'center', fontSize: 18, marginBottom: 20 },
   grantButton: { alignSelf: 'center', padding: 12, backgroundColor: '#fff', borderRadius: 12 },
   grantText: { fontWeight: 'bold' },
-  feedbackContainer: {
-    position: 'absolute',
-    top: '40%',
-    alignSelf: 'center',
-  },
-  feedbackText: {
-    fontSize: 36,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
+  feedbackContainer: { position: 'absolute', top: '40%', alignSelf: 'center' },
+  feedbackText: { fontSize: 36, fontWeight: 'bold', textAlign: 'center' },
 });

@@ -1,28 +1,46 @@
 import { Text, View, StyleSheet } from 'react-native';
 import { useGameStore } from '@/stores/GameStore';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
+import { useSound } from '@/hooks/useSoundsEffects'; // import your SFX hook
+import { useBackgroundMusic } from '@/hooks/useBackgroundMusic';
 
 export function CountdownTimer() {
   const timeRemaining = useGameStore((state) => state.timeRemaining);
   const status = useGameStore((state) => state.status);
   const [fill, setFill] = useState(100);
   const [blink, setBlink] = useState(false);
+  const prevTime = useRef(timeRemaining);
+  const { stopMusic, pauseMusic, resumeMusic } = useBackgroundMusic(
+      require('@/assets/sounds/game-loop.mp3')
+    );
 
-  // Determine total time based on status
+  const { playSound } = useSound();
+
   const getTotalTime = () => {
     if (status === 'pre_round') return 10;
     if (status === 'running') return 60;
     return 0;
   };
 
-  // Update fill based on time remaining
   useEffect(() => {
     const totalTime = getTotalTime();
     setFill(totalTime > 0 ? (timeRemaining / totalTime) * 100 : 0);
+
+    // play countdown sound only once when hitting 4
+    if (timeRemaining === 3 && prevTime.current !== 3) {
+      playSound('countdown');
+    }
+    prevTime.current = timeRemaining;
   }, [timeRemaining, status]);
 
-  // Handle blinking when time <= 10 in running state
+  useEffect(() => {
+    if (status === 'running') {
+      if (timeRemaining === 59) resumeMusic(); // start music
+      if (timeRemaining === 1) stopMusic();  // stop music
+    }
+  }, [timeRemaining, status]);
+
   useEffect(() => {
     let interval: NodeJS.Timer;
     if (status === 'running' && timeRemaining <= 10) {
@@ -37,7 +55,6 @@ export function CountdownTimer() {
 
   return (
     <View style={styles.container}>
-      
       <Text style={styles.label}>
         {status === 'pre_round' ? 'New Round In' : status === 'running' ? 'Time left' : ''}
       </Text>
@@ -64,23 +81,8 @@ export function CountdownTimer() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  inner: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  label: {
-    color: 'white',
-    fontSize: 20,
-    fontWeight: '600',
-    marginBottom: 4,
-  },
-  time: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginTop: 4,
-  },
+  container: { justifyContent: 'center', alignItems: 'center' },
+  inner: { justifyContent: 'center', alignItems: 'center' },
+  label: { color: 'white', fontSize: 20, fontWeight: '600', marginBottom: 4 },
+  time: { fontSize: 24, fontWeight: 'bold', marginTop: 4 },
 });

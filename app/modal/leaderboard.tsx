@@ -63,7 +63,7 @@ export default function LeaderboardModal({ leaderboard, onClose }: Props) {
       <View style={styles.bottom}>
         {countdown !== null && countdown > 0 ? (
           <TouchableOpacity style={styles.button} onPress={handleStartNextRound}>
-            <Text style={styles.buttonText}>Join Next Round in {countdown}s</Text>
+            <Text style={styles.buttonText}>Start next round</Text>
           </TouchableOpacity>
         ) : (
           <TouchableOpacity style={styles.button} onPress={handleStartNextRound}>

@@ -20,7 +20,11 @@
     "android": {
       "package": "com.petervandoorn.photoscavenger.lite",
       "versionCode": 37,
-      "permissions": ["CAMERA", "WRITE_EXTERNAL_STORAGE", "CAMERA_ROLL"],
+      "permissions": [
+        "CAMERA",
+        "WRITE_EXTERNAL_STORAGE",
+        "CAMERA_ROLL"
+      ],
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#FFFFFF"
@@ -65,10 +69,12 @@
           "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone",
           "recordAudioAndroid": true
         }
-      ]
-    ]},
-    "experiments": {
-      "typedRoutes": true,
-      "reactCompiler": true
-    }
+      ],
+      "expo-audio"
+    ]
+  },
+  "experiments": {
+    "typedRoutes": true,
+    "reactCompiler": true
   }
+}
