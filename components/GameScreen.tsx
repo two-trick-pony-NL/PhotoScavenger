@@ -15,10 +15,10 @@ import { CountdownTimer } from './CountdownTimer';
 import ConfettiCannon from 'react-native-confetti-cannon';
 import EmojiButton from './EmojiButton';
 
-const API_URL = 'http://192.168.1.213:8000';
+const API_URL = 'photoscavenger-backend-service.2ps1g1wgs1ndj.eu-central-1.cs.amazonlightsail.com';
 const UPLOAD_URL = `${API_URL}/upload/`;
 const START_URL = `${API_URL}/start_round/`;
-const WEBSOCKET_URL = 'ws://192.168.1.213:8000/ws';
+const WEBSOCKET_URL = 'ws://photoscavenger-backend-service.2ps1g1wgs1ndj.eu-central-1.cs.amazonlightsail.com/ws';
 
 type Props = { username: string };
 
