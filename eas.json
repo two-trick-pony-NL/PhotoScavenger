@@ -1,0 +1,24 @@
+{
+  "cli": {
+    "version": ">= 0.55.1"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal"
+    },
+    "preview": {
+      "distribution": "internal"
+    },
+    "production": {}
+  },
+  "submit": {
+    "production": {
+      "ios": {
+        "appleId": "peter@petervandoorn.com",
+        "ascAppId": "1637234234",
+        "appleTeamId": "U37U4F79V9"
+      }
+    }
+  }
+}

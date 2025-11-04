@@ -2,47 +2,73 @@
   "expo": {
     "name": "PhotoScavenger",
     "slug": "PhotoScavenger",
-    "version": "1.0.0",
+    "version": "1.0.16",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/icon.png",
     "scheme": "photoscavenger",
-    "userInterfaceStyle": "automatic",
+    "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "bundleIdentifier": "com.petervandoorn.photoscavenger.lite",
+      "buildNumber": "3",
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSCameraUsageDescription": "Photo Scavenger uses the camera to take pictures for the game.",
+        "NSPhotoLibraryAddUsageDescription": "Photo Scavenger may save photos you take for the game."
+      }
     },
     "android": {
+      "package": "com.petervandoorn.photoscavenger.lite",
+      "versionCode": 37,
+      "permissions": ["CAMERA", "WRITE_EXTERNAL_STORAGE", "CAMERA_ROLL"],
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/images/android-icon-foreground.png",
-        "backgroundImage": "./assets/images/android-icon-background.png",
-        "monochromeImage": "./assets/images/android-icon-monochrome.png"
+        "foregroundImage": "./assets/icon.png",
+        "backgroundColor": "#FFFFFF"
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false
     },
     "web": {
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "f4973149-3f6e-4921-8f09-9864267d46ca"
+      }
     },
     "plugins": [
       "expo-router",
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/splash-icon.png",
+          "image": "./assets/splash.png",
           "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#ffffff",
+          "backgroundColor": "#d90827",
           "dark": {
             "backgroundColor": "#000000"
           }
         }
+      ],
+      [
+        "expo-media-library",
+        {
+          "photosPermission": "Allow PhotoScavenger",
+          "savePhotosPermission": "Allow test test"
+        }
+      ],
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera",
+          "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone",
+          "recordAudioAndroid": true
+        }
       ]
-    ],
+    ]},
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
     }
   }
-}
