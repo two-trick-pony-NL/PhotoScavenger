@@ -11,7 +11,7 @@ export function useBackgroundMusic(source: any) {
       try {
         await music.loadAsync(source);
         await music.setIsLoopingAsync(true);
-        await music.setVolumeAsync(0.5); // 50% volume
+        await music.setVolumeAsync(0.3); // 50% volume
         await music.playAsync();
         musicRef.current = music;
       } catch (err) {
