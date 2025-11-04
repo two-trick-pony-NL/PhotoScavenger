@@ -196,26 +196,26 @@ export default function GameScreen({ username }: Props) {
       <EventFeed events={events} />
 
       {/* Emoji buttons */}
-
-      
+      {/* Emoji buttons + helper text */}
       <View style={styles.bottom}>
-        {roundEmojis.length > 0
-          ? roundEmojis
-              .filter((e) => emojiStates[e] !== 'locked') // only show unlocked emojis
-              .map((e) => (
-                <EmojiButton
-                  key={e}
-                  emoji={e}
-                  state={emojiStates[e] || 'idle'}
-                  onPress={() => takeAndSendPhoto(e)}
-                />
-              ))
-          : status === 'running' && (
-              <Text style={[styles.statusText, { marginBottom: 0 }]}>
-                Game in progress. You will automatically join the next round
-              </Text>
-            )}
+        {roundEmojis.filter((e) => emojiStates[e] !== 'locked').length > 0 ? (
+          roundEmojis
+            .filter((e) => emojiStates[e] !== 'locked') // only unlocked
+            .map((e) => (
+              <EmojiButton
+                key={e}
+                emoji={e}
+                state={emojiStates[e] || 'idle'}
+                onPress={() => takeAndSendPhoto(e)}
+              />
+            ))
+        ) : status === 'running' ? (
+          <Text style={[styles.statusText, { marginBottom: 0 }]}>
+            Game in progress. You will automatically join the next round
+          </Text>
+        ) : null}
       </View>
+
 
       {/* Leaderboard modal */}
       <Modal visible={showLeaderboard} transparent animationType="slide">
