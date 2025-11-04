@@ -125,7 +125,7 @@ export default function GameScreen({ username }: Props) {
           showAnimatedMessage('Too late!', 'white', 'warning');
           break;
         case 'wrong':
-          showAnimatedMessage('Incorrect! Try again!', 'red', 'error');
+          showAnimatedMessage(`'No ${emoji} detected!'`, 'white', 'error');
           break;
         default:
           showAnimatedMessage('Upload failed', 'red', 'error');
@@ -167,7 +167,7 @@ export default function GameScreen({ username }: Props) {
       )}
 
       {/* Confetti */}
-      {showConfetti && <ConfettiCannon count={200} origin={{ x: -10, y: 0 }} fadeOut />}
+      {showConfetti && <ConfettiCannon count={200} origin={{ x: (width/2), y: 0 }} fadeOut />}
 
       {/* Status / start / late join messages */}
       <View style={styles.statusContainer}>
