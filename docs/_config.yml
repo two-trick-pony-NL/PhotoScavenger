@@ -13,7 +13,7 @@ presskit_download_link                    :                                     
 app_icon                                  :  assets/icon.png                          # Automatically populates if not set and if iOS app ID is set.  Otherwise enter path to icon file manually.
 app_name                                  :  Photo Scavenger                          # Automatically populates if not set and if iOS app ID is set.  Otherwise enter manually.
 app_price                                 :  Find, Photograph, Score!                                         # Automatically populates if not set and if iOS app ID is set.  Otherwise enter manually.
-app_description                           : Win from friends and family by taking photos of objects. You score points for every item found in the picture and lose points if you can't find the object.
+app_description                           : Snap, race, and laugh! Grab your friends and family for fast rounds of emoji-inspired photo challenges. Quick, silly, and endlessly fun—can you top the leaderboard?
 
 enable_smart_app_banner                   : true                                      # Set to true to show a smart app banner at top of page on mobile devices.
 
@@ -33,31 +33,33 @@ youtube_username                          :
 
 
 # Feature List                            Edit, add or remove features to be presented.
-features                                  :
+features:
 
-  - title                                 : Find, Photograph, Score!
-    description                           : Win from friends and family by taking photos of objects. You score points for every item found in the picture and lose points if you have to refresh.
-    fontawesome_icon_name                 : play-circle
-  
-  - title                                 : Using AI to detect objects
-    description                           : Photo Scavenger uses the latest AI techniques to detect objects in the pictures you snap 
-    fontawesome_icon_name                 : magic
+  - title: Find, Snap, Score!
+    description: Race your friends and family in fast rounds of emoji-inspired photo challenges. Snap, laugh, and see who tops the leaderboard!
+    fontawesome_icon_name: play-circle
 
-  - title                                 :  Objectives get harder as you go
-    description                           :  Photo Scavenger might look like a simple game, and it is. But beware, the more points you score the harder the objectives get!
-    fontawesome_icon_name                 :  binoculars
-    
-  - title                                 : All you need is your iPhone
-    description                           : All you need to play Photo Scavenger is your iPhone
-    fontawesome_icon_name                 : mobile
+  - title: AI-Powered Object Detection
+    description: Our locally trained AI spots the objects in your photos—instantly and completely in-game.
+    fontawesome_icon_name: magic
 
-  - title                                 :  Privacy friendly
-    description                           :  No data is collected, no ads and the photos you take are removed after processing
-    fontawesome_icon_name                 :  fingerprint
+  - title: Multiplayer Fun
+    description: Play with friends, family, or players worldwide. Quick rounds, lots of laughs, and friendly banter!
+    fontawesome_icon_name: users
 
-  - title                                 :  Open Source
-    description                           :  All of the Photo Scavenger code is available on Github. So if you want to see how the app works you can. 
-    fontawesome_icon_name                 :  code
+  - title: Just Your iPhone
+    description: All you need to play Photo Scavenger is your iPhone. And perhaps some friends
+    fontawesome_icon_name: mobile
+
+  - title: Privacy First
+    description: No data collection, no ads, and your photos never leave . Play worry-free.
+    fontawesome_icon_name: fingerprint
+
+  - title: Open Source Fun
+    description: Curious how the app works? All Photo Scavenger code is available on GitHub for you to explore.
+    fontawesome_icon_name: code
+
+
 
   - title                                 : # New Feature Title
     description                           : # New Feature Description
