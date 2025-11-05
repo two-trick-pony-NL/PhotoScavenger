@@ -1,4 +1,4 @@
-import { View, Text, Image, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, Image, StyleSheet, FlatList, TouchableOpacity, Alert } from 'react-native';
 import { useState, useEffect } from 'react';
 import { PlayerScore, useGameStore } from '@/stores/GameStore';
 
@@ -6,6 +6,8 @@ type Props = {
   leaderboard: PlayerScore[];
   onClose: () => void; // callback to close modal
 };
+
+const START_URL = 'https://photoscavenger-backend-service.2ps1g1wgs1ndj.eu-central-1.cs.amazonlightsail.com/start_round/';
 
 export default function LeaderboardModal({ leaderboard, onClose }: Props) {
   const status = useGameStore((s) => s.status);
@@ -25,12 +27,15 @@ export default function LeaderboardModal({ leaderboard, onClose }: Props) {
   }, [status, timeRemaining]);
 
   const handleStartNextRound = async () => {
-    onClose();
     try {
-      await fetch('https://photoscavenger-backend-service.2ps1g1wgs1ndj.eu-central-1.cs.amazonlightsail.com/start_round', { method: 'POST' });
+      const res = await fetch(START_URL, { method: 'POST' });
+      if (!res.ok) throw new Error('Failed to start next round');
     } catch (err) {
-      console.error('Failed to start next round', err);
+      console.error(err);
+      Alert.alert('Error', 'Failed to start the next round. Please try again.');
+      return;
     }
+    onClose(); // close modal only after successful call
   };
 
   const sorted = [...leaderboard].sort((a, b) => b.points - a.points);
@@ -61,15 +66,11 @@ export default function LeaderboardModal({ leaderboard, onClose }: Props) {
       )}
 
       <View style={styles.bottom}>
-        {countdown !== null && countdown > 0 ? (
-          <TouchableOpacity style={styles.button} onPress={handleStartNextRound}>
-            <Text style={styles.buttonText}>Start next round</Text>
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity style={styles.button} onPress={handleStartNextRound}>
-            <Text style={styles.buttonText}>Join Next Round</Text>
-          </TouchableOpacity>
-        )}
+        <TouchableOpacity style={styles.button} onPress={handleStartNextRound}>
+          <Text style={styles.buttonText}>
+            {countdown !== null && countdown > 0 ? 'Start next round' : 'Join Next Round'}
+          </Text>
+        </TouchableOpacity>
       </View>
     </View>
   );

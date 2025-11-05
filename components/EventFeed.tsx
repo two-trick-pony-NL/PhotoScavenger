@@ -1,7 +1,6 @@
 import { View, Text, StyleSheet, Animated } from 'react-native';
 import { useEffect, useRef, useState } from 'react';
 import { GameEvent } from '@/stores/GameStore';
-import ConfettiCannon from 'react-native-confetti-cannon';
 
 type Props = {
   events: GameEvent[];
@@ -9,7 +8,6 @@ type Props = {
 
 export default function EventFeed({ events }: Props) {
   const animations = useRef<Animated.Value[]>([]).current;
-  const [showConfetti, setShowConfetti] = useState(false);
 
   // Ensure we have an Animated.Value for each event
   while (animations.length < events.length) {
@@ -32,10 +30,6 @@ export default function EventFeed({ events }: Props) {
         }),
       ]).start();
 
-      if (events[latestIndex].type === 'locked') {
-        setShowConfetti(true);
-        setTimeout(() => setShowConfetti(false), 3000);
-      }
     }
   }, [events]);
 
@@ -69,11 +63,6 @@ export default function EventFeed({ events }: Props) {
         );
       })}
 
-      {showConfetti && (
-        <View style={StyleSheet.absoluteFill} pointerEvents="none">
-          <ConfettiCannon count={200} origin={{ x: -10, y: 0 }} fadeOut />
-        </View>
-      )}
     </View>
   );
 }

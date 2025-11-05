@@ -2,7 +2,7 @@
   "expo": {
     "name": "PhotoScavenger",
     "slug": "PhotoScavenger",
-    "version": "1.0.16",
+    "version": "2.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "scheme": "photoscavenger",
@@ -10,7 +10,7 @@
     "newArchEnabled": true,
     "ios": {
       "bundleIdentifier": "com.petervandoorn.photoscavenger.lite",
-      "buildNumber": "3",
+      "buildNumber": "4",
       "supportsTablet": true,
       "infoPlist": {
         "NSCameraUsageDescription": "Photo Scavenger uses the camera to take pictures for the game.",

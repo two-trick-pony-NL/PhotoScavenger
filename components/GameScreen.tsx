@@ -18,7 +18,7 @@ import EmojiButton from './EmojiButton';
 const API_URL = 'https://photoscavenger-backend-service.2ps1g1wgs1ndj.eu-central-1.cs.amazonlightsail.com';
 const UPLOAD_URL = `${API_URL}/upload/`;
 const START_URL = `${API_URL}/start_round/`;
-const WEBSOCKET_URL = 'ws://photoscavenger-backend-service.2ps1g1wgs1ndj.eu-central-1.cs.amazonlightsail.com/ws';
+const WEBSOCKET_URL = 'wss://photoscavenger-backend-service.2ps1g1wgs1ndj.eu-central-1.cs.amazonlightsail.com/ws';
 
 type Props = { username: string };
 
@@ -64,7 +64,6 @@ export default function GameScreen({ username }: Props) {
         body: JSON.stringify({ player_id: username }),
       });
       if (!res.ok) throw new Error('Failed to start game');
-      addEvent({ type: 'system', msg: 'Countdown started!' });
     } catch (err) {
       console.error(err);
       Alert.alert('Error', 'Failed to start the game. Please try again.');
