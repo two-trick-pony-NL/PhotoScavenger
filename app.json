@@ -1,48 +1,49 @@
 {
   "expo": {
-    "name": "photoscavenger",
+    "name": "PhotoScavenger",
     "slug": "PhotoScavenger",
-    "version": "1.0.15",
+    "version": "2.0.2",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
+    "scheme": "photoscavenger",
     "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#d90827"
-    },
-    "updates": {
-      "fallbackToCacheTimeout": 0
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "newArchEnabled": true,
     "ios": {
-      "config": {
-        "googleMobileAdsAppId": "ca-app-pub-3940256099942544~1458002511"
-      },
-      "supportsTablet": false,
-      "buildNumber": "2",
       "bundleIdentifier": "com.petervandoorn.photoscavenger.lite",
+      "buildNumber": "5",
+      "supportsTablet": true,
       "infoPlist": {
-        "NSCameraUsageDescription": "Photo Scavenger uses the camera to photograph objects in the game.",
-        "NSPhotoLibraryAddUsageDescription": "Allow Photo Scavenger to save the photos while playing the game.",
-        "NSPhotoLibraryUsageDescription": "Allow Photo Scavenger to save the photos while playing the game.",
-        "NSUserTrackingUsageDescription": "Allow Photo Scavenger to collect app-related data that can be used to verify the app is working correctly"
+        "NSCameraUsageDescription": "Photo Scavenger uses the camera to take pictures for the game.",
+        "NSPhotoLibraryAddUsageDescription": "Photo Scavenger may save photos you take for the game.",
+        "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {
-      "versionCode": 36,
-      "permissions": [ "CAMERA", "WRITE_EXTERNAL_STORAGE", "CAMERA_ROLL" ],
-      "config": {
-        "googleMobileAdsAppId": "ca-app-pub-3940256099942544~1458002511"
-      },
+      "package": "com.petervandoorn.photoscavenger.lite",
+      "versionCode": 37,
+      "permissions": [
+        "CAMERA",
+        "WRITE_EXTERNAL_STORAGE",
+        "CAMERA_ROLL",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.READ_MEDIA_VISUAL_USER_SELECTED",
+        "android.permission.READ_MEDIA_IMAGES",
+        "android.permission.READ_MEDIA_VIDEO",
+        "android.permission.READ_MEDIA_AUDIO",
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.MODIFY_AUDIO_SETTINGS"
+      ],
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "edgeToEdgeEnabled": true,
+      "predictiveBackGestureEnabled": false
     },
     "web": {
+      "output": "static",
       "favicon": "./assets/favicon.png"
     },
     "extra": {
@@ -51,13 +52,39 @@
       }
     },
     "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash.png",
+          "imageWidth": 200,
+          "resizeMode": "contain",
+          "backgroundColor": "#d90827",
+          "dark": {
+            "backgroundColor": "#000000"
+          }
+        }
+      ],
       [
         "expo-media-library",
         {
           "photosPermission": "Allow PhotoScavenger",
-          "savePhotosPermission": "Allow test test",
+          "savePhotosPermission": "Allow test test"
         }
-      ]
+      ],
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera",
+          "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone",
+          "recordAudioAndroid": true
+        }
+      ],
+      "expo-audio"
     ]
+  },
+  "experiments": {
+    "typedRoutes": true,
+    "reactCompiler": true
   }
 }
