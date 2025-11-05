@@ -1,7 +1,7 @@
 <img src="https://user-images.githubusercontent.com/71013416/183674037-eca7cc9b-4a19-494c-a449-af638fdd869c.png" width="250">
 
 
-# Photo Scavenger
+# Photo Scavenger 2.0
 This is the repo for the React Native app that
 support my Photo Scavenger app. From react it should be possible to compile both iOS and Android apps. 
 
