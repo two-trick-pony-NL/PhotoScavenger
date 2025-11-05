@@ -32,4 +32,4 @@ https://apps.apple.com/nl/app/photo-scavenger/id1637234234?l=en
 - I'm considering adding functionalty to have assignments where 2 objects must be present to progress (e.g. take a photo of a plant and a person).
 
 # Backend repo: 
-- This app is supported by a FastAPI backend written in Python. It takes post requests with images and uses Machine Learning to detect the objects in the photo. Check the code here: https://github.com/two-trick-pony-NL/PhotoScavengerBackend 
+- This app is supported by a FastAPI backend written in Python. It takes post requests with images and uses Machine Learning to detect the objects in the photo. Check the code here: https://github.com/two-trick-pony-NL/PhotoScavenger2.0-Backend
