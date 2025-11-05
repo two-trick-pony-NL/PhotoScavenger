@@ -2,15 +2,16 @@
 
 
 # Photo Scavenger
-This is the repo for the React Native apps that
+This is the repo for the React Native app that
 support my Photo Scavenger app. From react it should be possible to compile both iOS and Android apps. 
 
 Here is the project page: https://photoscavenger.petervandoorn.com
 
 Here is a in-game clip of the basic idea: <br>
 
-![ezgif com-gif-maker](https://user-images.githubusercontent.com/71013416/178448499-3f547173-43ab-41b2-967a-a1f9ae8dd9a0.gif)
+<img src="https://raw.githubusercontent.com/two-trick-pony-NL/PhotoScavenger/refs/heads/master/docs/assets/screenshot/1.png" width="250">
 
+<img src="https://raw.githubusercontent.com/two-trick-pony-NL/PhotoScavenger/refs/heads/master/docs/assets/screenshot/sofa.png" width="250">
 
 
 
@@ -32,4 +33,3 @@ https://apps.apple.com/nl/app/photo-scavenger/id1637234234?l=en
 
 # Backend repo: 
 - This app is supported by a FastAPI backend written in Python. It takes post requests with images and uses Machine Learning to detect the objects in the photo. Check the code here: https://github.com/two-trick-pony-NL/PhotoScavengerBackend 
-- The backend has it's own dashboard here: https://photoscavenger.vdotvo9a4e2a6.eu-central-1.cs.amazonlightsail.com/
