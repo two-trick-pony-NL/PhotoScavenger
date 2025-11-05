@@ -2,19 +2,24 @@ import { View, Text, Image, StyleSheet, FlatList, TouchableOpacity, Alert } from
 import { useState, useEffect } from 'react';
 import { PlayerScore, useGameStore } from '@/stores/GameStore';
 
-type Props = {
-  leaderboard: PlayerScore[];
-  onClose: () => void; // callback to close modal
-};
-
 const START_URL = 'https://photoscavenger-backend-service.2ps1g1wgs1ndj.eu-central-1.cs.amazonlightsail.com/start_round/';
 
-export default function LeaderboardModal({ leaderboard, onClose }: Props) {
+
+type Props = {
+  leaderboard: PlayerScore[];
+  onClose: () => void;
+  currentUser: string;
+};
+
+export default function LeaderboardModal({ leaderboard, onClose, currentUser }: Props) {
   const status = useGameStore((s) => s.status);
   const timeRemaining = useGameStore((s) => s.timeRemaining);
+  const roundStats = useGameStore((s) => s.roundStats);
   const [countdown, setCountdown] = useState<number | null>(null);
 
-  // Keep countdown synced with store
+  const sorted = [...leaderboard].sort((a, b) => b.points - a.points);
+  const userIndex = sorted.findIndex((p) => p.name === currentUser);
+
   useEffect(() => {
     if (status === 'pre_round' || status === 'running') {
       setCountdown(timeRemaining);
@@ -35,16 +40,48 @@ export default function LeaderboardModal({ leaderboard, onClose }: Props) {
       Alert.alert('Error', 'Failed to start the next round. Please try again.');
       return;
     }
-    onClose(); // close modal only after successful call
+    onClose();
   };
-
-  const sorted = [...leaderboard].sort((a, b) => b.points - a.points);
 
   return (
     <View style={styles.container}>
+
       <View style={{ alignItems: 'center' }}>
         <Image source={require('@/assets/icon.png')} style={{ width: 50, height: 50, marginBottom: 40, borderRadius: 10 }} />
       </View>
+            {/* User rank banner */}
+
+
+      {/* Round stats banner */}
+      <View style={styles.statsBanner}>
+        <Text style={styles.statsTitle}>Round Stats</Text>
+              {userIndex !== -1 && (
+        <View style={styles.banner}>
+          <Text style={styles.bannerText}>You rank #{userIndex + 1} on the leaderboard</Text>
+        </View>
+      )}
+        <View style={styles.statsRow}>
+          <Text style={styles.statsLabel}>Score:</Text>
+          <Text style={styles.statsValue}>{roundStats.correctPhotos * 10} Points</Text>
+        </View>
+        <View style={styles.statsRow}>
+          <Text style={styles.statsLabel}>Captured Objects:</Text>
+          <Text style={styles.statsValue}>{roundStats.correctPhotos}</Text>
+        </View>
+        
+        <View style={styles.statsRow}>
+          <Text style={styles.statsLabel}>Accuracy:</Text>
+          <Text style={styles.statsValue}>
+            {roundStats.photosTaken > 0 ? `${Math.round((roundStats.correctPhotos / roundStats.photosTaken) * 100)}%` : '0%'}
+          </Text>
+        </View>
+        <View style={styles.statsRow}>
+          <Text style={styles.statsLabel}>Rounds Played:</Text>
+          <Text style={styles.statsValue}>{roundStats.roundsPlayed}</Text>
+        </View>
+      </View>
+
+
       <Text style={styles.title}>Leaderboard</Text>
 
       {sorted.length === 0 ? (
@@ -86,5 +123,34 @@ const styles = StyleSheet.create({
   bottom: { marginTop: 20, alignItems: 'center' },
   button: { backgroundColor: '#d90827', alignItems: 'center', padding: 24, borderRadius: 12, width: '100%', marginBottom: 75 },
   buttonText: { color: 'white', fontWeight: 'bold', fontSize: 18 },
-  countdown: { fontSize: 18, fontWeight: 'bold' },
+  banner: { backgroundColor: '#d90827', padding: 10, borderRadius: 8, marginBottom: 10 },
+  bannerText: { fontWeight: 'bold', textAlign: 'center', fontSize: 16, color:'#ffffff' },
+  statsBanner: { backgroundColor: '#f0f0f0', padding: 10, borderRadius: 8, marginBottom: 15 },
+  statsText: { fontSize: 14, fontWeight: '600', textAlign: 'center' },
+  statsBanner: {
+  backgroundColor: '#000', // black background
+  padding: 16,
+  borderRadius: 12,
+  marginBottom: 15,
+  shadowColor: '#000',
+  shadowOpacity: 0.3,
+  shadowOffset: { width: 0, height: 2 },
+  shadowRadius: 6,
+  elevation: 4,
+},
+statsTitle: {
+  fontSize: 20,
+  fontWeight: 'bold',
+  color: '#fff', // white text
+  textAlign: 'center',
+  marginBottom: 12,
+},
+statsRow: {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  marginVertical: 4,
+},
+statsLabel: { color: '#fff', fontSize: 16, fontWeight: '600' },
+statsValue: { fontSize: 18, fontWeight: 'bold', color: '#ffffff' }, // red for emphasis
+
 });

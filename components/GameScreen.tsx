@@ -8,7 +8,6 @@ import {
 import { useGameStore } from '@/stores/GameStore';
 import { useGameWS } from '@/hooks/useGameWS';
 import { useSound } from '@/hooks/useSoundsEffects';
-import { useBackgroundMusic } from '@/hooks/useBackgroundMusic';
 import LeaderboardModal from '@/app/modal/leaderboard';
 import EventFeed from '@/components/EventFeed';
 import { CountdownTimer } from './CountdownTimer';
@@ -38,6 +37,8 @@ export default function GameScreen({ username }: Props) {
   const status = useGameStore((s) => s.status);
   const leaderboard = useGameStore((s) => s.leaderboard);
   const addEvent = useGameStore((s) => s.addEvent);
+  const incrementPhotosTaken = useGameStore((s) => s.incrementPhotosTaken);
+  const incrementCorrectPhotos = useGameStore((s) => s.incrementCorrectPhotos);
 
   const { playSound } = useSound();
 
@@ -93,6 +94,7 @@ export default function GameScreen({ username }: Props) {
 
   const takeAndSendPhoto = async (emoji: string) => {
     if (!cameraRef.current) return;
+    incrementPhotosTaken();
     try {
       showAnimatedMessage('Uploading...', 'white');
 
@@ -114,6 +116,7 @@ export default function GameScreen({ username }: Props) {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
 
+
       const json = await res.json();
 
       switch (json.status) {
@@ -121,6 +124,7 @@ export default function GameScreen({ username }: Props) {
           setShowConfetti(true);
           showAnimatedMessage(`Nice! ${emoji}!`, 'green', 'success');
           playSound('success');
+          incrementCorrectPhotos();
           setTimeout(() => setShowConfetti(false), 3000);
           break;
         case 'too_late':
@@ -216,6 +220,8 @@ export default function GameScreen({ username }: Props) {
           <LeaderboardModal
             leaderboard={leaderboard.map(([name, points]) => ({ name, points }))}
             onClose={() => setShowLeaderboard(false)}
+            currentUser={username} // pass it here
+
           />
         </View>
       </Modal>

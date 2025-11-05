@@ -10,6 +10,8 @@ export function useGameWS(wsUrl: string) {
   const setRoundEmojis = useGameStore((state) => state.setRoundEmojis);
   const setEmojiState = useGameStore((state) => state.setEmojiState);
   const addEvent = useGameStore((state) => state.addEvent);
+  const incrementRoundsPlayed = useGameStore((s) => s.incrementRoundsPlayed);
+
 
   // Helper to pick random item from an array
   const pickRandom = <T,>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
@@ -37,6 +39,8 @@ export function useGameWS(wsUrl: string) {
             break;
 
           case 'new_round':
+            useGameStore.getState().resetRoundStats(); // reset only photos/correct
+            useGameStore.getState().incrementRoundsPlayed(); // increment round counter
             setRoundEmojis(data.emojis);
             break;
 

@@ -19,7 +19,7 @@ export function CountdownTimer() {
 
   const getTotalTime = () => {
     if (status === 'pre_round') return 10;
-    if (status === 'running') return 60;
+    if (status === 'running') return 30;
     return 0;
   };
 
@@ -36,7 +36,7 @@ export function CountdownTimer() {
 
   useEffect(() => {
     if (status === 'running') {
-      if (timeRemaining === 59) resumeMusic(); // start music
+      if (timeRemaining === 29) resumeMusic(); // start music
       if (timeRemaining === 1) stopMusic();  // stop music
     }
   }, [timeRemaining, status]);

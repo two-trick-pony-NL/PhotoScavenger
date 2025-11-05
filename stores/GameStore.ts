@@ -4,6 +4,12 @@ export type PlayerScore = { name: string; points: number };
 export type EmojiState = 'idle' | 'uploading' | 'locked' | 'wrong';
 export type GameEvent = { type: string; msg: string; [key: string]: any };
 
+type RoundStats = {
+  photosTaken: number;
+  correctPhotos: number;
+  roundsPlayed: number;
+};
+
 type GameState = {
   status: 'idle' | 'pre_round' | 'running' | 'ended';
   timeRemaining: number;
@@ -11,6 +17,7 @@ type GameState = {
   leaderboard: PlayerScore[];
   emojiStates: Record<string, EmojiState>;
   events: GameEvent[];
+  roundStats: RoundStats;
 
   setStatus: (status: GameState['status']) => void;
   setTimeRemaining: (time: number) => void;
@@ -19,6 +26,12 @@ type GameState = {
   setEmojiState: (emoji: string, state: EmojiState) => void;
   setLeaderboard: (lb: PlayerScore[]) => void;
   resetRound: () => void;
+  resetRoundStats: () => void; // ✅ add this
+
+
+  incrementPhotosTaken: () => void;
+  incrementCorrectPhotos: () => void;
+  incrementRoundsPlayed: () => void;
 };
 
 export const useGameStore = create<GameState>((set) => ({
@@ -28,6 +41,11 @@ export const useGameStore = create<GameState>((set) => ({
   leaderboard: [],
   emojiStates: {},
   events: [],
+  roundStats: {
+    photosTaken: 0,
+    correctPhotos: 0,
+    roundsPlayed: 0,
+  },
 
   setStatus: (status) => set({ status }),
   setTimeRemaining: (time) => set({ timeRemaining: time }),
@@ -41,12 +59,37 @@ export const useGameStore = create<GameState>((set) => ({
       emojiStates: { ...state.emojiStates, [emoji]: emojiState },
     })),
   setLeaderboard: (lb) => set({ leaderboard: lb }),
+
   resetRound: () =>
-    set({
-      events: [],
-      roundEmojis: [],
-      emojiStates: {},
-      status: 'pre_round',
-      timeRemaining: 10,
-    }),
+  set((state) => ({
+    events: [],
+    roundEmojis: [],
+    emojiStates: {},
+    status: 'pre_round',
+    timeRemaining: 10,
+    // Remove roundStats changes here
+  })),
+
+  resetRoundStats: () =>
+    set((state) => ({
+      roundStats: {
+        photosTaken: 0,
+        correctPhotos: 0,
+        roundsPlayed: state.roundStats.roundsPlayed, // do NOT increment here
+      },
+    })),
+
+
+  incrementPhotosTaken: () =>
+    set((state) => ({
+      roundStats: { ...state.roundStats, photosTaken: state.roundStats.photosTaken + 1 },
+    })),
+  incrementCorrectPhotos: () =>
+    set((state) => ({
+      roundStats: { ...state.roundStats, correctPhotos: state.roundStats.correctPhotos + 1 },
+    })),
+  incrementRoundsPlayed: () =>
+    set((state) => ({
+      roundStats: { ...state.roundStats, roundsPlayed: state.roundStats.roundsPlayed + 1 },
+    })),
 }));
