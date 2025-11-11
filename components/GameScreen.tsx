@@ -149,12 +149,14 @@ export default function GameScreen({ username }: Props) {
   if (!permission) return <View />;
   if (!permission.granted)
     return (
-      <View style={styles.overlay}>
-        <Text style={styles.message}>Camera access required</Text>
-        <TouchableOpacity style={styles.grantButton} onPress={requestPermission}>
-          <Text style={styles.grantText}>Grant Permission</Text>
-        </TouchableOpacity>
-      </View>
+    <View style={styles.overlay}>
+      <Text style={styles.message}>
+        To play PhotoScavenger, we need access to your camera so you can capture objects.
+      </Text>
+      <TouchableOpacity style={styles.grantButton} onPress={requestPermission}>
+        <Text style={styles.grantText}>Continue</Text>
+      </TouchableOpacity>
+    </View>
     );
 
   return (

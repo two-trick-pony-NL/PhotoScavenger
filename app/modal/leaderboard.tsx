@@ -33,14 +33,12 @@ export default function LeaderboardModal({ leaderboard, onClose, currentUser }: 
 
   const handleStartNextRound = async () => {
     try {
-      const res = await fetch(START_URL, { method: 'POST' });
-      if (!res.ok) throw new Error('Failed to start next round');
+      await fetch(START_URL, { method: 'POST' });
     } catch (err) {
-      console.error(err);
-      Alert.alert('Error', 'Failed to start the next round. Please try again.');
-      return;
+      console.error('Failed to start next round:', err);
+    } finally {
+      onClose(); // always close, success or fail
     }
-    onClose();
   };
 
   return (

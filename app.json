@@ -2,7 +2,7 @@
   "expo": {
     "name": "PhotoScavenger",
     "slug": "PhotoScavenger",
-    "version": "2.0.3",
+    "version": "2.0.4",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "scheme": "photoscavenger",
@@ -10,17 +10,16 @@
     "newArchEnabled": true,
     "ios": {
       "bundleIdentifier": "com.petervandoorn.photoscavenger.lite",
-      "buildNumber": "6",
+      "buildNumber": "7",
       "supportsTablet": false,
       "infoPlist": {
-        "NSCameraUsageDescription": "The camera is usedto take photos in the Photo Scavenger game, which are then uploaded to calculate if you won any points. Photos are never saved.",
-        "NSPhotoLibraryAddUsageDescription": "Photo Scavenger may save photos you take for the game.",
+        "NSCameraUsageDescription": "PhotoScavenger uses your camera so you can take photos of objects during the scavenger hunt game.",        
         "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {
       "package": "com.petervandoorn.photoscavenger.lite",
-      "versionCode": 37,
+      "versionCode": 38,
       "permissions": [
         "CAMERA",
         "WRITE_EXTERNAL_STORAGE",
