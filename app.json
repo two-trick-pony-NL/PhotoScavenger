@@ -74,8 +74,7 @@
       [
         "expo-camera",
         {
-          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera",
-          "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone",
+          "cameraPermission": "PhotoScavenger uses your camera so you can take photos of objects during the scavenger hunt game.",
           "recordAudioAndroid": true
         }
       ],
